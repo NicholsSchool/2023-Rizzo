@@ -72,6 +72,12 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+
+    new JoystickButton(m_driverController, Button.kY.value)
+        .whileTrue(new RunCommand(
+            () -> m_robotDrive.resetGyro(),
+            m_robotDrive));
+
   }
 
   /**
@@ -89,12 +95,11 @@ public class RobotContainer {
 
     // An example trajectory to follow. All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
+        List.of(new Translation2d(1, .75), 
+        new Translation2d(3, 0), 
+        new Translation2d(2, -0.75)),
+        new Pose2d(0.64, -0.07, new Rotation2d(3.14)),
         config);
 
     var thetaController = new ProfiledPIDController(
@@ -105,10 +110,9 @@ public class RobotContainer {
         exampleTrajectory,
         m_robotDrive::getPose, // Functional interface to feed supplier
         DriveConstants.kDriveKinematics,
-
         // Position controllers
-        new PIDController(AutoConstants.kPXController, 0, 0),
-        new PIDController(AutoConstants.kPYController, 0, 0),
+        new PIDController(0.85, 0, 0),
+        new PIDController(0.85, 0, 0),
         thetaController,
         m_robotDrive::setModuleStates,
         m_robotDrive);

@@ -26,7 +26,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static final class DriveConstants {
 
-    public static final double kGovernor = 1.0;
+    public static final double kGovernor = 0.6;
 
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
@@ -115,8 +115,8 @@ public final class Constants {
     public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
 
-    public static final int kDrivingMotorCurrentLimit = 50; // amps
-    public static final int kTurningMotorCurrentLimit = 20; // amps
+    public static final int kDrivingMotorCurrentLimit = 15; // amps
+    public static final int kTurningMotorCurrentLimit = 10; // amps
   }
 
   public static final class OIConstants {
@@ -125,8 +125,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 2.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2.4;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
