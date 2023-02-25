@@ -37,7 +37,7 @@ public class Intake extends SubsystemBase {
     motorRight.setIdleMode( IdleMode.kBrake );
 
     motorLeft.setInverted( false );
-    motorRight.setInverted( false ); //maybe change this?
+    motorRight.setInverted( false ); //experiment with, change negative values if used
 
     //Pincher
     // pincherLeft = new Solenoid( PneumaticsModuleType.CTREPCM,IntakeConstants.PINCHER_LEFT_SOLENOID_CHANNEL );

@@ -144,7 +144,7 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    public static final int LEFT_MOTOR_ID = -1;
+    public static final int LEFT_MOTOR_ID = -1; //change to correct IDs
     public static final int RIGHT_MOTOR_ID = -1;
     // public static final int PINCHER_LEFT_SOLENOID_CHANNEL = -1;
     // public static final int PINCHER_RIGHT_SOLENOID_CHANNEL = -1;
