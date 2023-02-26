@@ -142,4 +142,8 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+
+  public static final class UprighterConstants {
+    public static final int MOTOR_ID = -1; // change to correct ID
+  }
 }
