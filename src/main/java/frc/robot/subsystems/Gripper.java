@@ -16,17 +16,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.GripperConstants;
 
 public class Gripper extends SubsystemBase {
-  private WPI_TalonFX rotator;
+  private WPI_TalonFX spinner;
   private Solenoid pincher;
 
   /** Creates a new Gripper. */
   public Gripper() {
-    // rotator
-    rotator = new WPI_TalonFX(GripperConstants.ROTATOR_ID);
-    rotator.configFactoryDefault();
-    rotator.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    rotator.setInverted(true); // check if change needed
-    rotator.setNeutralMode(NeutralMode.Coast);
+    // spinner
+    spinner = new WPI_TalonFX(GripperConstants.SPINNER_ID);
+    spinner.configFactoryDefault();
+    spinner.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    spinner.setInverted(true); // check if change needed
+    spinner.setNeutralMode(NeutralMode.Coast);
 
     // pincher
     pincher = new Solenoid(PneumaticsModuleType.CTREPCM, GripperConstants.PINCHER_SOLENOID_CHANNEL);
@@ -34,11 +34,11 @@ public class Gripper extends SubsystemBase {
   }
 
   public void grab(double speed) {
-    rotator.set(speed);
+    spinner.set(speed);
   }
 
   public void release(double speed) {
-    rotator.set(-speed);
+    spinner.set(-speed);
   }
 
   public void widen() {
