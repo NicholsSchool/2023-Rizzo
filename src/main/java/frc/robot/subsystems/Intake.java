@@ -17,25 +17,25 @@ import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
 
-  private CANSparkMax motorLeft;
-  private CANSparkMax motorRight;
+  private CANSparkMax intakeLeft;
+  private CANSparkMax intakeRight;
   private Solenoid lifterLeft;
   private Solenoid lifterRight;
 
   /** Creates a new Intake. */
   public Intake() {
     // Motor
-    motorLeft = new CANSparkMax(IntakeConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
-    motorRight = new CANSparkMax(IntakeConstants.RIGHT_MOTOR_ID, MotorType.kBrushless);
+    intakeLeft = new CANSparkMax(IntakeConstants.LEFT_INTAKE_ID, MotorType.kBrushless);
+    intakeRight = new CANSparkMax(IntakeConstants.RIGHT_INTAKE_ID, MotorType.kBrushless);
 
-    motorLeft.restoreFactoryDefaults();
-    motorRight.restoreFactoryDefaults();
+    intakeLeft.restoreFactoryDefaults();
+    intakeRight.restoreFactoryDefaults();
 
-    motorLeft.setIdleMode(IdleMode.kBrake);
-    motorRight.setIdleMode(IdleMode.kBrake);
+    intakeLeft.setIdleMode(IdleMode.kBrake);
+    intakeRight.setIdleMode(IdleMode.kBrake);
 
-    motorLeft.setInverted(false);
-    motorRight.setInverted(false); // experiment with inverting using this
+    intakeLeft.setInverted(false);
+    intakeRight.setInverted(false); // experiment with inverting using this
 
     // Lifter
     lifterLeft = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.LIFTER_LEFT_SOLENOID_CHANNEL);
@@ -46,18 +46,18 @@ public class Intake extends SubsystemBase {
   }
 
   public void in(double speed) {
-    motorLeft.set(speed);
-    motorRight.set(speed);
+    intakeLeft.set(speed);
+    intakeRight.set(speed);
   }
 
   public void out(double speed) {
-    motorLeft.set(-speed);
-    motorRight.set(-speed);
+    intakeLeft.set(-speed);
+    intakeRight.set(-speed);
   }
 
   public void stop() {
-    motorLeft.stopMotor();
-    motorRight.stopMotor();
+    intakeLeft.stopMotor();
+    intakeRight.stopMotor();
   }
 
   public void raise() {
