@@ -144,6 +144,8 @@ public final class Constants {
   }
 
   public static final class GripperConstants {
-    public static final int ROTATOR_ID = -1; // put actual ID here
+    public static final int ROTATOR_ID = -1; // replace with correct ID
+    public static final int PINCHER_SOLENOID_CHANNEL = -1;
+    public static final boolean EXTENDED = true; // check if correct
   }
 }
