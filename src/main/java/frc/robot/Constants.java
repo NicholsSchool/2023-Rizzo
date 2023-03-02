@@ -144,6 +144,6 @@ public final class Constants {
   }
 
   public static final class UprighterConstants {
-    public static final int MOTOR_ID = -1; // change to correct ID
+    public static final int UPRIGHTER_ID = -1; // change to correct ID
   }
 }

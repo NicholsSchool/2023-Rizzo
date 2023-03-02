@@ -13,27 +13,27 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants.UprighterConstants;
 
 public class Uprighter extends SubsystemBase {
-  private CANSparkMax motor;
+  private CANSparkMax uprighter;
 
   /** Creates a new Uprighter. */
   public Uprighter() {
-    // Motor
-    motor = new CANSparkMax(UprighterConstants.MOTOR_ID, MotorType.kBrushless);
-    motor.restoreFactoryDefaults();
-    motor.setIdleMode(IdleMode.kBrake);
-    motor.setInverted(false); // check if clockwise is incorrect without inversion
+    // uprighter
+    uprighter= new CANSparkMax(UprighterConstants.UPRIGHTER_ID, MotorType.kBrushless);
+    uprighter.restoreFactoryDefaults();
+    uprighter.setIdleMode(IdleMode.kBrake);
+    uprighter.setInverted(false); // check if clockwise is incorrect without inversion
   }
 
   public void clockwise(double speed) {
-    motor.set(speed);
+    uprighter.set(speed);
   }
 
   public void counterClockwise(double speed) {
-    motor.set(-speed);
+    uprighter.set(-speed);
   }
 
   public void stop() {
-    motor.stopMotor();
+    uprighter.stopMotor();
   }
 
   @Override
