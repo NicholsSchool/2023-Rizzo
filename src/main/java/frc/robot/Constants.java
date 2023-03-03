@@ -143,6 +143,13 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
 
+  public static final class IntakeConstants {
+    public static final int LEFT_INTAKE_ID = -1; //change to correct IDs
+    public static final int RIGHT_INTAKE_ID = -1;
+    public static final int LIFTER_LEFT_SOLENOID_CHANNEL = -1;
+    public static final int LIFTER_RIGHT_SOLENOID_CHANNEL = -1;
+    public static final boolean EXTENDED = true; //check if correct with testing
+  }
 
   public static final class UprighterConstants {
     public static final int UPRIGHTER_ID = -1; // change to correct ID
