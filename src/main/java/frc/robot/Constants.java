@@ -143,6 +143,11 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
 
+
+  public static final class UprighterConstants {
+    public static final int UPRIGHTER_ID = -1; // change to correct ID
+  }
+
   public static final class ArmConstants {
     public static final int RAISER_ID = -1; // replace with real ID
   }
