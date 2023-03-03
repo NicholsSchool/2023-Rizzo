@@ -1,18 +1,11 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
@@ -22,8 +15,8 @@ public class Intake extends SubsystemBase {
   private Solenoid lifterLeft;
   private Solenoid lifterRight;
 
-  /** Creates a new Intake. */
   public Intake() {
+
     // Motor
     intakeLeft = new CANSparkMax(IntakeConstants.LEFT_INTAKE_ID, MotorType.kBrushless);
     intakeRight = new CANSparkMax(IntakeConstants.RIGHT_INTAKE_ID, MotorType.kBrushless);
@@ -43,6 +36,7 @@ public class Intake extends SubsystemBase {
 
     lifterLeft.set(!IntakeConstants.EXTENDED);
     lifterRight.set(!IntakeConstants.EXTENDED);
+
   }
 
   public void in(double speed) {
@@ -78,4 +72,5 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
 }
