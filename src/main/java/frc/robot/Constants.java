@@ -143,7 +143,19 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
 
+
   public static final class UprighterConstants {
     public static final int UPRIGHTER_ID = -1; // change to correct ID
   }
+
+  public static final class ArmConstants {
+    public static final int RAISER_ID = -1; // replace with real ID
+  }
+
+  public static final class GripperConstants {
+    public static final int SPINNER_ID = -1; // replace with correct ID
+    public static final int PINCHER_SOLENOID_CHANNEL = -1;
+    public static final boolean EXTENDED = true; // check if correct
+  }
+
 }
