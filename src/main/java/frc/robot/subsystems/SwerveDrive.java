@@ -138,7 +138,7 @@ public class SwerveDrive extends SubsystemBase {
       // Calculate the direction slew rate based on an estimate of the lateral
       // acceleration
       double directionSlewRate;
-      if (m_currentTranslationMag != 0.0) { asdf
+      if (m_currentTranslationMag != 0.0) {
         directionSlewRate = Math.abs(DriveConstants.kDirectionSlewRate / m_currentTranslationMag);
       } else {
         directionSlewRate = 500.0; // some high number that means the slew rate is effectively instantaneous
