@@ -26,11 +26,12 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static final class DriveConstants {
 
-    public static final double kGovernor = 0.6;
+    public static final double kLowGear = 0.6;
+    public static final double kHighGear = 1.0;
 
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 4.8 * kGovernor; // was originally 4.8
+    public static double kMaxSpeedMetersPerSecond = 4.8 * kLowGear; // was originally 4.8
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     public static final double kDirectionSlewRate = 1.2; // radians per second

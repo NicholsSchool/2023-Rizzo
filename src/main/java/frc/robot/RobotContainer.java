@@ -77,6 +77,12 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.resetGyro(),
             m_robotDrive));
+    
+    new JoystickButton(m_driverController, 2) // Replace 2 with the axis number of the left trigger )
+        .onTrue(new RunCommand(
+            () -> DriveConstants.kMaxSpeedMetersPerSecond = DriveConstants.kHighGear))
+        .onFalse(new RunCommand(
+            () -> DriveConstants.kMaxSpeedMetersPerSecond = DriveConstants.kLowGear));
 
   }
 
