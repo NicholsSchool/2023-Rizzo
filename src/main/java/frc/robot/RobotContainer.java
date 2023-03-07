@@ -15,6 +15,8 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.XboxController.Axis;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -78,12 +80,11 @@ public class RobotContainer {
             () -> m_robotDrive.resetGyro(),
             m_robotDrive));
     
-    new JoystickButton(m_driverController, 2) // Replace 2 with the axis number of the left trigger )
-        .onTrue(new RunCommand(
+    new JoystickButton(m_driverController, Axis.kLeftTrigger.value)
+        .onTrue(new InstantCommand(
             () -> DriveConstants.kMaxSpeedMetersPerSecond = DriveConstants.kHighGear))
-        .onFalse(new RunCommand(
+        .onFalse(new InstantCommand(
             () -> DriveConstants.kMaxSpeedMetersPerSecond = DriveConstants.kLowGear));
-
   }
 
   /**
