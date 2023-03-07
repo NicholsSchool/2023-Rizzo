@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.Constants.CANID;
 import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
@@ -18,8 +19,8 @@ public class Intake extends SubsystemBase {
   public Intake() {
 
     // Motor
-    intakeLeft = new CANSparkMax(IntakeConstants.LEFT_INTAKE_ID, MotorType.kBrushless);
-    intakeRight = new CANSparkMax(IntakeConstants.RIGHT_INTAKE_ID, MotorType.kBrushless);
+    intakeLeft = new CANSparkMax(CANID.LEFT_INTAKE_SPARKMAX, MotorType.kBrushless);
+    intakeRight = new CANSparkMax(CANID.RIGHT_INTAKE_SPARKMAX, MotorType.kBrushless);
 
     intakeLeft.restoreFactoryDefaults();
     intakeRight.restoreFactoryDefaults();

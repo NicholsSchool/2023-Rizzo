@@ -8,12 +8,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -43,9 +42,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(driverXbox.getLeftY(), OIConstants.DEADBAND),
-                -MathUtil.applyDeadband(driverXbox.getLeftX(), OIConstants.DEADBAND),
-                -MathUtil.applyDeadband(driverXbox.getRightX(), OIConstants.DEADBAND),
+                -MathUtil.applyDeadband(driverXbox.getLeftY(), 0.09),
+                -MathUtil.applyDeadband(driverXbox.getLeftX(), 0.09),
+                -MathUtil.applyDeadband(driverXbox.getRightX(), 0.09),
                 true, true),
             m_robotDrive));
   }
@@ -80,10 +79,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // Create config for trajectory
     TrajectoryConfig config = new TrajectoryConfig(
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+        2.0,
+        2.4)
         // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(DriveConstants.kDriveKinematics);
+        .setKinematics(SwerveDriveConstants.DRIVETRAIN_KINEMATICS);
 
     // An example trajectory to follow. All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
@@ -95,13 +94,14 @@ public class RobotContainer {
         config);
 
     var thetaController = new ProfiledPIDController(
-        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+        1, 0, 0, new TrapezoidProfile.Constraints(
+            Math.PI, Math.PI));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
         exampleTrajectory,
         m_robotDrive::getPose, // Functional interface to feed supplier
-        DriveConstants.kDriveKinematics,
+        SwerveDriveConstants.DRIVETRAIN_KINEMATICS,
         // Position controllers
         new PIDController(0.85, 0, 0),
         new PIDController(0.85, 0, 0),
