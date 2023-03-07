@@ -10,7 +10,9 @@ import edu.wpi.first.wpilibj.RobotBase;
  * NOTE: Do NOT touch anything in this file.
  */
 public final class Main {
-  private Main() {}
+  private Main() {
+  }
+
   public static void main(String... args) {
     RobotBase.startRobot(Robot::new);
   }
