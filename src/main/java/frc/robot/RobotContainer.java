@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
@@ -25,18 +21,14 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
-/*
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems
+
+  // robot subsystems
   private final SwerveDrive m_robotDrive = new SwerveDrive();
 
-  // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  // OI controllers
+  XboxController driverXbox = new XboxController(0);
+  XboxController operatorXbox = new XboxController(1);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -51,9 +43,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(driverXbox.getLeftY(), OIConstants.DEADBAND),
+                -MathUtil.applyDeadband(driverXbox.getLeftX(), OIConstants.DEADBAND),
+                -MathUtil.applyDeadband(driverXbox.getRightX(), OIConstants.DEADBAND),
                 true, true),
             m_robotDrive));
   }
@@ -68,12 +60,12 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kX.value)
+    new JoystickButton(driverXbox, Button.kX.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
 
-    new JoystickButton(m_driverController, Button.kY.value)
+    new JoystickButton(driverXbox, Button.kY.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.resetGyro(),
             m_robotDrive));
@@ -96,9 +88,9 @@ public class RobotContainer {
     // An example trajectory to follow. All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(new Translation2d(1, .75), 
-        new Translation2d(3, 0), 
-        new Translation2d(2, -0.75)),
+        List.of(new Translation2d(1, .75),
+            new Translation2d(3, 0),
+            new Translation2d(2, -0.75)),
         new Pose2d(0.64, -0.07, new Rotation2d(3.14)),
         config);
 
@@ -123,4 +115,5 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
   }
+
 }
