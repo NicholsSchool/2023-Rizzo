@@ -12,6 +12,7 @@ public class Uprighter extends SubsystemBase {
 
   public Uprighter() {
 
+    // uprighter
     uprighter = new CANSparkMax(UprighterConstants.UPRIGHTER_ID, MotorType.kBrushless);
     uprighter.restoreFactoryDefaults();
     uprighter.setIdleMode(IdleMode.kBrake);

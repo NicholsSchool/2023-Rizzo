@@ -38,7 +38,7 @@ public class SwerveDrive extends SubsystemBase {
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset);
 
-  // The gyro sensor
+  // The IMU sensor
   private final AHRS navX = new AHRS(SPI.Port.kMXP);
 
   // Slew rate filter variables for controlling lateral acceleration
@@ -50,7 +50,7 @@ public class SwerveDrive extends SubsystemBase {
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
-  // Odometry class for tracking robot pose
+  // Odometry object for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
       Rotation2d.fromDegrees(transfromAngle()),
