@@ -23,7 +23,7 @@ public class Gripper extends SubsystemBase {
     spinner.setNeutralMode(NeutralMode.Coast);
     // pincher
     pincher = new Solenoid(PneumaticsModuleType.CTREPCM, GripperConstants.PINCHER_SOLENOID_CHANNEL);
-    pincher.set(!GripperConstants.EXTENDED);
+    pincher.set(!GripperConstants.GRIPPER_PISTON_EXTENDED);
   }
 
   public void grab(double speed) {
@@ -37,13 +37,13 @@ public class Gripper extends SubsystemBase {
   }
 
   public void open() {
-    if (pincher.get() == GripperConstants.EXTENDED)
-      pincher.set(!GripperConstants.EXTENDED);
+    if (pincher.get() == GripperConstants.GRIPPER_PISTON_EXTENDED)
+      pincher.set(!GripperConstants.GRIPPER_PISTON_EXTENDED);
   }
 
   public void close() {
-    if (pincher.get() != GripperConstants.EXTENDED)
-      pincher.set(GripperConstants.EXTENDED);
+    if (pincher.get() != GripperConstants.GRIPPER_PISTON_EXTENDED)
+      pincher.set(GripperConstants.GRIPPER_PISTON_EXTENDED);
   }
 
   @Override

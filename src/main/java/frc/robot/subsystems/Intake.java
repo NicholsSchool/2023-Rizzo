@@ -35,8 +35,8 @@ public class Intake extends SubsystemBase {
     lifterLeft = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.LIFTER_LEFT_SOLENOID_CHANNEL);
     lifterRight = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.LIFTER_RIGHT_SOLENOID_CHANNEL);
 
-    lifterLeft.set(!IntakeConstants.EXTENDED);
-    lifterRight.set(!IntakeConstants.EXTENDED);
+    lifterLeft.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
+    lifterRight.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
 
   }
 
@@ -56,16 +56,16 @@ public class Intake extends SubsystemBase {
   }
 
   public void raise() {
-    if (lifterLeft.get() == IntakeConstants.EXTENDED) {
-      lifterLeft.set(!IntakeConstants.EXTENDED);
-      lifterRight.set(!IntakeConstants.EXTENDED);
+    if (lifterLeft.get() == IntakeConstants.INTAKE_PISTON_EXTENDED) {
+      lifterLeft.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
+      lifterRight.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
     }
   }
 
   public void lower() {
-    if (lifterLeft.get() != IntakeConstants.EXTENDED) {
-      lifterLeft.set(IntakeConstants.EXTENDED);
-      lifterRight.set(IntakeConstants.EXTENDED);
+    if (lifterLeft.get() != IntakeConstants.INTAKE_PISTON_EXTENDED) {
+      lifterLeft.set(IntakeConstants.INTAKE_PISTON_EXTENDED);
+      lifterRight.set(IntakeConstants.INTAKE_PISTON_EXTENDED);
     }
   }
 

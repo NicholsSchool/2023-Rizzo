@@ -21,7 +21,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    // @todo Go to X pos with swerve drive when brake mode enabled.
   }
 
   @Override

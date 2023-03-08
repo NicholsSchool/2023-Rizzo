@@ -12,8 +12,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import frc.robot.Constants.SwerveDriveConstants;
-import frc.robot.subsystems.SwerveDrive;
+import static frc.robot.Constants.SwerveDriveConstants.*;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -22,52 +22,39 @@ import java.util.List;
 
 public class RobotContainer {
 
-  // robot subsystems
-  private final SwerveDrive m_robotDrive = new SwerveDrive();
+  // subsystems
+  private final SwerveDrive robotSwerveDrive = new SwerveDrive();
 
   // OI controllers
   XboxController driverXbox = new XboxController(0);
   XboxController operatorXbox = new XboxController(1);
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+  /** Robot Container Constructor. */
   public RobotContainer() {
+
     // Configure the button bindings
     configureButtonBindings();
 
     // Configure default commands
-    m_robotDrive.setDefaultCommand(
+    robotSwerveDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
-            () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(driverXbox.getLeftY(), 0.09),
-                -MathUtil.applyDeadband(driverXbox.getLeftX(), 0.09),
-                -MathUtil.applyDeadband(driverXbox.getRightX(), 0.09),
-                true, true),
-            m_robotDrive));
+            () -> robotSwerveDrive.drive(
+                -MathUtil.applyDeadband(driverXbox.getLeftY(), 0.07),
+                -MathUtil.applyDeadband(driverXbox.getLeftX(), 0.07),
+                -MathUtil.applyDeadband(driverXbox.getRightX(), 0.07),
+                true),
+            robotSwerveDrive));
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
-   * subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling
-   * passing it to a
-   * {@link JoystickButton}.
-   */
+  /** Define all button() to command() mappings. */
   private void configureButtonBindings() {
     new JoystickButton(driverXbox, Button.kX.value)
-        .whileTrue(new RunCommand(
-            () -> m_robotDrive.setX(),
-            m_robotDrive));
+        .whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
 
     new JoystickButton(driverXbox, Button.kY.value)
-        .whileTrue(new RunCommand(
-            () -> m_robotDrive.resetGyro(),
-            m_robotDrive));
+        .whileTrue(new RunCommand(() -> robotSwerveDrive.resetGyro(), robotSwerveDrive));
 
   }
 
@@ -82,7 +69,7 @@ public class RobotContainer {
         2.0,
         2.4)
         // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(SwerveDriveConstants.DRIVETRAIN_KINEMATICS);
+        .setKinematics(SWERVE_DRIVE_KINEMATICS);
 
     // An example trajectory to follow. All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
@@ -100,20 +87,20 @@ public class RobotContainer {
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
         exampleTrajectory,
-        m_robotDrive::getPose, // Functional interface to feed supplier
-        SwerveDriveConstants.DRIVETRAIN_KINEMATICS,
+        robotSwerveDrive::getPose, // Functional interface to feed supplier
+        SWERVE_DRIVE_KINEMATICS,
         // Position controllers
         new PIDController(0.85, 0, 0),
         new PIDController(0.85, 0, 0),
         thetaController,
-        m_robotDrive::setModuleStates,
-        m_robotDrive);
+        robotSwerveDrive::setModuleStates,
+        robotSwerveDrive);
 
     // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+    robotSwerveDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
+    return swerveControllerCommand.andThen(() -> robotSwerveDrive.drive(0, 0, 0, false));
   }
 
 }
