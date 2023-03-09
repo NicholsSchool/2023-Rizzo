@@ -23,7 +23,7 @@ public class SwerveDrive extends SubsystemBase {
 
   private final SwerveModule frontRightModule = new SwerveModule(
       CANID.FRONT_RIGHT_DRIVING_SPARKMAX,
-      CANID.FRONT_RIGHT_DRIVING_SPARKMAX,
+      CANID.FRONT_RIGHT_TURNING_SPARKMAX,
       (0));
 
   private final SwerveModule rearLeftModule = new SwerveModule(
