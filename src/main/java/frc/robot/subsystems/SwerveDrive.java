@@ -39,8 +39,8 @@ public class SwerveDrive extends SubsystemBase {
   // Attitude and Heading Reference System (AHRS)
   private final AHRS navX = new AHRS(SPI.Port.kMXP);
 
+  // Setup rate limiters for translation and rotation.
   private double translationRateLimiter = VIRTUAL_LOW_GEAR_RATE;
-
   private SlewRateLimiter rotationRateLimiter = new SlewRateLimiter(ROTATIONAL_SLEW_RATE);
 
   // Create odometry object for tracking robot pose.
@@ -117,7 +117,7 @@ public class SwerveDrive extends SubsystemBase {
    *
    * @param xSpeed          Speed of the robot in the x direction (forward).
    * @param ySpeed          Speed of the robot in the y direction (sideways).
-   * @param angularRotation Angular rate of rotation of the robot chasis.
+   * @param angularRotation Angular rate of robot chasis rotation.
    * @param fieldRelative   Whether x and y speeds are field relative, or not.
    */
   public void drive(double xSpeed, double ySpeed, double angularRotation, boolean fieldRelative) {
