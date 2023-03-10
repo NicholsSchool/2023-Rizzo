@@ -122,6 +122,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
     public static final double kDriveDeadband = 0.10;
   }
 
@@ -163,7 +164,7 @@ public final class Constants {
   public static final class GripperConstants {
     public static final int SPINNER_ID = -1; // replace with correct ID
     public static final int PINCHER_SOLENOID_CHANNEL = -1;
-    public static final boolean EXTENDED = true; // check if correct
+    public static final boolean EXTENDED = true; // check if correct with testing
   }
 
 }
