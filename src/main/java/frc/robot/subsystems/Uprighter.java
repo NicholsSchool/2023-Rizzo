@@ -4,20 +4,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import frc.robot.Constants.UprighterConstants;
+import frc.robot.Constants.CANID;
+// import frc.robot.Constants.UprighterConstants;
 
 public class Uprighter extends SubsystemBase {
 
   private CANSparkMax uprighter;
 
   public Uprighter() {
-
-    // uprighter
-    uprighter = new CANSparkMax(UprighterConstants.UPRIGHTER_ID, MotorType.kBrushless);
+    uprighter = new CANSparkMax(CANID.UPRIGHTER_SPARKMAX, MotorType.kBrushless);
     uprighter.restoreFactoryDefaults();
     uprighter.setIdleMode(IdleMode.kBrake);
     uprighter.setInverted(false);
-
   }
 
   public void clockwise(double speed) {
