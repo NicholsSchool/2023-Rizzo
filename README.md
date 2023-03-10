@@ -1,6 +1,8 @@
-# 2023-Walter
+# :four::nine::three::zero: 2023-Walter :robot:
 
 FRC 4930's 2023 Competitive Robot for FRC Charged Up!
+
+# 
 
 ## Diver OI Controller Setup:
 * DRIVER Left Stick: Translational movement of the robot relative to the field.
@@ -47,6 +49,6 @@ FRC 4930's 2023 Competitive Robot for FRC Charged Up!
 * 23 Arm
 * 24 Gripper
 
-## Built with Love ♥♥♥:
-* Thanks to REV Robotics 3in MAXSwerve Modules https://www.revrobotics.com/rev-21-3005/
+## Built with:
+* REV Robotics 3in MAXSwerve Modules https://www.revrobotics.com/rev-21-3005/
 * OG Code (v2023.1) https://github.com/REVrobotics/MAXSwerve-Java-Template
