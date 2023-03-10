@@ -49,18 +49,16 @@ public class RobotContainer {
   /** Define all button() to command() mappings. */
   private void configureButtonBindings() {
 
-    // DRIVER X Button: Set swerve drive to X position.
-    driverOI.x()
-        .whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
-
     // DRIVER Left Trigger: Shift between high and low gear.
     driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> robotSwerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> robotSwerveDrive.setVirtualLowGear()));
 
     // DRIVER Y Button: Reset field oriented gyro.
-    driverOI.y()
-        .whileTrue(new RunCommand(() -> robotSwerveDrive.resetFieldOrientedGyro(), robotSwerveDrive));
+    driverOI.y().whileTrue(new RunCommand(() -> robotSwerveDrive.resetFieldOrientedGyro(), robotSwerveDrive));
+
+    // OPERATOR X Button: Set swerve drive to X position.
+    operatorOI.x().whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
 
     // Driver OI Controller Sample Mappings
     driverOI.a().onTrue(new InstantCommand(() -> System.out.println("Driver A")));
