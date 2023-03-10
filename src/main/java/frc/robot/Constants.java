@@ -97,6 +97,7 @@ public final class Constants {
     // @todo also adjust the max(es) here when changing the governor
     public static final int DRIVING_MOTOR_CURRENT_LIMIT = 15; // amps
     public static final int TURNING_MOTOR_CURRENT_LIMIT = 10; // amps
+
   }
 
 }

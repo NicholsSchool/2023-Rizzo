@@ -12,12 +12,15 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.XboxController.Axis;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import java.util.List;
 
 public class RobotContainer {
@@ -52,6 +55,12 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverXbox, Button.kX.value)
         .whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
+
+    new JoystickButton(driverXbox, Axis.kLeftTrigger.value)
+        .onTrue(new InstantCommand(
+            () -> DriveConstants.kMaxSpeedMetersPerSecond = DriveConstants.kHighGear))
+        .onFalse(new InstantCommand(
+            () -> DriveConstants.kMaxSpeedMetersPerSecond = DriveConstants.kLowGear));
 
     new JoystickButton(driverXbox, Button.kY.value)
         .whileTrue(new RunCommand(() -> robotSwerveDrive.resetGyro(), robotSwerveDrive));
