@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.Constants.CANID;
 import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
@@ -18,8 +19,8 @@ public class Intake extends SubsystemBase {
   public Intake() {
 
     // Motor
-    intakeLeft = new CANSparkMax(IntakeConstants.LEFT_INTAKE_ID, MotorType.kBrushless);
-    intakeRight = new CANSparkMax(IntakeConstants.RIGHT_INTAKE_ID, MotorType.kBrushless);
+    intakeLeft = new CANSparkMax(CANID.LEFT_INTAKE_SPARKMAX, MotorType.kBrushless);
+    intakeRight = new CANSparkMax(CANID.RIGHT_INTAKE_SPARKMAX, MotorType.kBrushless);
 
     intakeLeft.restoreFactoryDefaults();
     intakeRight.restoreFactoryDefaults();
@@ -34,8 +35,8 @@ public class Intake extends SubsystemBase {
     lifterLeft = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.LIFTER_LEFT_SOLENOID_CHANNEL);
     lifterRight = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.LIFTER_RIGHT_SOLENOID_CHANNEL);
 
-    lifterLeft.set(!IntakeConstants.EXTENDED);
-    lifterRight.set(!IntakeConstants.EXTENDED);
+    lifterLeft.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
+    lifterRight.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
 
   }
 
@@ -55,16 +56,16 @@ public class Intake extends SubsystemBase {
   }
 
   public void raise() {
-    if (lifterLeft.get() == IntakeConstants.EXTENDED) {
-      lifterLeft.set(!IntakeConstants.EXTENDED);
-      lifterRight.set(!IntakeConstants.EXTENDED);
+    if (lifterLeft.get() == IntakeConstants.INTAKE_PISTON_EXTENDED) {
+      lifterLeft.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
+      lifterRight.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
     }
   }
 
   public void lower() {
-    if (lifterLeft.get() != IntakeConstants.EXTENDED) {
-      lifterLeft.set(IntakeConstants.EXTENDED);
-      lifterRight.set(IntakeConstants.EXTENDED);
+    if (lifterLeft.get() != IntakeConstants.INTAKE_PISTON_EXTENDED) {
+      lifterLeft.set(IntakeConstants.INTAKE_PISTON_EXTENDED);
+      lifterRight.set(IntakeConstants.INTAKE_PISTON_EXTENDED);
     }
   }
 

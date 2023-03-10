@@ -3,7 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.CANID;
+// import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
@@ -11,8 +12,7 @@ public class Arm extends SubsystemBase {
   private WPI_TalonFX raiser;
 
   public Arm() {
-    // arm
-    raiser = new WPI_TalonFX(ArmConstants.RAISER_ID);
+    raiser = new WPI_TalonFX(CANID.ARM_FALCON_FX);
     raiser.configFactoryDefault();
     raiser.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     raiser.setInverted(true);
