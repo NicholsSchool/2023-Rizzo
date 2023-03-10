@@ -26,8 +26,8 @@ public class RobotContainer {
   private final SwerveDrive robotSwerveDrive = new SwerveDrive();
 
   // OI controllers
-  CommandXboxController driverXboxController = new CommandXboxController(0);
-  CommandXboxController operatorXboxController = new CommandXboxController(1);
+  CommandXboxController driverOI = new CommandXboxController(0);
+  CommandXboxController operatorOI = new CommandXboxController(1);
 
   /** Robot Container Constructor. */
   public RobotContainer() {
@@ -37,13 +37,11 @@ public class RobotContainer {
 
     // Configure default commands
     robotSwerveDrive.setDefaultCommand(
-        // The left stick controls translation of the robot (X and Y).
-        // The right stick controls rotation of the robot (X only).
         new RunCommand(
             () -> robotSwerveDrive.drive(
-                -MathUtil.applyDeadband(driverXboxController.getLeftY(), 0.07),
-                -MathUtil.applyDeadband(driverXboxController.getLeftX(), 0.07),
-                -MathUtil.applyDeadband(driverXboxController.getRightX(), 0.07),
+                -MathUtil.applyDeadband(driverOI.getLeftY(), 0.07),
+                -MathUtil.applyDeadband(driverOI.getLeftX(), 0.07),
+                -MathUtil.applyDeadband(driverOI.getRightX(), 0.07),
                 true),
             robotSwerveDrive));
   }
@@ -52,18 +50,57 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // DRIVER X Button: Set swerve drive to X position.
-    driverXboxController.x()
+    driverOI.x()
         .whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
 
     // DRIVER Left Trigger: Shift between high and low gear.
-    driverXboxController.leftTrigger(0.25)
+    driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> robotSwerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> robotSwerveDrive.setVirtualLowGear()));
 
     // DRIVER Y Button: Reset field oriented gyro.
-    driverXboxController.y()
+    driverOI.y()
         .whileTrue(new RunCommand(() -> robotSwerveDrive.resetFieldOrientedGyro(), robotSwerveDrive));
 
+    // Driver OI Controller Sample Mappings
+    driverOI.a().onTrue(new InstantCommand(() -> System.out.println("Driver A")));
+    driverOI.b().onTrue(new InstantCommand(() -> System.out.println("Driver B")));
+    driverOI.x().onTrue(new InstantCommand(() -> System.out.println("Driver X")));
+    driverOI.y().onTrue(new InstantCommand(() -> System.out.println("Driver Y")));
+    driverOI.start().onTrue(new InstantCommand(() -> System.out.println("Driver Start")));
+    driverOI.back().onTrue(new InstantCommand(() -> System.out.println("Driver Back")));
+    driverOI.leftBumper().onTrue(new InstantCommand(() -> System.out.println("Driver Left Bumper")));
+    driverOI.rightBumper().onTrue(new InstantCommand(() -> System.out.println("Driver Right Bumper")));
+    driverOI.povLeft().onTrue(new InstantCommand(() -> System.out.println("Driver POV Left")));
+    driverOI.povUpLeft().onTrue(new InstantCommand(() -> System.out.println("Driver POV Up Left")));
+    driverOI.povRight().onTrue(new InstantCommand(() -> System.out.println("Driver POV Right")));
+    driverOI.povUpRight().onTrue(new InstantCommand(() -> System.out.println("Driver POV Up Right")));
+    driverOI.povUp().onTrue(new InstantCommand(() -> System.out.println("Driver POV Up")));
+    driverOI.povDownRight().onTrue(new InstantCommand(() -> System.out.println("Driver POV Down Right")));
+    driverOI.povDownLeft().onTrue(new InstantCommand(() -> System.out.println("Driver POV Down Left")));
+    driverOI.povDown().onTrue(new InstantCommand(() -> System.out.println("Driver POV Down")));
+    driverOI.leftTrigger().onTrue(new InstantCommand(() -> System.out.println("Driver Left Trigger")));
+    driverOI.rightTrigger().onTrue(new InstantCommand(() -> System.out.println("Driver Right Trigger")));
+
+    // Operator OI Controller Sample Mappings
+    operatorOI.a().onTrue(new InstantCommand(() -> System.out.println("Operator A")));
+    operatorOI.b().onTrue(new InstantCommand(() -> System.out.println("Operator B")));
+    operatorOI.x().onTrue(new InstantCommand(() -> System.out.println("Operator X")));
+    operatorOI.y().onTrue(new InstantCommand(() -> System.out.println("Operator Y")));
+    operatorOI.start().onTrue(new InstantCommand(() -> System.out.println("Operator Start")));
+    operatorOI.back().onTrue(new InstantCommand(() -> System.out.println("Operator Back")));
+    operatorOI.leftBumper().onTrue(new InstantCommand(() -> System.out.println("Operator Left Bumper")));
+    operatorOI.rightBumper().onTrue(new InstantCommand(() -> System.out.println("Operator Right Bumper")));
+    operatorOI.povLeft().onTrue(new InstantCommand(() -> System.out.println("Operator POV Left")));
+    operatorOI.povUpLeft().onTrue(new InstantCommand(() -> System.out.println("Operator POV Up Left")));
+    operatorOI.povRight().onTrue(new InstantCommand(() -> System.out.println("Operator POV Right")));
+    operatorOI.povUpRight().onTrue(new InstantCommand(() -> System.out.println("Operator POV Up Right")));
+    operatorOI.povUp().onTrue(new InstantCommand(() -> System.out.println("Operator POV Up")));
+    operatorOI.povDownRight().onTrue(new InstantCommand(() -> System.out.println("Operator POV Down Right")));
+    operatorOI.povDownLeft().onTrue(new InstantCommand(() -> System.out.println("Operator POV Down Left")));
+    operatorOI.povDown().onTrue(new InstantCommand(() -> System.out.println("Operator POV Down")));
+    operatorOI.leftTrigger().onTrue(new InstantCommand(() -> System.out.println("Operator Left Trigger")));
+    operatorOI.rightTrigger().onTrue(new InstantCommand(() -> System.out.println("Operator Right Trigger")));
   }
 
   /**
