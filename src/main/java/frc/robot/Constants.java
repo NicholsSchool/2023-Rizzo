@@ -57,12 +57,10 @@ public final class Constants {
     public static final double DRIVETRAIN_WIDTH = Units.inchesToMeters(26.5);
     public static final double DRIVETRAIN_LENGTH = Units.inchesToMeters(26.5);
 
-    // @todo: use the virtual gear rates in a function within SwerveDrive()
     public static final double VIRTUAL_LOW_GEAR_RATE = 0.6;
     public static final double VIRTUAL_HIGH_GEAR_RATE = 1.0;
-    public static final double VIRTUAL_GEAR_RATE = VIRTUAL_LOW_GEAR_RATE;
 
-    public static final double MAX_METERS_PER_SECOND = 4.8 * VIRTUAL_GEAR_RATE;
+    public static final double MAX_METERS_PER_SECOND = 4.8;
     public static final double MAX_ANGULAR_SPEED = 2 * Math.PI;
 
     public static final double ROTATIONAL_SLEW_RATE = 2.0; // percent per second (1 = 100%)
@@ -94,7 +92,6 @@ public final class Constants {
     public static final IdleMode DRIVING_MOTOR_IDLE_MODE = IdleMode.kBrake;
     public static final IdleMode TURNING_MOTOR_IDLE_MODE = IdleMode.kBrake;
 
-    // @todo also adjust the max(es) here when changing the governor
     public static final int DRIVING_MOTOR_CURRENT_LIMIT = 15; // amps
     public static final int TURNING_MOTOR_CURRENT_LIMIT = 10; // amps
 

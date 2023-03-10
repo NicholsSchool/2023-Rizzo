@@ -39,12 +39,14 @@ public class SwerveDrive extends SubsystemBase {
   // Attitude and Heading Reference System (AHRS)
   private final AHRS navX = new AHRS(SPI.Port.kMXP);
 
-  private SlewRateLimiter rotationalRateLimiter = new SlewRateLimiter(ROTATIONAL_SLEW_RATE);
+  private double translationRateLimiter = VIRTUAL_LOW_GEAR_RATE;
+
+  private SlewRateLimiter rotationRateLimiter = new SlewRateLimiter(ROTATIONAL_SLEW_RATE);
 
   // Create odometry object for tracking robot pose.
   SwerveDriveOdometry robotOdometry = new SwerveDriveOdometry(
       SWERVE_DRIVE_KINEMATICS,
-      Rotation2d.fromDegrees(transfromAngle()),
+      Rotation2d.fromDegrees(getContinuousAngle()),
       new SwerveModulePosition[] {
           frontLeftModule.getPosition(),
           frontRightModule.getPosition(),
@@ -54,7 +56,7 @@ public class SwerveDrive extends SubsystemBase {
 
   /** Constructor for a new SwerveDrive Subsystem. */
   public SwerveDrive() {
-    // NavX calibration takes approximately 3 to 5 seconds.
+    // Note: NavX calibration takes approximately 3 to 5 seconds.
     navX.calibrate();
   }
 
@@ -62,7 +64,7 @@ public class SwerveDrive extends SubsystemBase {
   public void periodic() {
     // Update the odometry with esitmated robot pose.
     robotOdometry.update(
-        Rotation2d.fromDegrees(transfromAngle()),
+        Rotation2d.fromDegrees(getContinuousAngle()),
         new SwerveModulePosition[] {
             frontLeftModule.getPosition(),
             frontRightModule.getPosition(),
@@ -71,14 +73,26 @@ public class SwerveDrive extends SubsystemBase {
         });
   }
 
-  /** Get the current continously accruing angle of the AHRS. */
-  public double transfromAngle() {
+  /** Get the current continuously accruing angle of the AHRS. */
+  public double getContinuousAngle() {
     return navX.getAngle();
   }
 
   /** Reset the AHRS to zero. */
-  public void resetGyro() {
+  public void resetFieldOrientedGyro() {
     navX.zeroYaw();
+  }
+
+  /** Set the gear ratio to High Gear */
+  public void setVirtualHighGear() {
+    translationRateLimiter = VIRTUAL_HIGH_GEAR_RATE;
+    System.out.println("setting virtual gear to high");
+  }
+
+  /** Set the gear ratio to Low Gear */
+  public void setVirtualLowGear() {
+    translationRateLimiter = VIRTUAL_LOW_GEAR_RATE;
+    System.out.println("setting virtual gear to low");
   }
 
   /** Returns the currently-estimated pose of the robot. */
@@ -89,7 +103,7 @@ public class SwerveDrive extends SubsystemBase {
   /** Resets the odometry to the specified pose. */
   public void resetOdometry(Pose2d pose) {
     robotOdometry.resetPosition(
-        Rotation2d.fromDegrees(transfromAngle()),
+        Rotation2d.fromDegrees(getContinuousAngle()),
         new SwerveModulePosition[] {
             frontLeftModule.getPosition(),
             frontRightModule.getPosition(),
@@ -101,19 +115,19 @@ public class SwerveDrive extends SubsystemBase {
   /**
    * Drive the robot based on input from either a joystick or auto routine.
    *
-   * @param xSpeed        Speed of the robot in the x direction (forward).
-   * @param ySpeed        Speed of the robot in the y direction (sideways).
-   * @param rot           Angular rate of the robot.
-   * @param fieldRelative Whether the provided x and y speeds are field relative.
+   * @param xSpeed          Speed of the robot in the x direction (forward).
+   * @param ySpeed          Speed of the robot in the y direction (sideways).
+   * @param angularRotation Angular rate of rotation of the robot chasis.
+   * @param fieldRelative   Whether x and y speeds are field relative, or not.
    */
   public void drive(double xSpeed, double ySpeed, double angularRotation, boolean fieldRelative) {
 
-    // Note: Might need to remove this line as it may not work as intended.
-    angularRotation = rotationalRateLimiter.calculate(angularRotation);
+    // Note: This Rotational Rate Limiter is experimental. It may need to be tuned.
+    angularRotation = rotationRateLimiter.calculate(angularRotation);
 
     // Convert the commanded speeds into the correct units for the drivetrain
-    double xSpeedDelivered = xSpeed * MAX_METERS_PER_SECOND;
-    double ySpeedDelivered = ySpeed * MAX_METERS_PER_SECOND;
+    double xSpeedDelivered = xSpeed * MAX_METERS_PER_SECOND * translationRateLimiter;
+    double ySpeedDelivered = ySpeed * MAX_METERS_PER_SECOND * translationRateLimiter;
     double rotDelivered = angularRotation * MAX_ANGULAR_SPEED;
 
     SwerveModuleState[] swerveModuleStates;
@@ -122,7 +136,7 @@ public class SwerveDrive extends SubsystemBase {
       // field relative driving
       swerveModuleStates = SWERVE_DRIVE_KINEMATICS.toSwerveModuleStates(
           ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-              Rotation2d.fromDegrees(transfromAngle())));
+              Rotation2d.fromDegrees(getContinuousAngle())));
     } else {
       // robot orientated driving
       swerveModuleStates = SWERVE_DRIVE_KINEMATICS.toSwerveModuleStates(
@@ -169,7 +183,7 @@ public class SwerveDrive extends SubsystemBase {
 
   /** Returns the heading of the robot in degrees, from -180 to 180 */
   public double getHeading() {
-    return Rotation2d.fromDegrees(transfromAngle()).getDegrees();
+    return Rotation2d.fromDegrees(getContinuousAngle()).getDegrees();
   }
 
 }

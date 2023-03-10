@@ -10,16 +10,13 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.XboxController.Axis;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import java.util.List;
 
@@ -29,8 +26,8 @@ public class RobotContainer {
   private final SwerveDrive robotSwerveDrive = new SwerveDrive();
 
   // OI controllers
-  XboxController driverXbox = new XboxController(0);
-  XboxController operatorXbox = new XboxController(1);
+  CommandXboxController driverXboxController = new CommandXboxController(0);
+  CommandXboxController operatorXboxController = new CommandXboxController(1);
 
   /** Robot Container Constructor. */
   public RobotContainer() {
@@ -40,30 +37,32 @@ public class RobotContainer {
 
     // Configure default commands
     robotSwerveDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
+        // The left stick controls translation of the robot (X and Y).
+        // The right stick controls rotation of the robot (X only).
         new RunCommand(
             () -> robotSwerveDrive.drive(
-                -MathUtil.applyDeadband(driverXbox.getLeftY(), 0.07),
-                -MathUtil.applyDeadband(driverXbox.getLeftX(), 0.07),
-                -MathUtil.applyDeadband(driverXbox.getRightX(), 0.07),
+                -MathUtil.applyDeadband(driverXboxController.getLeftY(), 0.07),
+                -MathUtil.applyDeadband(driverXboxController.getLeftX(), 0.07),
+                -MathUtil.applyDeadband(driverXboxController.getRightX(), 0.07),
                 true),
             robotSwerveDrive));
   }
 
   /** Define all button() to command() mappings. */
   private void configureButtonBindings() {
-    new JoystickButton(driverXbox, Button.kX.value)
+
+    // DRIVER X Button: Set swerve drive to X position.
+    driverXboxController.x()
         .whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
 
-    new JoystickButton(driverXbox, Axis.kLeftTrigger.value)
-        .onTrue(new InstantCommand(
-            () -> DriveConstants.kMaxSpeedMetersPerSecond = DriveConstants.kHighGear))
-        .onFalse(new InstantCommand(
-            () -> DriveConstants.kMaxSpeedMetersPerSecond = DriveConstants.kLowGear));
+    // DRIVER Left Trigger: Shift between high and low gear.
+    driverXboxController.leftTrigger(0.25)
+        .onTrue(new InstantCommand(() -> robotSwerveDrive.setVirtualHighGear()))
+        .onFalse(new InstantCommand(() -> robotSwerveDrive.setVirtualLowGear()));
 
-    new JoystickButton(driverXbox, Button.kY.value)
-        .whileTrue(new RunCommand(() -> robotSwerveDrive.resetGyro(), robotSwerveDrive));
+    // DRIVER Y Button: Reset field oriented gyro.
+    driverXboxController.y()
+        .whileTrue(new RunCommand(() -> robotSwerveDrive.resetFieldOrientedGyro(), robotSwerveDrive));
 
   }
 
