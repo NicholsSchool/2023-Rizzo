@@ -17,7 +17,9 @@ public class RobotContainer {
   private final Gripper gripper = new Gripper();
   private final Arm arm = new Arm();
   private final Intake intake = new Intake();
+  private final Uprighter uprighter = new Uprighter(); 
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+
 
   // OI controllers
   CommandXboxController driverOI = new CommandXboxController(0);
@@ -43,6 +45,12 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(driverOI.getRightX(), 0.07),
                 true),
             swerveDrive));
+    
+    uprighter.setDefaultCommand( 
+        new RunCommand(
+            () -> uprighter.uprighterSpin(
+                -MathUtil.applyDeadband(operatorOI.getLeftY(), 0.07) ),
+            uprighter)) ;
     
   }
 
