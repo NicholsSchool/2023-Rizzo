@@ -41,6 +41,10 @@ public class Gripper extends SubsystemBase {
     spinner.set(-GRIPPER_SPEED);
   }
 
+  public void stopSpinner() {
+    spinner.stopMotor();
+  }
+
   public void openPincher() {
     pincher.set(!PINCHER_CLOSED);
   }
