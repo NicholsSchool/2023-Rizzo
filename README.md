@@ -19,7 +19,7 @@
 
 ## Operator OI Controller Setup:
 * OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
-* OPERATOR Right Stick: not used
+* OPERATOR Right Stick: (not used)
 * OPERATOR X (←) Button: Go to Arm position #1 and lock.
 * OPERATOR Y (↑) Button: Go to Arm position #2 and lock.
 * OPERATOR B (→) Button: Go to Arm position #3 and lock.
@@ -46,6 +46,11 @@
 * CAN ID 22 = Uprighter
 * CAN ID 23 = Arm
 * CAN ID 24 = Gripper
+
+## Solenoid ID Assignments
+* Solenoid ID 1 = Intake's Left Piston
+* Solenoid ID 2 = Intake's Right Piston
+* Solenoid ID 3 = Grabber/Pincher Piston
 
 ## Built with:
 * REV Robotics 3in MAXSwerve Modules https://www.revrobotics.com/rev-21-3005/

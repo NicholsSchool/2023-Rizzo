@@ -1,12 +1,13 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANID;
-import frc.robot.Constants.GripperConstants;
+import static frc.robot.Constants.GripperConstants.*;
 
 public class Gripper extends SubsystemBase {
 
@@ -14,39 +15,46 @@ public class Gripper extends SubsystemBase {
   private Solenoid pincher;
 
   public Gripper() {
-    // spinner
+
+    // Spinner - Brake mode enabled to hold the game piece during autonomous.
     spinner = new WPI_TalonFX(CANID.GRIPPER_FALCON_FX);
     spinner.configFactoryDefault();
+    spinner.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     spinner.setInverted(true);
-    spinner.setNeutralMode(NeutralMode.Coast);
-    // pincher
-    pincher = new Solenoid(PneumaticsModuleType.CTREPCM, GripperConstants.PINCHER_SOLENOID_CHANNEL);
-    pincher.set(!GripperConstants.GRIPPER_PISTON_EXTENDED);
-  }
+    spinner.setNeutralMode(NeutralMode.Brake);
 
-  public void grab(double speed) {
-    close();
-    spinner.set(speed);
-  }
+    // Pincher - Set to closed for holding a game piece during autonomous.
+    pincher = new Solenoid(PneumaticsModuleType.CTREPCM, PINCHER_SOLENOID_CHANNEL);
+    pincher.set(PINCHER_CLOSED);
 
-  public void release(double speed) {
-    open();
-    spinner.set(-speed);
-  }
-
-  public void open() {
-    if (pincher.get() == GripperConstants.GRIPPER_PISTON_EXTENDED)
-      pincher.set(!GripperConstants.GRIPPER_PISTON_EXTENDED);
-  }
-
-  public void close() {
-    if (pincher.get() != GripperConstants.GRIPPER_PISTON_EXTENDED)
-      pincher.set(GripperConstants.GRIPPER_PISTON_EXTENDED);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+  }
+
+  public void spinIn() {
+    spinner.set(GRIPPER_SPEED);
+  }
+
+  public void spinOut() {
+    spinner.set(-GRIPPER_SPEED);
+  }
+
+  public void openPincher() {
+    pincher.set(!PINCHER_CLOSED);
+  }
+
+  public void closePincher() {
+    pincher.set(PINCHER_CLOSED);
+  }
+
+  public double getSpinnerPosition() {
+    return spinner.getSelectedSensorPosition();
+  }
+
+  public double getSpinnerVelocity() {
+    return spinner.getSelectedSensorVelocity();
   }
 
 }
