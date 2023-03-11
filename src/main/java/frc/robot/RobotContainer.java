@@ -77,6 +77,7 @@ public class RobotContainer {
     // DRIVER Y Button: Reset field oriented gyro.
     driverOI.back().whileTrue(new RunCommand(() -> robotSwerveDrive.resetFieldOrientedGyro(), robotSwerveDrive));
 
+
     // OPERATOR X Button: Set swerve drive to X position.
     operatorOI.x().whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
 
