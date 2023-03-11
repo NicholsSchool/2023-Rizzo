@@ -4,6 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.autonomous.*;
+import frc.robot.commands.Gripper_Outtake;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -51,6 +52,7 @@ public class RobotContainer {
             () -> uprighter.uprighterSpin(
                 -MathUtil.applyDeadband(operatorOI.getLeftY(), 0.07) ),
             uprighter)) ;
+
     
   }
 
@@ -96,7 +98,7 @@ public class RobotContainer {
     driverOI.povUp().onTrue(new InstantCommand(() -> System.out.println("Driver POV Up")));
     driverOI.povDown().onTrue(new InstantCommand(() -> System.out.println("Driver POV Down")));
     driverOI.leftTrigger().onTrue(new InstantCommand(() -> System.out.println("Driver Left Trigger")));
-    driverOI.rightTrigger().onTrue(new InstantCommand(() -> System.out.println("Driver Right Trigger")));
+    driverOI.rightTrigger().onTrue(new Gripper_Outtake(gripper));
     driverOI.leftBumper().onTrue(new InstantCommand(() -> System.out.println("Driver Left Bumper")));
     driverOI.rightBumper().onTrue(new InstantCommand(() -> System.out.println("Driver Right Bumper")));
     driverOI.back().onTrue(new InstantCommand(() -> System.out.println("Driver Back")));

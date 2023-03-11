@@ -12,8 +12,11 @@ public class Gripper extends SubsystemBase {
 
   private WPI_TalonFX spinner;
   private Solenoid pincher;
+  private boolean state; 
 
   public Gripper() {
+
+    state = PINCHER_CLOSED; 
 
     // Spinner - Brake mode enabled to hold a game piece during autonomous.
     spinner = new WPI_TalonFX(CANID.GRIPPER_FALCON_FX);
@@ -44,7 +47,7 @@ public class Gripper extends SubsystemBase {
   }
 
   public void openPincher() {
-    pincher.set(!PINCHER_CLOSED);
+      pincher.set(!PINCHER_CLOSED);
   }
 
   public void closePincher() {
