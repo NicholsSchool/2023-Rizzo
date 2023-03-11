@@ -9,6 +9,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -35,8 +37,17 @@ public class RobotContainer {
   CommandXboxController driverOI = new CommandXboxController(0);
   CommandXboxController operatorOI = new CommandXboxController(1);
 
+  // NetworkTables
+  public static NetworkTableInstance networkTableInstance;
+  public static NetworkTable pieceIDs;
+  public static NetworkTable pieceCoordinates;
+
   /** Robot Container Constructor. */
   public RobotContainer() {
+    // NetworkTables
+    networkTableInstance = NetworkTableInstance.getDefault();
+    pieceIDs = networkTableInstance.getTable("Piece");
+    pieceCoordinates = networkTableInstance.getTable("Vision");
 
     // Configure the button bindings
     configureButtonBindings();

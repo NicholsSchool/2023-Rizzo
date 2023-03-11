@@ -89,4 +89,22 @@ public final class Constants {
     public static final int TURNING_MOTOR_CURRENT_LIMIT = 10; // amps
   }
 
+  public static final class Webcam {
+    public static final double W = 160.0; // Pixels
+    public static final double H = 120.0;
+    public static final double D_FOV = 1.20; // Radians
+    public static final double H_FOV = 1.05;
+    public static final double V_FOV = 0.59;
+    public static final double H_RADIANS_PER_PIXEL = H_FOV / W; // Radians / Pixel
+    public static final double V_RADIANS_PER_PIXEL = V_FOV / H;
+  }
+
+  public static final class Cone {
+    public static final double GREATER_DIM = 0.33; // Meters
+    public static final double LESSER_DIM = 0.21;
+  }
+
+  public static final class Cube {
+    public static final double SIZE = 0.24; // Meters
+  }
 }
