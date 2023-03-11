@@ -53,6 +53,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(operatorOI.getLeftY(), 0.07) ),
             uprighter)) ;
 
+
     
   }
 
@@ -98,7 +99,7 @@ public class RobotContainer {
     driverOI.povUp().onTrue(new InstantCommand(() -> System.out.println("Driver POV Up")));
     driverOI.povDown().onTrue(new InstantCommand(() -> System.out.println("Driver POV Down")));
     driverOI.leftTrigger().onTrue(new InstantCommand(() -> System.out.println("Driver Left Trigger")));
-    driverOI.rightTrigger().onTrue(new Gripper_Outtake(gripper));
+    driverOI.rightTrigger().onTrue(new InstantCommand(() -> System.out.println("Driver Right Trigger")));
     driverOI.leftBumper().onTrue(new InstantCommand(() -> System.out.println("Driver Left Bumper")));
     driverOI.rightBumper().onTrue(new InstantCommand(() -> System.out.println("Driver Right Bumper")));
     driverOI.back().onTrue(new InstantCommand(() -> System.out.println("Driver Back")));
@@ -133,7 +134,7 @@ public class RobotContainer {
     operatorOI.povUp().onTrue(new InstantCommand(() -> System.out.println("Operator POV Up")));
     operatorOI.povDown().onTrue(new InstantCommand(() -> System.out.println("Operator POV Down")));
     operatorOI.leftTrigger().onTrue(new InstantCommand(() -> System.out.println("Operator Left Trigger")));
-    operatorOI.rightTrigger().onTrue(new InstantCommand(() -> System.out.println("Operator Right Trigger")));
+    operatorOI.rightTrigger().onTrue(new Gripper_Outtake(gripper));
     operatorOI.leftBumper().onTrue(new InstantCommand(() -> System.out.println("Operator Left Bumper")));
     operatorOI.rightBumper().onTrue(new InstantCommand(() -> System.out.println("Operator Right Bumper")));
     operatorOI.back().onTrue(new InstantCommand(() -> System.out.println("Operator Back")));
