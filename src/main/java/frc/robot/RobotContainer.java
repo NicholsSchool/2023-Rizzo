@@ -12,11 +12,11 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import static frc.robot.Constants.SwerveDriveConstants.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import static frc.robot.Constants.SwerveDriveConstants.*;
 
 import java.util.List;
 
@@ -57,29 +57,21 @@ public class RobotContainer {
     // DRIVER Y Button: Rotate to 0 degree Yaw relative to the field.
     // DRIVER B Button: Rotate to 90 degree Yaw relative to the field.
     // DRIVER A Button: Rotate to 180 degree Yaw relative to the field.
-    // DRIVER Left Trigger: While held, set to virtual high gear.
+    // +DRIVER Left Trigger: While held, switch to virtual high gear.
     // DRIVER Right Trigger: While held, deploy and spin robot intake.
     // DRIVER Left Bumper: Evasive left robot action button.
     // DRIVER Right Bumper: Evasive right robot action button.
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    // DRIVER Back Button: Set the robot's field oriented forward position.
+    // +DRIVER Back Button: Reset the robot's field oriented forward position.
     // DRIVER Start Button: Toggle robot relative vs field orientated driving.
 
-    // DRIVER X Button: Set swerve drive to X position.
-    driverOI.x()
-        .whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
-
-    // DRIVER Left Trigger: Shift between high and low gear.
+    // DRIVER Left Trigger: While held, switch to virtual high gear.
     driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> robotSwerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> robotSwerveDrive.setVirtualLowGear()));
 
-    // DRIVER Y Button: Reset field oriented gyro.
+    // DRIVER Back Button: Reset the robot's field oriented forward position.
     driverOI.back().whileTrue(new RunCommand(() -> robotSwerveDrive.resetFieldOrientedGyro(), robotSwerveDrive));
-
-
-    // OPERATOR X Button: Set swerve drive to X position.
-    operatorOI.x().whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
 
     // Driver OI Controller Sample Mappings
     driverOI.a().onTrue(new InstantCommand(() -> System.out.println("Driver A")));
@@ -100,7 +92,7 @@ public class RobotContainer {
     // ################ OPERATOR OI CONTROLLER CONFIGURATION ################
 
     // OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
-    // OPERATOR Right Stick: not used
+    // OPERATOR Right Stick: (not used)
     // OPERATOR X Button: Go to Arm position #1 and lock.
     // OPERATOR Y Button: Go to Arm position #2 and lock.
     // OPERATOR B Button: Go to Arm position #3 and lock.
@@ -110,8 +102,11 @@ public class RobotContainer {
     // OPERATOR Left Trigger: While held, auto pick up game object using ML/AI.
     // OPERATOR Right Trigger: Release game object from Grabber.
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
-    // OPERATOR Back Button: Toggle defensive X position and prevent driving.
+    // ~OPERATOR Back Button: Toggle defensive X position and prevent driving.
     // OPERATOR Start Button: Cycle out all intake and grabber motors.
+
+    // OPERATOR Back Button: Toggle defensive X position and prevent driving.
+    operatorOI.back().whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
 
     // Operator OI Controller Sample Mappings
     operatorOI.a().onTrue(new InstantCommand(() -> System.out.println("Operator A")));
