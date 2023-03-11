@@ -19,7 +19,7 @@
 
 ## Operator OI Controller Setup:
 * OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
-* OPERATOR Right Stick: (not used)
+* OPERATOR Right Stick: Direct control over the Uprighter.
 * OPERATOR X (←) Button: Go to Arm position #1 and lock.
 * OPERATOR Y (↑) Button: Go to Arm position #2 and lock.
 * OPERATOR B (→) Button: Go to Arm position #3 and lock.
@@ -33,23 +33,24 @@
 * OPERATOR Start (→) Button: Cycle out all intake and grabber motors.
 
 ## CAN ID Assignments
-* CAN ID 10 = Rear Right Drive Motor
-* CAN ID 11 = Rear Right Turn Motor
-* CAN ID 12 = Front Right Drive Motor
-* CAN ID 13 = Front Left Turn Motor
-* CAN ID 14 = Front Left Drive Motor
-* CAN ID 15 = Front Left Turn Motor
-* CAN ID 16 = Rear Left Drive Motor
-* CAN ID 17 = Rear Left Turn Motor
-* CAN ID 20 = Left Intake
-* CAN ID 21 = Right Intake
-* CAN ID 22 = Uprighter
-* CAN ID 23 = Arm
-* CAN ID 24 = Gripper
+* CAN ID 10 = SparkMax = Rear Right Drive Motor
+* CAN ID 11 = SparkMax = Rear Right Turn Motor
+* CAN ID 12 = SparkMax = Front Right Drive Motor
+* CAN ID 13 = SparkMax = Front Left Turn Motor
+* CAN ID 14 = SparkMax = Front Left Drive Motor
+* CAN ID 15 = SparkMax = Front Left Turn Motor
+* CAN ID 16 = SparkMax = Rear Left Drive Motor
+* CAN ID 17 = SparkMax = Rear Left Turn Motor
+* CAN ID 20 = SparkMax = Left Intake
+* CAN ID 21 = SparkMax = Right Intake
+* CAN ID 22 = SparkMax = Left Uprighter
+* CAN ID 23 = SparkMax = Right Uprighter
+* CAN ID 24 = FalconFX = Arm
+* CAN ID 25 = FalconFX = Gripper
 
 ## Solenoid ID Assignments
-* Solenoid ID 1 = Intake's Left Piston
-* Solenoid ID 2 = Intake's Right Piston
+* Solenoid ID 1 = Intake Pistons
+* Solenoid ID 2 = Lifter Pistons
 * Solenoid ID 3 = Grabber/Pincher Piston
 
 ## Built with:

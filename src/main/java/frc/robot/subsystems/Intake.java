@@ -7,71 +7,119 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants.CANID;
-import frc.robot.Constants.IntakeConstants;
+import static frc.robot.Constants.IntakeConstants.*;
 
 public class Intake extends SubsystemBase {
 
-  private CANSparkMax intakeLeft;
-  private CANSparkMax intakeRight;
-  private Solenoid lifterLeft;
-  private Solenoid lifterRight;
+  private CANSparkMax intakeMotorLeft;
+  private CANSparkMax intakeMotorRight;
+  private Solenoid intakePistons;
+  private Solenoid lifterPistons;
+  private CANSparkMax uprighterMotorLeft;
+  private CANSparkMax uprighterMotorRight;
 
   public Intake() {
 
-    // Motor
-    intakeLeft = new CANSparkMax(CANID.LEFT_INTAKE_SPARKMAX, MotorType.kBrushless);
-    intakeRight = new CANSparkMax(CANID.RIGHT_INTAKE_SPARKMAX, MotorType.kBrushless);
+    // Intake Motor Left
+    intakeMotorLeft = new CANSparkMax(CANID.LEFT_INTAKE_SPARKMAX, MotorType.kBrushless);
+    intakeMotorLeft.restoreFactoryDefaults();
+    intakeMotorLeft.setIdleMode(IdleMode.kBrake);
+    intakeMotorLeft.setInverted(false);
 
-    intakeLeft.restoreFactoryDefaults();
-    intakeRight.restoreFactoryDefaults();
+    // Intake Motor Right
+    intakeMotorRight = new CANSparkMax(CANID.RIGHT_INTAKE_SPARKMAX, MotorType.kBrushless);
+    intakeMotorRight.restoreFactoryDefaults();
+    intakeMotorRight.setIdleMode(IdleMode.kBrake);
+    intakeMotorRight.setInverted(true);
 
-    intakeLeft.setIdleMode(IdleMode.kBrake);
-    intakeRight.setIdleMode(IdleMode.kBrake);
+    // Intake Pistons
+    intakePistons = new Solenoid(PneumaticsModuleType.CTREPCM, INTAKE_PISTON_SOLENOID_CHANNEL);
+    intakePistons.set(INTAKE_CLOSED);
 
-    intakeLeft.setInverted(false);
-    intakeRight.setInverted(false); // experiment with inverting using this
+    // Lifter Pistons
+    lifterPistons = new Solenoid(PneumaticsModuleType.CTREPCM, LIFTER_PISTON_SOLENOID_CHANNEL);
+    lifterPistons.set(LIFTER_UP);
 
-    // Lifter
-    lifterLeft = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.LIFTER_LEFT_SOLENOID_CHANNEL);
-    lifterRight = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.LIFTER_RIGHT_SOLENOID_CHANNEL);
+    // Uprighter Motor Left
+    uprighterMotorLeft = new CANSparkMax(CANID.LEFT_UPRIGHTER_SPARKMAX, MotorType.kBrushless);
+    uprighterMotorLeft.restoreFactoryDefaults();
+    uprighterMotorLeft.setIdleMode(IdleMode.kBrake);
+    uprighterMotorLeft.setInverted(false);
 
-    lifterLeft.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
-    lifterRight.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
+    // Uprighter Motor Right
+    uprighterMotorRight = new CANSparkMax(CANID.RIGHT_UPRIGHTER_SPARKMAX, MotorType.kBrushless);
+    uprighterMotorRight.restoreFactoryDefaults();
+    uprighterMotorRight.setIdleMode(IdleMode.kBrake);
+    uprighterMotorRight.setInverted(true);
 
-  }
-
-  public void in(double speed) {
-    intakeLeft.set(speed);
-    intakeRight.set(speed);
-  }
-
-  public void out(double speed) {
-    intakeLeft.set(-speed);
-    intakeRight.set(-speed);
-  }
-
-  public void stop() {
-    intakeLeft.stopMotor();
-    intakeRight.stopMotor();
-  }
-
-  public void raise() {
-    if (lifterLeft.get() == IntakeConstants.INTAKE_PISTON_EXTENDED) {
-      lifterLeft.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
-      lifterRight.set(!IntakeConstants.INTAKE_PISTON_EXTENDED);
-    }
-  }
-
-  public void lower() {
-    if (lifterLeft.get() != IntakeConstants.INTAKE_PISTON_EXTENDED) {
-      lifterLeft.set(IntakeConstants.INTAKE_PISTON_EXTENDED);
-      lifterRight.set(IntakeConstants.INTAKE_PISTON_EXTENDED);
-    }
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+  }
+
+  // Intake Motors
+
+  public void intakeSpinIn() {
+    intakeMotorLeft.set(INTAKE_SPEED);
+    intakeMotorRight.set(INTAKE_SPEED);
+  }
+
+  public void intakeSpinOut() {
+    intakeMotorLeft.set(-INTAKE_SPEED);
+    intakeMotorRight.set(-INTAKE_SPEED);
+  }
+
+  public void intakeStop() {
+    intakeMotorLeft.stopMotor();
+    intakeMotorRight.stopMotor();
+  }
+
+  // Intake Pistons
+
+  public void intakeClose() {
+    intakePistons.set(INTAKE_CLOSED);
+  }
+
+  public void intakeOpen() {
+    intakePistons.set(!INTAKE_CLOSED);
+  }
+
+  // Lifter Pistons
+
+  public void lifterUp() {
+    lifterPistons.set(LIFTER_UP);
+  }
+
+  public void lifterDown() {
+    lifterPistons.set(!LIFTER_UP);
+  }
+
+  // Uprighter Motors
+
+  public void uprighterSpinIn() {
+    uprighterMotorLeft.set(-UPRIGHTER_SPEED);
+    uprighterMotorRight.set(-UPRIGHTER_SPEED);
+  }
+
+  public void uprighterSpinOut() {
+    uprighterMotorLeft.set(UPRIGHTER_SPEED);
+    uprighterMotorRight.set(UPRIGHTER_SPEED);
+  }
+
+  public void uprighterStop() {
+    uprighterMotorLeft.stopMotor();
+    uprighterMotorRight.stopMotor();
+  }
+
+  /**
+   * Spin the uprighter motors at a given speed.
+   * 
+   * @param speed double between -1.0 and 1.0
+   */
+  public void uprighterSpin(double speed) {
+    uprighterMotorLeft.set(speed);
+    uprighterMotorRight.set(speed);
   }
 
 }
