@@ -28,7 +28,8 @@ public final class Constants {
   public static final class GripperConstants {
 
     public static final int PINCHER_SOLENOID_CHANNEL = 3; // ???
-    public static final boolean GRIPPER_PISTON_EXTENDED = true; // ???
+    public static final double GRIPPER_SPEED = 0.5;
+    public static final boolean PINCHER_CLOSED = true; // might need to be false
 
   }
 

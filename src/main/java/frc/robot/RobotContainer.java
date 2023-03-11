@@ -17,13 +17,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import static frc.robot.Constants.SwerveDriveConstants.*;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 import java.util.List;
 
 public class RobotContainer {
 
-  // subsystems
-  private final SwerveDrive robotSwerveDrive = new SwerveDrive();
+  // Create subsystems
+  private final SwerveDrive swerveDrive = new SwerveDrive();
+  private final Gripper gripper = new Gripper();
+  private final Arm arm = new Arm();
+  private final Intake intake = new Intake();
+  private final Uprighter uprighter = new Uprighter();
+  Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);;
 
   // OI controllers
   CommandXboxController driverOI = new CommandXboxController(0);
@@ -36,14 +43,14 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    robotSwerveDrive.setDefaultCommand(
+    swerveDrive.setDefaultCommand(
         new RunCommand(
-            () -> robotSwerveDrive.drive(
+            () -> swerveDrive.drive(
                 -MathUtil.applyDeadband(driverOI.getLeftY(), 0.07),
                 -MathUtil.applyDeadband(driverOI.getLeftX(), 0.07),
                 -MathUtil.applyDeadband(driverOI.getRightX(), 0.07),
                 true),
-            robotSwerveDrive));
+            swerveDrive));
   }
 
   /** Define all button() to command() mappings. */
@@ -67,11 +74,11 @@ public class RobotContainer {
 
     // DRIVER Left Trigger: While held, switch to virtual high gear.
     driverOI.leftTrigger(0.25)
-        .onTrue(new InstantCommand(() -> robotSwerveDrive.setVirtualHighGear()))
-        .onFalse(new InstantCommand(() -> robotSwerveDrive.setVirtualLowGear()));
+        .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
+        .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
 
     // DRIVER Back Button: Reset the robot's field oriented forward position.
-    driverOI.back().whileTrue(new RunCommand(() -> robotSwerveDrive.resetFieldOrientedGyro(), robotSwerveDrive));
+    driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
 
     // Driver OI Controller Sample Mappings
     driverOI.a().onTrue(new InstantCommand(() -> System.out.println("Driver A")));
@@ -106,7 +113,7 @@ public class RobotContainer {
     // OPERATOR Start Button: Cycle out all intake and grabber motors.
 
     // OPERATOR Back Button: Toggle defensive X position and prevent driving.
-    operatorOI.back().whileTrue(new RunCommand(() -> robotSwerveDrive.setX(), robotSwerveDrive));
+    operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
 
     // Operator OI Controller Sample Mappings
     operatorOI.a().onTrue(new InstantCommand(() -> System.out.println("Operator A")));
@@ -154,20 +161,20 @@ public class RobotContainer {
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
         exampleTrajectory,
-        robotSwerveDrive::getPose, // Functional interface to feed supplier
+        swerveDrive::getPose, // Functional interface to feed supplier
         SWERVE_DRIVE_KINEMATICS,
         // Position controllers
         new PIDController(0.85, 0, 0),
         new PIDController(0.85, 0, 0),
         thetaController,
-        robotSwerveDrive::setModuleStates,
-        robotSwerveDrive);
+        swerveDrive::setModuleStates,
+        swerveDrive);
 
     // Reset odometry to the starting pose of the trajectory.
-    robotSwerveDrive.resetOdometry(exampleTrajectory.getInitialPose());
+    swerveDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> robotSwerveDrive.drive(0, 0, 0, false));
+    return swerveControllerCommand.andThen(() -> swerveDrive.drive(0, 0, 0, false));
   }
 
 }
