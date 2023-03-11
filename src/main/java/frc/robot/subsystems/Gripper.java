@@ -16,14 +16,13 @@ public class Gripper extends SubsystemBase {
 
   public Gripper() {
 
-    // Spinner - Brake mode enabled to hold the game piece during autonomous.
+    // Spinner - Brake mode enabled to hold a game piece during autonomous.
     spinner = new WPI_TalonFX(CANID.GRIPPER_FALCON_FX);
     spinner.configFactoryDefault();
-    spinner.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     spinner.setInverted(true);
     spinner.setNeutralMode(NeutralMode.Brake);
 
-    // Pincher - Set to closed for holding a game piece during autonomous.
+    // Pincher - Set to closed to hold a game piece during autonomous.
     pincher = new Solenoid(PneumaticsModuleType.CTREPCM, PINCHER_SOLENOID_CHANNEL);
     pincher.set(PINCHER_CLOSED);
 
@@ -51,14 +50,6 @@ public class Gripper extends SubsystemBase {
 
   public void closePincher() {
     pincher.set(PINCHER_CLOSED);
-  }
-
-  public double getSpinnerPosition() {
-    return spinner.getSelectedSensorPosition();
-  }
-
-  public double getSpinnerVelocity() {
-    return spinner.getSelectedSensorVelocity();
   }
 
 }

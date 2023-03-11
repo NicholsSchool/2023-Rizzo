@@ -7,54 +7,47 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
 
-  // Intake
+  // Intake/Lifter/Uprighter
   public static final class IntakeConstants {
-
-    public static final int LIFTER_LEFT_SOLENOID_CHANNEL = 1; // ???
-    public static final int LIFTER_RIGHT_SOLENOID_CHANNEL = 2; // ???
-    public static final boolean INTAKE_PISTON_EXTENDED = true; // ???
-
+    public static final int INTAKE_PISTON_SOLENOID_CHANNEL = 1;
+    public static final boolean INTAKE_CLOSED = true;
+    public static final double INTAKE_SPEED = 0.4;
+    public static final int LIFTER_PISTON_SOLENOID_CHANNEL = 2;
+    public static final boolean LIFTER_UP = true;
+    public static final double UPRIGHTER_SPEED = 0.4;
   }
 
-  // Uprighter
-  public static final class UprighterConstants {
-  }
-
-  // Arm
+  // Arm (Manipulator)
   public static final class ArmConstants {
   }
 
-  // Gripper
+  // Gripper/Pinchers/Spinners (End Effector)
   public static final class GripperConstants {
-
-    public static final int PINCHER_SOLENOID_CHANNEL = 3; // ???
-    public static final double GRIPPER_SPEED = 0.5;
-    public static final boolean PINCHER_CLOSED = true; // might need to be false
-
+    public static final int PINCHER_SOLENOID_CHANNEL = 3;
+    public static final boolean PINCHER_CLOSED = true;
+    public static final double GRIPPER_SPEED = 0.4;
   }
 
-  // CAND IDs
+  // Controller Area Network (CAN) IDs
   public static final class CANID {
-
-    public static final int LEFT_INTAKE_SPARKMAX = 20; // ???
-    public static final int RIGHT_INTAKE_SPARKMAX = 21; // ???
-    public static final int UPRIGHTER_SPARKMAX = 22; // ???
-    public static final int ARM_FALCON_FX = 23; // ???
-    public static final int GRIPPER_FALCON_FX = 24; // ???
+    public static final int REAR_RIGHT_DRIVING_SPARKMAX = 10;
+    public static final int REAR_RIGHT_TURNING_SPARKMAX = 11;
+    public static final int FRONT_RIGHT_DRIVING_SPARKMAX = 12;
+    public static final int FRONT_RIGHT_TURNING_SPARKMAX = 13;
     public static final int FRONT_LEFT_DRIVING_SPARKMAX = 14;
     public static final int FRONT_LEFT_TURNING_SPARKMAX = 15;
     public static final int REAR_LEFT_DRIVING_SPARKMAX = 16;
     public static final int REAR_LEFT_TURNING_SPARKMAX = 17;
-    public static final int FRONT_RIGHT_DRIVING_SPARKMAX = 12;
-    public static final int FRONT_RIGHT_TURNING_SPARKMAX = 13;
-    public static final int REAR_RIGHT_DRIVING_SPARKMAX = 10;
-    public static final int REAR_RIGHT_TURNING_SPARKMAX = 11;
-
+    public static final int LEFT_INTAKE_SPARKMAX = 20;
+    public static final int RIGHT_INTAKE_SPARKMAX = 21;
+    public static final int LEFT_UPRIGHTER_SPARKMAX = 22;
+    public static final int RIGHT_UPRIGHTER_SPARKMAX = 23;
+    public static final int ARM_FALCON_FX = 24;
+    public static final int GRIPPER_FALCON_FX = 25;
   }
 
-  // Swerve Drive
+  // Swerve Drive (Drive Train)
   public static final class SwerveDriveConstants {
-
     public static final double DRIVETRAIN_WIDTH = Units.inchesToMeters(26.5);
     public static final double DRIVETRAIN_LENGTH = Units.inchesToMeters(26.5);
 
@@ -73,9 +66,8 @@ public final class Constants {
         new Translation2d(-DRIVETRAIN_LENGTH / 2, -DRIVETRAIN_WIDTH / 2));
   }
 
-  // Swerve Modules
+  // REV MAXSwerve Modules
   public static final class SwerveModuleConstants {
-
     public static final int DRIVING_MOTOR_PINION_TEETH = 12; // 12T, 13T, or 14T
     public static final double DRIVING_MOTOR_FREE_SPIN_RPM = 5676; // NEO 550s max RPM
     public static final double WHEEL_DIAMETER_IN_METERS = 0.0762; // 3 inch wheels
@@ -95,7 +87,6 @@ public final class Constants {
 
     public static final int DRIVING_MOTOR_CURRENT_LIMIT = 15; // amps
     public static final int TURNING_MOTOR_CURRENT_LIMIT = 10; // amps
-
   }
 
 }

@@ -29,7 +29,6 @@ public class RobotContainer {
   private final Gripper gripper = new Gripper();
   private final Arm arm = new Arm();
   private final Intake intake = new Intake();
-  private final Uprighter uprighter = new Uprighter();
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);;
 
   // OI controllers
@@ -99,7 +98,7 @@ public class RobotContainer {
     // ################ OPERATOR OI CONTROLLER CONFIGURATION ################
 
     // OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
-    // OPERATOR Right Stick: (not used)
+    // OPERATOR Right Stick: Direct control over the Uprighter.
     // OPERATOR X Button: Go to Arm position #1 and lock.
     // OPERATOR Y Button: Go to Arm position #2 and lock.
     // OPERATOR B Button: Go to Arm position #3 and lock.
