@@ -1,6 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.autonomous.*;
@@ -29,15 +31,11 @@ public class RobotContainer {
 
   // NetworkTables
   public static NetworkTableInstance networkTableInstance;
-  public static NetworkTable pieceIDs;
-  public static NetworkTable pieceCoordinates;
+  public static NetworkTable gamePieceIDs;
+  public static NetworkTable gamePieceCoordinates;
 
   /** Robot Container Constructor. */
   public RobotContainer() {
-    // NetworkTables
-    networkTableInstance = NetworkTableInstance.getDefault();
-    pieceIDs = networkTableInstance.getTable("Piece");
-    pieceCoordinates = networkTableInstance.getTable("Vision");
 
     // Instantiate all subsystems
     swerveDrive = new SwerveDrive();
@@ -53,6 +51,11 @@ public class RobotContainer {
     // Instantiate all OI controllers
     driverOI = new CommandXboxController(0);
     operatorOI = new CommandXboxController(1);
+
+    // NetworkTables
+    networkTableInstance = NetworkTableInstance.getDefault();
+    gamePieceIDs = networkTableInstance.getTable("Piece");
+    gamePieceCoordinates = networkTableInstance.getTable("Vision");
 
     // Configure the button bindings
     configureButtonBindings();
