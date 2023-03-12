@@ -27,8 +27,17 @@ public class RobotContainer {
   // Autonomous Commands
   private final DefaultAuto defaultAuto;
 
+  // NetworkTables
+  public static NetworkTableInstance networkTableInstance;
+  public static NetworkTable pieceIDs;
+  public static NetworkTable pieceCoordinates;
+
   /** Robot Container Constructor. */
   public RobotContainer() {
+    // NetworkTables
+    networkTableInstance = NetworkTableInstance.getDefault();
+    pieceIDs = networkTableInstance.getTable("Piece");
+    pieceCoordinates = networkTableInstance.getTable("Vision");
 
     // Instantiate all subsystems
     swerveDrive = new SwerveDrive();
