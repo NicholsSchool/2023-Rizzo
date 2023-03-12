@@ -13,30 +13,42 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 public class RobotContainer {
 
   // Create subsystems
-  private final SwerveDrive swerveDrive = new SwerveDrive();
-  private final Gripper gripper = new Gripper();
-  private final Arm arm = new Arm();
-  private final Intake intake = new Intake();
-  private final Uprighter uprighter = new Uprighter(); 
-  Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-
+  private final SwerveDrive swerveDrive;
+  private final Gripper gripper;
+  private final Arm arm;
+  private final Intake intake;
+  private final Uprighter uprighter;
+  Compressor compressor;
 
   // OI controllers
-  CommandXboxController driverOI = new CommandXboxController(0);
-  CommandXboxController operatorOI = new CommandXboxController(1);
-
-  
+  CommandXboxController driverOI;
+  CommandXboxController operatorOI;
 
   // Autonomous Commands
-  private final DefaultAuto defaultAuto = new DefaultAuto(swerveDrive);
+  private final DefaultAuto defaultAuto;
 
   /** Robot Container Constructor. */
   public RobotContainer() {
 
+    // Instantiate all subsystems
+    swerveDrive = new SwerveDrive();
+    gripper = new Gripper();
+    arm = new Arm();
+    intake = new Intake();
+    uprighter = new Uprighter();
+    compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+
+    // Instantiate all autonomous commands
+    defaultAuto = new DefaultAuto(swerveDrive);
+
+    // Instantiate all OI controllers
+    driverOI = new CommandXboxController(0);
+    operatorOI = new CommandXboxController(1);
+
     // Configure the button bindings
     configureButtonBindings();
 
-    // Configure default commands
+    // Configure Default Driver Commands
     swerveDrive.setDefaultCommand(
         new RunCommand(
             () -> swerveDrive.drive(
@@ -45,18 +57,14 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(driverOI.getRightX(), 0.07),
                 true),
             swerveDrive));
-    
-    uprighter.setDefaultCommand( 
+
+    // Configure Default Operator Commands
+    uprighter.setDefaultCommand(
         new RunCommand(
-            () -> uprighter.uprighterSpin(
-                -MathUtil.applyDeadband(operatorOI.getLeftY(), 0.07) ),
-            uprighter)) ;
-    
+            () -> uprighter.spin(
+                -MathUtil.applyDeadband(operatorOI.getRightY(), 0.07)),
+            uprighter));
   }
-
-
-
-
 
   /** Define all button() to command() mappings. */
   private void configureButtonBindings() {
@@ -84,7 +92,6 @@ public class RobotContainer {
 
     // DRIVER Back Button: Reset the robot's field oriented forward position.
     driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
-    
 
     // Driver OI Controller Sample Mappings
     driverOI.a().onTrue(new InstantCommand(() -> System.out.println("Driver A")));
@@ -105,7 +112,7 @@ public class RobotContainer {
     // ################ OPERATOR OI CONTROLLER CONFIGURATION ################
 
     // OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
-    // OPERATOR Right Stick: Direct control over the Uprighter.
+    // +OPERATOR Right Stick: Direct control over the Uprighter.
     // OPERATOR X Button: Go to Arm position #1 and lock.
     // OPERATOR Y Button: Go to Arm position #2 and lock.
     // OPERATOR B Button: Go to Arm position #3 and lock.

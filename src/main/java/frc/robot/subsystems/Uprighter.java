@@ -3,19 +3,16 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import frc.robot.Constants.CANID;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.IntakeConstants.*;
 
-public class Uprighter extends SubsystemBase{
+public class Uprighter extends SubsystemBase {
 
   private CANSparkMax uprighterMotorLeft;
   private CANSparkMax uprighterMotorRight;
 
-  public Uprighter()
-  {
+  public Uprighter() {
     // Uprighter Motor Left
     uprighterMotorLeft = new CANSparkMax(CANID.LEFT_UPRIGHTER_SPARKMAX, MotorType.kBrushless);
     uprighterMotorLeft.restoreFactoryDefaults();
@@ -30,32 +27,30 @@ public class Uprighter extends SubsystemBase{
   }
 
   @Override
-  public void periodic()
-  {
-
+  public void periodic() {
   }
 
-  public void uprighterSpinIn() {
+  public void spinIn() {
     uprighterMotorLeft.set(-UPRIGHTER_SPEED);
     uprighterMotorRight.set(-UPRIGHTER_SPEED);
   }
 
-  public void uprighterSpinOut() {
+  public void spinOut() {
     uprighterMotorLeft.set(UPRIGHTER_SPEED);
     uprighterMotorRight.set(UPRIGHTER_SPEED);
   }
 
-  public void uprighterStop() {
+  public void stop() {
     uprighterMotorLeft.stopMotor();
     uprighterMotorRight.stopMotor();
   }
 
   /**
-   * Spin the uprighter motors at a given speed.
+   * Spin the uprighter motors at a given speed directly with OI controller.
    * 
    * @param speed double between -1.0 and 1.0
    */
-  public void uprighterSpin(double speed) {
+  public void spin(double speed) {
     uprighterMotorLeft.set(speed);
     uprighterMotorRight.set(speed);
   }
