@@ -17,11 +17,15 @@ public class RobotContainer {
   private final Gripper gripper = new Gripper();
   private final Arm arm = new Arm();
   private final Intake intake = new Intake();
+  private final Uprighter uprighter = new Uprighter(); 
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+
 
   // OI controllers
   CommandXboxController driverOI = new CommandXboxController(0);
   CommandXboxController operatorOI = new CommandXboxController(1);
+
+  
 
   // Autonomous Commands
   private final DefaultAuto defaultAuto = new DefaultAuto(swerveDrive);
@@ -41,7 +45,18 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(driverOI.getRightX(), 0.07),
                 true),
             swerveDrive));
+    
+    uprighter.setDefaultCommand( 
+        new RunCommand(
+            () -> uprighter.uprighterSpin(
+                -MathUtil.applyDeadband(operatorOI.getLeftY(), 0.07) ),
+            uprighter)) ;
+    
   }
+
+
+
+
 
   /** Define all button() to command() mappings. */
   private void configureButtonBindings() {
@@ -69,6 +84,7 @@ public class RobotContainer {
 
     // DRIVER Back Button: Reset the robot's field oriented forward position.
     driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
+    
 
     // Driver OI Controller Sample Mappings
     driverOI.a().onTrue(new InstantCommand(() -> System.out.println("Driver A")));

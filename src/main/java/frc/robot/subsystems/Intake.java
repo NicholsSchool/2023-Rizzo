@@ -15,8 +15,6 @@ public class Intake extends SubsystemBase {
   private CANSparkMax intakeMotorRight;
   private Solenoid intakePistons;
   private Solenoid lifterPistons;
-  private CANSparkMax uprighterMotorLeft;
-  private CANSparkMax uprighterMotorRight;
 
   public Intake() {
 
@@ -39,19 +37,6 @@ public class Intake extends SubsystemBase {
     // Lifter Pistons
     lifterPistons = new Solenoid(PneumaticsModuleType.CTREPCM, LIFTER_PISTON_SOLENOID_CHANNEL);
     lifterPistons.set(LIFTER_UP);
-
-    // Uprighter Motor Left
-    uprighterMotorLeft = new CANSparkMax(CANID.LEFT_UPRIGHTER_SPARKMAX, MotorType.kBrushless);
-    uprighterMotorLeft.restoreFactoryDefaults();
-    uprighterMotorLeft.setIdleMode(IdleMode.kBrake);
-    uprighterMotorLeft.setInverted(false);
-
-    // Uprighter Motor Right
-    uprighterMotorRight = new CANSparkMax(CANID.RIGHT_UPRIGHTER_SPARKMAX, MotorType.kBrushless);
-    uprighterMotorRight.restoreFactoryDefaults();
-    uprighterMotorRight.setIdleMode(IdleMode.kBrake);
-    uprighterMotorRight.setInverted(true);
-
   }
 
   @Override
@@ -94,32 +79,4 @@ public class Intake extends SubsystemBase {
   public void lifterDown() {
     lifterPistons.set(!LIFTER_UP);
   }
-
-  // Uprighter Motors
-
-  public void uprighterSpinIn() {
-    uprighterMotorLeft.set(-UPRIGHTER_SPEED);
-    uprighterMotorRight.set(-UPRIGHTER_SPEED);
-  }
-
-  public void uprighterSpinOut() {
-    uprighterMotorLeft.set(UPRIGHTER_SPEED);
-    uprighterMotorRight.set(UPRIGHTER_SPEED);
-  }
-
-  public void uprighterStop() {
-    uprighterMotorLeft.stopMotor();
-    uprighterMotorRight.stopMotor();
-  }
-
-  /**
-   * Spin the uprighter motors at a given speed.
-   * 
-   * @param speed double between -1.0 and 1.0
-   */
-  public void uprighterSpin(double speed) {
-    uprighterMotorLeft.set(speed);
-    uprighterMotorRight.set(speed);
-  }
-
 }
