@@ -6,6 +6,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.autonomous.*;
+import frc.robot.commands.Gripper_Outtake;
+import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 public class RobotContainer {
 
   // Create subsystems
+
   private final SwerveDrive swerveDrive;
   private final Gripper gripper;
   private final Arm arm;
@@ -105,6 +108,12 @@ public class RobotContainer {
     // DRIVER Back Button: Reset the robot's field oriented forward position.
     driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
 
+
+    // Driver Right Trigger: Deploy intake when presses and spin motors while held
+    driverOI.rightTrigger().whileTrue( new RunIntake() ); 
+
+    
+
     // Driver OI Controller Sample Mappings
     driverOI.a().onTrue(new InstantCommand(() -> System.out.println("Driver A")));
     driverOI.b().onTrue(new InstantCommand(() -> System.out.println("Driver B")));
@@ -139,6 +148,7 @@ public class RobotContainer {
 
     // OPERATOR Back Button: Toggle defensive X position and prevent driving.
     operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
+    operatorOI.rightTrigger().onTrue(new Gripper_Outtake(gripper));
 
     // Operator OI Controller Sample Mappings
     operatorOI.a().onTrue(new InstantCommand(() -> System.out.println("Operator A")));
@@ -150,7 +160,6 @@ public class RobotContainer {
     operatorOI.povUp().onTrue(new InstantCommand(() -> System.out.println("Operator POV Up")));
     operatorOI.povDown().onTrue(new InstantCommand(() -> System.out.println("Operator POV Down")));
     operatorOI.leftTrigger().onTrue(new InstantCommand(() -> System.out.println("Operator Left Trigger")));
-    operatorOI.rightTrigger().onTrue(new InstantCommand(() -> System.out.println("Operator Right Trigger")));
     operatorOI.leftBumper().onTrue(new InstantCommand(() -> System.out.println("Operator Left Bumper")));
     operatorOI.rightBumper().onTrue(new InstantCommand(() -> System.out.println("Operator Right Bumper")));
     operatorOI.back().onTrue(new InstantCommand(() -> System.out.println("Operator Back")));

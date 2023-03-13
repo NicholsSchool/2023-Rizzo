@@ -2,6 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -10,16 +14,19 @@ import static frc.robot.Constants.GripperConstants.*;
 
 public class Gripper extends SubsystemBase {
 
-  private WPI_TalonFX spinner;
+  private CANSparkMax spinner;
   private Solenoid pincher;
+  public static boolean state; 
 
   public Gripper() {
 
+    state = PINCHER_CLOSED; 
+
     // Spinner - Brake mode enabled to hold a game piece during autonomous.
-    spinner = new WPI_TalonFX(CANID.GRIPPER_FALCON_FX);
-    spinner.configFactoryDefault();
-    spinner.setInverted(true);
-    spinner.setNeutralMode(NeutralMode.Brake);
+    spinner = new CANSparkMax( CANID.GRIPPER_SPARKMAX, MotorType.kBrushless);
+    spinner.restoreFactoryDefaults();
+    spinner.setIdleMode(IdleMode.kBrake);
+
 
     // Pincher - Set to closed to hold a game piece during autonomous.
     pincher = new Solenoid(PneumaticsModuleType.CTREPCM, PINCHER_SOLENOID_CHANNEL);
@@ -44,11 +51,13 @@ public class Gripper extends SubsystemBase {
   }
 
   public void openPincher() {
-    pincher.set(!PINCHER_CLOSED);
+      pincher.set(!PINCHER_CLOSED);
+      state = !PINCHER_CLOSED; 
   }
 
   public void closePincher() {
     pincher.set(PINCHER_CLOSED);
+    state = PINCHER_CLOSED; 
   }
 
 }

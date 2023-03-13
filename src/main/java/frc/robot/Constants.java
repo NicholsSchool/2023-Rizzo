@@ -43,7 +43,9 @@ public final class Constants {
     public static final int LEFT_UPRIGHTER_SPARKMAX = 22;
     public static final int RIGHT_UPRIGHTER_SPARKMAX = 23;
     public static final int ARM_FALCON_FX = 24;
-    public static final int GRIPPER_FALCON_FX = 25;
+
+    //change
+    public static final int GRIPPER_SPARKMAX = 1;
   }
 
   // Swerve Drive (Drive Train)
