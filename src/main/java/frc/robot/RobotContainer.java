@@ -1,6 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.autonomous.*;
@@ -27,10 +29,16 @@ public class RobotContainer {
   CommandXboxController driverOI = new CommandXboxController(0);
   CommandXboxController operatorOI = new CommandXboxController(1);
 
+  //NetworkTables 
+  public static NetworkTableInstance networkTableInstance;
+  public static NetworkTable gamePieceIDs;
+  public static NetworkTable gamePieceCoordinates;
+
   
 
   // Autonomous Commands
   private final DefaultAuto defaultAuto = new DefaultAuto(swerveDrive);
+  private final PickupObject pickupObject = new PickupObject(swerveDrive); 
 
   /** Robot Container Constructor. */
   public RobotContainer() {
@@ -129,6 +137,7 @@ public class RobotContainer {
     // OPERATOR Back Button: Toggle defensive X position and prevent driving.
     operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
     operatorOI.rightTrigger().onTrue(new Gripper_Outtake(gripper));
+    operatorOI.leftTrigger().onTrue(pickupObject.runAutoSequence()); 
 
     // Operator OI Controller Sample Mappings
     operatorOI.a().onTrue(new InstantCommand(() -> System.out.println("Operator A")));
