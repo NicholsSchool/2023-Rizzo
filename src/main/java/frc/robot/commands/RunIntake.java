@@ -11,7 +11,10 @@ public class RunIntake extends CommandBase {
     }
 
     @Override
-    public void initialize() {}
+    public void initialize()
+    {
+      RobotContainer.intake.lifterDown();
+    }
 
     @Override
     public void execute() {
@@ -23,6 +26,8 @@ public class RunIntake extends CommandBase {
     public void end(boolean interrupted) {
         RobotContainer.intake.intakeStop();
         RobotContainer.uprighter.uprighterStop();
+        RobotContainer.intake.lifterUp();
+
     }
 
     @Override

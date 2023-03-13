@@ -90,10 +90,7 @@ public class RobotContainer {
     driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
 
     // Driver Right Trigger: Deploy intake when presses and spin motors while held
-    driverOI.rightTrigger().onTrue( new InstantCommand( () -> intake.lifterDown() ) );
     driverOI.rightTrigger().whileTrue( new RunIntake() ); 
-    driverOI.rightTrigger().onFalse( new InstantCommand( () -> intake.lifterUp() )  ); 
-
 
     
 
