@@ -1,6 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.autonomous.*;
@@ -15,30 +17,53 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 public class RobotContainer {
 
   // Create subsystems
-  private final SwerveDrive swerveDrive = new SwerveDrive();
-  private final Gripper gripper = new Gripper();
-  private final Arm arm = new Arm();
-  public final static Intake intake = new Intake();
-  public final static Uprighter uprighter = new Uprighter(); 
-  Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
+  private final SwerveDrive swerveDrive;
+  private final Gripper gripper;
+  private final Arm arm;
+  private final Intake intake;
+  private final Uprighter uprighter;
+  Compressor compressor;
 
   // OI controllers
-  CommandXboxController driverOI = new CommandXboxController(0);
-  CommandXboxController operatorOI = new CommandXboxController(1);
-
-  
+  CommandXboxController driverOI;
+  CommandXboxController operatorOI;
 
   // Autonomous Commands
-  private final DefaultAuto defaultAuto = new DefaultAuto(swerveDrive);
+  private final DefaultAuto defaultAuto;
+
+  // NetworkTables
+  public static NetworkTableInstance networkTableInstance;
+  public static NetworkTable gamePieceIDs;
+  public static NetworkTable gamePieceCoordinates;
 
   /** Robot Container Constructor. */
   public RobotContainer() {
 
+    // Instantiate all subsystems
+    swerveDrive = new SwerveDrive();
+    gripper = new Gripper();
+    arm = new Arm();
+    intake = new Intake();
+    uprighter = new Uprighter();
+    compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+
+    // Instantiate all autonomous commands
+    defaultAuto = new DefaultAuto(swerveDrive);
+
+    // Instantiate all OI controllers
+    driverOI = new CommandXboxController(0);
+    operatorOI = new CommandXboxController(1);
+
+    // NetworkTables
+    networkTableInstance = NetworkTableInstance.getDefault();
+    gamePieceIDs = networkTableInstance.getTable("Piece");
+    gamePieceCoordinates = networkTableInstance.getTable("Vision");
+
     // Configure the button bindings
     configureButtonBindings();
 
-    // Configure default commands
+    // Configure Default Driver Commands
     swerveDrive.setDefaultCommand(
         new RunCommand(
             () -> swerveDrive.drive(
@@ -47,20 +72,14 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(driverOI.getRightX(), 0.07),
                 true),
             swerveDrive));
-    
-    uprighter.setDefaultCommand( 
+
+    // Configure Default Operator Commands
+    uprighter.setDefaultCommand(
         new RunCommand(
-            () -> uprighter.uprighterSpin(
-                -MathUtil.applyDeadband(operatorOI.getLeftY(), 0.07) ),
-            uprighter)) ;
-
-
-    
+            () -> uprighter.spin(
+                -MathUtil.applyDeadband(operatorOI.getRightY(), 0.07)),
+            uprighter));
   }
-
-
-
-
 
   /** Define all button() to command() mappings. */
   private void configureButtonBindings() {
@@ -89,6 +108,7 @@ public class RobotContainer {
     // DRIVER Back Button: Reset the robot's field oriented forward position.
     driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
 
+
     // Driver Right Trigger: Deploy intake when presses and spin motors while held
     driverOI.rightTrigger().whileTrue( new RunIntake() ); 
 
@@ -113,7 +133,7 @@ public class RobotContainer {
     // ################ OPERATOR OI CONTROLLER CONFIGURATION ################
 
     // OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
-    // OPERATOR Right Stick: Direct control over the Uprighter.
+    // +OPERATOR Right Stick: Direct control over the Uprighter.
     // OPERATOR X Button: Go to Arm position #1 and lock.
     // OPERATOR Y Button: Go to Arm position #2 and lock.
     // OPERATOR B Button: Go to Arm position #3 and lock.
