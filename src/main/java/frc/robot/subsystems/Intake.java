@@ -62,11 +62,11 @@ public class Intake extends SubsystemBase {
 
   // Intake Pistons
 
-  public void intakeClose() {
+  public void flapperClose() {
     intakePistons.set(INTAKE_CLOSED);
   }
 
-  public void intakeOpen() {
+  public void flapperOpen() {
     intakePistons.set(!INTAKE_CLOSED);
   }
 
