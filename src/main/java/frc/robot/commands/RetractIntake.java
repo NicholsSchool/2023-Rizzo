@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Uprighter;
 
@@ -12,11 +13,13 @@ public class RetractIntake extends CommandBase {
 
   private Intake intake;
   private Uprighter uprighter;
+  private Gripper gripper;
 
-  public RetractIntake(Intake intakeSubsystem, Uprighter uprighterSubsystem) {
+  public RetractIntake(Intake intakeSubsystem, Uprighter uprighterSubsystem, Gripper gripperSubsystem) {
     intake = intakeSubsystem;
     uprighter = uprighterSubsystem;
-    addRequirements(intake, uprighter);
+    gripper = gripperSubsystem; 
+    addRequirements(intake, uprighter, gripper);
   }
 
   @Override
@@ -27,6 +30,7 @@ public class RetractIntake extends CommandBase {
   public void execute() {
     intake.spinIn();
     uprighter.spinIn();
+    gripper.spinIn();
   }
 
   @Override
@@ -34,6 +38,7 @@ public class RetractIntake extends CommandBase {
     intake.lifterUp();
     intake.stop();
     uprighter.stop();
+    gripper.stopSpinner();
     intake.flapperClose();
   }
 
