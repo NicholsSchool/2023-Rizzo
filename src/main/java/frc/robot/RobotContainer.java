@@ -92,21 +92,23 @@ public class RobotContainer {
     // DRIVER Left Bumper: Evasive left robot action button.
     // DRIVER Right Bumper: Evasive right robot action button.
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    // DRIVER Start Button: Toggle robot relative vs field orientated driving.
 
     // DRIVER Left Trigger: While held, switch to virtual high gear.
     driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
 
-    // DRIVER Back Button: Reset the robot's field oriented forward position.
-    driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
-
     // DRIVER Right Trigger (WH): Deploy intake when presses and spin motors
     driverOI.rightTrigger().whileTrue(new DeployIntake(intake, uprighter));
 
     // DRIVER Right Trigger (WR): Spin intake motors, close flappers, lifter up
     driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter).withTimeout(2));
+
+    // DRIVER Start Button: Reset the robot's field oriented forward position.
+    driverOI.start().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
+
+    // DRIVER Back Button: Toggle defensive X position and prevent driving.
+    operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
 
     // DRIVER OI Controller Sample Mappings
     driverOI.a().onTrue(new InstantCommand(() -> System.out.println("OI: Driver A")));
@@ -137,9 +139,6 @@ public class RobotContainer {
     // OPERATOR Left Trigger: While held, auto pick up game object using ML/AI.
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
     // OPERATOR Start Button: Cycle out all intake and grabber motors.
-
-    // OPERATOR Back Button: Toggle defensive X position and prevent driving.
-    operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
 
     // OPERATOR OI Controller Sample Mappings
     operatorOI.a().onTrue(new InstantCommand(() -> System.out.println("OI: Operator A")));
