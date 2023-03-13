@@ -146,6 +146,7 @@ public class RobotContainer {
 
     operatorOI.back().onTrue(new InstantCommand( () -> gripper.setGripperState() ) ); 
     operatorOI.rightTrigger().whileTrue(new OuttakeGamePiece(gripper)); 
+    operatorOI.start().whileTrue( new SpinEverythingOut( intake, uprighter, gripper) ); 
 
     // OPERATOR Back Button: Toggle defensive X position and prevent driving.
     //operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
