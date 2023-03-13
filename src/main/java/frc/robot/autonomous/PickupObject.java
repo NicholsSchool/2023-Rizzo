@@ -9,6 +9,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.*;
 import frc.robot.utils.Detector;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -66,7 +67,7 @@ public class PickupObject {
     // Reset odometry to the starting pose of the trajectory.
     swerveDrive.resetOdometry(exampleTrajectory.getInitialPose());
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> swerveDrive.drive(0, 0, 0, false));
+    return swerveControllerCommand.alongWith(new RunIntake()).andThen(() -> swerveDrive.drive(0, 0, 0, false));    
   }
 
 }
