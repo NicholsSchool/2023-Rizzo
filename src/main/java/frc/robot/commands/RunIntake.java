@@ -7,7 +7,7 @@ import frc.robot.RobotContainer;
 public class RunIntake extends CommandBase {
 
     public RunIntake() {
-        addRequirements(RobotContainer.intake);
+        addRequirements(RobotContainer.intake, RobotContainer.uprighter);
     }
 
     @Override
@@ -16,11 +16,13 @@ public class RunIntake extends CommandBase {
     @Override
     public void execute() {
         RobotContainer.intake.intakeSpinIn();
+        RobotContainer.uprighter.uprighterSpinIn();
     }
 
     @Override
     public void end(boolean interrupted) {
         RobotContainer.intake.intakeStop();
+        RobotContainer.uprighter.uprighterStop();
     }
 
     @Override

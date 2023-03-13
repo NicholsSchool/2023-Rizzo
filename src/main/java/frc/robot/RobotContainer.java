@@ -19,7 +19,7 @@ public class RobotContainer {
   private final Gripper gripper = new Gripper();
   private final Arm arm = new Arm();
   public final static Intake intake = new Intake();
-  private final Uprighter uprighter = new Uprighter(); 
+  public final static Uprighter uprighter = new Uprighter(); 
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
 

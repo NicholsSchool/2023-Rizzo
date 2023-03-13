@@ -16,7 +16,7 @@ public class Gripper extends SubsystemBase {
 
   private CANSparkMax spinner;
   private Solenoid pincher;
-  private boolean state; 
+  public static boolean state; 
 
   public Gripper() {
 
@@ -52,10 +52,12 @@ public class Gripper extends SubsystemBase {
 
   public void openPincher() {
       pincher.set(!PINCHER_CLOSED);
+      state = !PINCHER_CLOSED; 
   }
 
   public void closePincher() {
     pincher.set(PINCHER_CLOSED);
+    state = PINCHER_CLOSED; 
   }
 
 }
