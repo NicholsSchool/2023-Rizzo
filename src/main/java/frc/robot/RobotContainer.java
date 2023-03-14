@@ -112,6 +112,17 @@ public class RobotContainer {
     driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter, gripper).withTimeout(0));
     driverOI.rightBumper().onTrue( new InstantCommand( () -> gripper.gripPiece() ) );
 
+    // // Yeah I have no clue if this will work
+    // driverOI.x().onTrue(new InstantCommand( () -> swerveDrive.drive( 0.0, 0.0, -Math.PI / 2, true ) ) );
+    // driverOI.y().onTrue(new InstantCommand( () -> swerveDrive.drive( 0.0, 0.0, 0, true ) ) );
+    // driverOI.b().onTrue(new InstantCommand( () -> swerveDrive.drive( 0.0, 0.0, Math.PI / 2, true ) ) );
+    // driverOI.a().onTrue(new InstantCommand( () -> swerveDrive.drive( 0.0, 0.0, Math.PI + 1e-7, true ) ) );    
+
+    // Yeah I have no clue if this will work
+    driverOI.povRight().onTrue(new InstantCommand( () -> swerveDrive.drive( 0, -0.5, 0, false ) ).withTimeout(0.1) );
+    driverOI.povLeft().onTrue(new InstantCommand( () -> swerveDrive.drive( 0, 0.5, 0, false ) ).withTimeout(0.1) );
+    driverOI.povUp().onTrue(new InstantCommand( () -> swerveDrive.drive( 0.5, 0, 0, false ) ).withTimeout(0.1) );
+    driverOI.povDown().onTrue(new InstantCommand( () -> swerveDrive.drive( -0.5, 0, 0, false ) ).withTimeout(0.1) );
 
 
     // DRIVER OI Controller Sample Mappings
@@ -147,6 +158,14 @@ public class RobotContainer {
     operatorOI.back().onTrue(new InstantCommand( () -> gripper.setGripperState() ) ); 
     operatorOI.rightTrigger().whileTrue(new OuttakeGamePiece(gripper)); 
     operatorOI.start().whileTrue( new SpinEverythingOut( intake, uprighter, gripper) ); 
+
+    // Yeah I have no clue if this will work
+    operatorOI.povRight().onTrue(new InstantCommand( () -> swerveDrive.drive( 0, 0.5, 0, false ) ).withTimeout(0.1) );
+    operatorOI.povLeft().onTrue(new InstantCommand( () -> swerveDrive.drive( 0, 0-.5, 0, false ) ).withTimeout(0.1) );
+    operatorOI.povUp().onTrue(new InstantCommand( () -> swerveDrive.drive( -0.5, 0, 0, false ) ).withTimeout(0.1) );
+    operatorOI.povDown().onTrue(new InstantCommand( () -> swerveDrive.drive( 0.5, 0, 0, false ) ).withTimeout(0.1) );
+
+
 
     // OPERATOR Back Button: Toggle defensive X position and prevent driving.
     //operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
