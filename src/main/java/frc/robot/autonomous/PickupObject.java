@@ -9,7 +9,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import frc.robot.commands.RunIntake;
+import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.utils.Detector;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,15 +21,17 @@ public class PickupObject {
 
   Detector detector = new Detector();
   static SwerveDrive swerveDrive;
+  static Intake intake;
+  static Uprighter uprighter;
 
   int x = detector.getXDist();
-  int y = detector.getYDist(); 
+  int y = detector.getYDist();
   double angle = detector.getAngle();
 
-  public PickupObject(SwerveDrive swerveDrive) {
-    DefaultAuto.swerveDrive = swerveDrive;
-
-
+  public PickupObject(SwerveDrive swerveDriveSub, Intake intakeSub, Uprighter uprighterSub) {
+    swerveDrive = swerveDriveSub;
+    intake = intakeSub;
+    uprighter = uprighterSub;
   }
 
   public Command runAutoSequence() {
@@ -45,7 +47,7 @@ public class PickupObject {
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(new Translation2d(x, y)),
-        new Pose2d( 2 * x, 2 * y, new Rotation2d(angle)),
+        new Pose2d(2 * x, 2 * y, new Rotation2d(angle)),
         config);
 
     var thetaController = new ProfiledPIDController(
@@ -66,8 +68,10 @@ public class PickupObject {
 
     // Reset odometry to the starting pose of the trajectory.
     swerveDrive.resetOdometry(exampleTrajectory.getInitialPose());
+
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.alongWith(new RunIntake()).andThen(() -> swerveDrive.drive(0, 0, 0, false));    
+    return swerveControllerCommand.alongWith(new DeployIntake(intake, uprighter))
+        .andThen(() -> swerveDrive.drive(0, 0, 0, false));
   }
 
 }
