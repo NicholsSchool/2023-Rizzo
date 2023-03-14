@@ -7,6 +7,8 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
 
+  public static final int MILLISECS_PER_SEC = 1000;
+
   // Intake/Lifter/Uprighter
   public static final class IntakeConstants {
     public static final int INTAKE_PISTON_SOLENOID_CHANNEL = 1;
