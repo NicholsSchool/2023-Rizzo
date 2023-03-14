@@ -4,14 +4,23 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Uprighter;
 
+/**
+ * Deploys the intake and uprighter.
+ */
 public class DeployIntake extends CommandBase {
 
   private Intake intake;
   private Uprighter uprighter;
 
-  public DeployIntake(Intake intakeSubsystem, Uprighter uprighterSubsystem) {
-    intake = intakeSubsystem = intake;
-    uprighter = uprighterSubsystem = uprighter;
+  /**
+   * Creates a new DeployIntake.
+   * 
+   * @param intakeSub
+   * @param uprighterSub
+   */
+  public DeployIntake(Intake intakeSub, Uprighter uprighterSub) {
+    intake = intakeSub;
+    uprighter = uprighterSub;
     addRequirements(intake, uprighter);
   }
 

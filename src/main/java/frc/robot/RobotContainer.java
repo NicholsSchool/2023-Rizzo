@@ -22,8 +22,8 @@ public class RobotContainer {
   private final Intake intake;
   private final Uprighter uprighter;
   Compressor compressor;
-  
-  private final PickupObject pickupObject; 
+
+  private final PickupObject pickupObject;
 
   // OI controllers
   CommandXboxController driverOI;
@@ -47,8 +47,8 @@ public class RobotContainer {
     intake = new Intake();
     uprighter = new Uprighter();
     compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-    
-    pickupObject = new PickupObject(swerveDrive)
+
+    pickupObject = new PickupObject(swerveDrive, intake, uprighter);
 
     // Instantiate all autonomous commands
     defaultAuto = new DefaultAuto(swerveDrive);
@@ -144,8 +144,11 @@ public class RobotContainer {
 
     // OPERATOR Back Button: Toggle defensive X position and prevent driving.
     operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
-    operatorOI.rightTrigger().onTrue(new Gripper_Outtake(gripper));
-    operatorOI.leftTrigger().onTrue(pickupObject.runAutoSequence()); 
+
+    // not done yet
+    // operatorOI.rightTrigger().onTrue(new Gripper_Outtake(gripper));
+
+    operatorOI.leftTrigger().onTrue(pickupObject.runAutoSequence());
 
     // OPERATOR OI Controller Sample Mappings
     operatorOI.a().onTrue(new InstantCommand(() -> System.out.println("OI: Operator A")));
