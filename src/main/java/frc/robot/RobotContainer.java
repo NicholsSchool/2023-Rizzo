@@ -99,15 +99,11 @@ public class RobotContainer {
     // DRIVER Left Bumper: Evasive left robot action button.
     // DRIVER Right Bumper: Evasive right robot action button.
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    // DRIVER Start Button: Toggle robot relative vs field orientated driving.
 
     // DRIVER Left Trigger: While held, switch to virtual high gear.
     driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
-
-    // DRIVER Back Button: Reset the robot's field oriented forward position.
-    driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
 
     // DRIVER Right Trigger (WH): Deploy intake when presses and spin motors
     driverOI.rightTrigger().whileTrue(new DeployIntake(intake, uprighter, gripper));
@@ -117,6 +113,12 @@ public class RobotContainer {
     driverOI.rightBumper().onTrue( new InstantCommand( () -> gripper.gripPiece() ) );
 
 
+
+    // DRIVER Start Button: Reset the robot's field oriented forward position.
+    driverOI.start().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
+
+    // DRIVER Back Button: Toggle defensive X position and prevent driving.
+    operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
 
     // DRIVER OI Controller Sample Mappings
     driverOI.a().onTrue(new InstantCommand(() -> System.out.println("OI: Driver A")));

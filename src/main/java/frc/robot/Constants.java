@@ -19,6 +19,12 @@ public final class Constants {
 
   // Arm (Manipulator)
   public static final class ArmConstants {
+    public static final double STATOR_CURRENT_LIMIT = 10.0;
+    public static final double SUPPLY_CURRENT_LIMIT = 10.0;
+    public static final double STATOR_TRIGGER_THRESHOLD_CURRENT = 3.0;
+    public static final double SUPPLY_TRIGGER_THRESHOLD_CURRENT = 3.0;
+    public static final double STATOR_TRIGGER_THRESHOLD_TIME = 1.0;
+    public static final double SUPPLY_TRIGGER_THRESHOLD_TIME = 1.0;
   }
 
   // Gripper/Pinchers/Spinners (End Effector)
