@@ -1,10 +1,10 @@
 # Motor Direction Tests:
 
-* Check direction of right intake motor
-* Check direction of left intake motor
-* Check direction of gripper motor
-* Check direction of right uprighter motor
-* Check direction of left uprighter motor
+* Check direction of right intake motor --> good
+* Check direction of left intake motor --> good
+* Check direction of gripper motor --> good
+* Check direction of right uprighter motor--> good
+* Check direction of left uprighter motor --> good
 * Check direction of arm motor
 
 # Piston Direction Tests: 
@@ -28,7 +28,7 @@
 
 # Subsystem Tests:
 
-* Check to see if intake sequence is working
+* Check to see if intake sequence is working 
 * Check to see if outtake sequence is working
 * Check having arm go to set positions
 * Check to make sure direct control of arm overrides arm locks

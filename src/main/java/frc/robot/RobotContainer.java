@@ -109,7 +109,7 @@ public class RobotContainer {
     driverOI.rightTrigger().whileTrue(new DeployIntake(intake, uprighter, gripper));
 
     // DRIVER Right Trigger (WR): Spin intake motors, close flappers, lifter up
-    driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter, gripper).withTimeout(1));
+    driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter, gripper).withTimeout(0));
     driverOI.rightBumper().onTrue( new InstantCommand( () -> gripper.gripPiece() ) );
 
 
