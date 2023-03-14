@@ -45,8 +45,8 @@
 * CAN ID 21 = SparkMax = Right Intake
 * CAN ID 22 = SparkMax = Left Uprighter
 * CAN ID 23 = SparkMax = Right Uprighter
-* CAN ID 24 = FalconFX = Arm
-* CAN ID 25 = FalconFX = Gripper
+* CAN ID 24 = SparkMax = Gripper
+* CAN ID 25 = FalconFX = Arm
 
 ## Solenoid ID Assignments
 * Solenoid ID 1 = Intake Pistons

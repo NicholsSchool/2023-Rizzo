@@ -5,7 +5,6 @@ import static frc.robot.RobotContainer.gamePieceCoordinates;
 
 public class Detector {
 
-
   /**
    * Gets the x distance to a game piece
    * 
@@ -35,6 +34,5 @@ public class Detector {
   {
     return gamePieceCoordinates.getDoubleTopic("Angle").subscribe(-0).get();
   }
-
 
 }
