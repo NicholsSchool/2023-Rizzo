@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.CANID;
 import static frc.robot.Constants.GripperConstants.*;
 
@@ -56,6 +57,26 @@ public class Gripper extends SubsystemBase {
   public void closePincher() {
     pincher.set(PINCHER_CLOSED);
     state = PINCHER_CLOSED;
+  }
+
+  /**
+   * Changes gripper piston for picking up cones or cubes 
+   */
+  public void setGripperState()
+  {
+    RobotContainer.readyForCone = !RobotContainer.readyForCone;
+  }
+
+  public boolean getGripperState()
+  {
+    return RobotContainer.readyForCone; 
+  }
+
+  public void gripPiece()
+  {
+    if( getGripperState() )
+      closePincher();
+    
   }
 
 }

@@ -37,6 +37,9 @@ public class RobotContainer {
   public static NetworkTable gamePieceIDs; // ???
   public static NetworkTable gamePieceCoordinates; // ???
 
+  //Used for determining if gripper is picking up cone or cube
+  public static boolean readyForCone = true; 
+
   /** Robot Container Constructor. */
   public RobotContainer() {
 
@@ -107,10 +110,13 @@ public class RobotContainer {
     driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
 
     // DRIVER Right Trigger (WH): Deploy intake when presses and spin motors
-    driverOI.rightTrigger().whileTrue(new DeployIntake(intake, uprighter));
+    driverOI.rightTrigger().whileTrue(new DeployIntake(intake, uprighter, gripper));
 
     // DRIVER Right Trigger (WR): Spin intake motors, close flappers, lifter up
-    driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter).withTimeout(2));
+    driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter, gripper).withTimeout(1));
+    driverOI.rightBumper().onTrue( new InstantCommand( () -> gripper.gripPiece() ) );
+
+
 
     // DRIVER OI Controller Sample Mappings
     driverOI.a().onTrue(new InstantCommand(() -> System.out.println("OI: Driver A")));
@@ -142,8 +148,11 @@ public class RobotContainer {
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
     // OPERATOR Start Button: Cycle out all intake and grabber motors.
 
+    operatorOI.back().onTrue(new InstantCommand( () -> gripper.setGripperState() ) ); 
+    operatorOI.rightTrigger().whileTrue(new OuttakeGamePiece(gripper)); 
+
     // OPERATOR Back Button: Toggle defensive X position and prevent driving.
-    operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
+    //operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
 
     // not done yet
     // operatorOI.rightTrigger().onTrue(new Gripper_Outtake(gripper));

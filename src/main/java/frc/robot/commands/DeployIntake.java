@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Uprighter;
 
@@ -11,17 +12,13 @@ public class DeployIntake extends CommandBase {
 
   private Intake intake;
   private Uprighter uprighter;
+  private Gripper gripper; 
 
-  /**
-   * Creates a new DeployIntake.
-   * 
-   * @param intakeSub
-   * @param uprighterSub
-   */
-  public DeployIntake(Intake intakeSub, Uprighter uprighterSub) {
-    intake = intakeSub;
-    uprighter = uprighterSub;
-    addRequirements(intake, uprighter);
+  public DeployIntake(Intake intakeSubsystem, Uprighter uprighterSubsystem, Gripper gripperSubsystem) {
+    intake = intakeSubsystem;
+    uprighter = uprighterSubsystem;
+    gripper = gripperSubsystem; 
+    addRequirements(intake, uprighter, gripper);
   }
 
   @Override
@@ -34,6 +31,7 @@ public class DeployIntake extends CommandBase {
   public void execute() {
     intake.spinIn();
     uprighter.spinIn();
+    gripper.spinIn();
   }
 
   @Override
