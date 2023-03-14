@@ -23,15 +23,17 @@ public class PickupObject {
   static SwerveDrive swerveDrive;
   static Intake intake;
   static Uprighter uprighter;
+  private Gripper gripper;
 
   int x = detector.getXDist();
   int y = detector.getYDist();
   double angle = detector.getAngle();
 
-  public PickupObject(SwerveDrive swerveDriveSub, Intake intakeSub, Uprighter uprighterSub) {
+  public PickupObject(SwerveDrive swerveDriveSub, Intake intakeSub, Uprighter uprighterSub, Gripper gripperSub) {
     swerveDrive = swerveDriveSub;
     intake = intakeSub;
     uprighter = uprighterSub;
+    gripper = gripperSub;
   }
 
   public Command runAutoSequence() {
@@ -70,7 +72,7 @@ public class PickupObject {
     swerveDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.alongWith(new DeployIntake(intake, uprighter))
+    return swerveControllerCommand.alongWith(new DeployIntake(intake, uprighter, gripper))
         .andThen(() -> swerveDrive.drive(0, 0, 0, false));
   }
 

@@ -39,11 +39,11 @@ public class Arm extends SubsystemBase {
         SUPPLY_TRIGGER_THRESHOLD_CURRENT,
         STATOR_TRIGGER_THRESHOLD_TIME));
 
-    armEncoder = new AbsoluteEncoder(CANID.ARM_FALCON_FX);
+    // armEncoder = new AbsoluteEncoder(CANID.ARM_FALCON_FX);
 
-    turningEncoder = turningSparkMax.getAbsoluteEncoder(Type.kDutyCycle);
-    turningPIDController = turningSparkMax.getPIDController();
-    turningPIDController.setFeedbackDevice(turningEncoder);
+    // turningEncoder = turningSparkMax.getAbsoluteEncoder(Type.kDutyCycle);
+    // turningPIDController = turningSparkMax.getPIDController();
+    // turningPIDController.setFeedbackDevice(turningEncoder);
 
     timer = new Timer();
   }
