@@ -13,10 +13,10 @@ public final class Constants {
   public static final class IntakeConstants {
     public static final int INTAKE_PISTON_SOLENOID_CHANNEL = 1;
     public static final boolean INTAKE_CLOSED = true;
-    public static final double INTAKE_SPEED = 0.4;
+    public static final double INTAKE_SPEED = 0.8;
     public static final int LIFTER_PISTON_SOLENOID_CHANNEL = 2;
     public static final boolean LIFTER_UP = true;
-    public static final double UPRIGHTER_SPEED = 0.4;
+    public static final double UPRIGHTER_SPEED = 1.0;
   }
 
   // Arm (Manipulator)
