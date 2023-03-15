@@ -28,6 +28,16 @@ public class Arm extends SubsystemBase {
     falcon.setInverted(false);
     falcon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     falcon.setNeutralMode(NeutralMode.Brake);
+    // falcon.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(
+    // true,
+    // STATOR_CURRENT_LIMIT,
+    // STATOR_TRIGGER_THRESHOLD_CURRENT,
+    // STATOR_TRIGGER_THRESHOLD_TIME));
+    // falcon.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
+    // true,
+    // SUPPLY_CURRENT_LIMIT,
+    // SUPPLY_TRIGGER_THRESHOLD_CURRENT,
+    // STATOR_TRIGGER_THRESHOLD_TIME));
 
     // armEncoder = new AbsoluteEncoder(CANID.ARM_FALCON_FX);
 
