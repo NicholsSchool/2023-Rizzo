@@ -9,18 +9,31 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.utils.Detector;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 import java.util.List;
 
-public class DefaultAuto {
+public class PickupObject {
 
+  Detector detector = new Detector();
   static SwerveDrive swerveDrive;
+  static Intake intake;
+  static Uprighter uprighter;
+  private Gripper gripper;
 
-  public DefaultAuto(SwerveDrive swerveDrive) {
-    DefaultAuto.swerveDrive = swerveDrive;
+  int x = detector.getXDist();
+  int y = detector.getYDist();
+  double angle = detector.getAngle();
+
+  public PickupObject(SwerveDrive swerveDriveSub, Intake intakeSub, Uprighter uprighterSub, Gripper gripperSub) {
+    swerveDrive = swerveDriveSub;
+    intake = intakeSub;
+    uprighter = uprighterSub;
+    gripper = gripperSub;
   }
 
   public Command runAutoSequence() {
@@ -35,10 +48,8 @@ public class DefaultAuto {
     // An example trajectory to follow. All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(new Translation2d(1, .75),
-            new Translation2d(3, 0),
-            new Translation2d(2, -0.75)),
-        new Pose2d(0.64, -0.07, new Rotation2d(3.14)),
+        List.of(new Translation2d(x, y)),
+        new Pose2d(2 * x, 2 * y, new Rotation2d(angle)),
         config);
 
     var thetaController = new ProfiledPIDController(
@@ -59,8 +70,10 @@ public class DefaultAuto {
 
     // Reset odometry to the starting pose of the trajectory.
     swerveDrive.resetOdometry(exampleTrajectory.getInitialPose());
+
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> swerveDrive.drive(0, 0, 0, false));
+    return swerveControllerCommand.alongWith(new DeployIntake(intake, uprighter, gripper))
+        .andThen(() -> swerveDrive.drive(0, 0, 0, false));
   }
 
 }

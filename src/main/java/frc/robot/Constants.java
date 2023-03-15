@@ -7,6 +7,8 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
 
+  public static final int MILLISECS_PER_SEC = 1000;
+
   // Intake/Lifter/Uprighter
   public static final class IntakeConstants {
     public static final int INTAKE_PISTON_SOLENOID_CHANNEL = 1;
@@ -19,6 +21,12 @@ public final class Constants {
 
   // Arm (Manipulator)
   public static final class ArmConstants {
+    public static final double STATOR_CURRENT_LIMIT = 10.0;
+    public static final double SUPPLY_CURRENT_LIMIT = 10.0;
+    public static final double STATOR_TRIGGER_THRESHOLD_CURRENT = 3.0;
+    public static final double SUPPLY_TRIGGER_THRESHOLD_CURRENT = 3.0;
+    public static final double STATOR_TRIGGER_THRESHOLD_TIME = 1.0;
+    public static final double SUPPLY_TRIGGER_THRESHOLD_TIME = 1.0;
   }
 
   // Gripper/Pinchers/Spinners (End Effector)

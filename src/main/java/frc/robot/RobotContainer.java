@@ -23,6 +23,8 @@ public class RobotContainer {
   private final Uprighter uprighter;
   Compressor compressor;
 
+  private final PickupObject pickupObject;
+
   // OI controllers
   CommandXboxController driverOI;
   CommandXboxController operatorOI;
@@ -35,8 +37,8 @@ public class RobotContainer {
   public static NetworkTable gamePieceIDs; // ???
   public static NetworkTable gamePieceCoordinates; // ???
 
-  //Used for determining if gripper is picking up cone or cube
-  public static boolean readyForCone = true; 
+  // Used for determining if gripper is picking up cone or cube
+  public static boolean readyForCone = true;
 
   /** Robot Container Constructor. */
   public RobotContainer() {
@@ -48,6 +50,8 @@ public class RobotContainer {
     intake = new Intake();
     uprighter = new Uprighter();
     compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+
+    pickupObject = new PickupObject(swerveDrive, intake, uprighter, gripper);
 
     // Instantiate all autonomous commands
     defaultAuto = new DefaultAuto(swerveDrive);
@@ -95,15 +99,11 @@ public class RobotContainer {
     // DRIVER Left Bumper: Evasive left robot action button.
     // DRIVER Right Bumper: Evasive right robot action button.
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    // DRIVER Start Button: Toggle robot relative vs field orientated driving.
 
     // DRIVER Left Trigger: While held, switch to virtual high gear.
     driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
-
-    // DRIVER Back Button: Reset the robot's field oriented forward position.
-    driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
 
     // DRIVER Right Trigger (WH): Deploy intake when presses and spin motors
     driverOI.rightTrigger().whileTrue(new DeployIntake(intake, uprighter, gripper));
@@ -123,7 +123,14 @@ public class RobotContainer {
     driverOI.povLeft().onTrue(new InstantCommand( () -> swerveDrive.drive( 0, 0.5, 0, false ) ).withTimeout(0.1) );
     driverOI.povUp().onTrue(new InstantCommand( () -> swerveDrive.drive( 0.5, 0, 0, false ) ).withTimeout(0.1) );
     driverOI.povDown().onTrue(new InstantCommand( () -> swerveDrive.drive( -0.5, 0, 0, false ) ).withTimeout(0.1) );
+    driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter, gripper).withTimeout(1));
+    driverOI.rightBumper().onTrue(new InstantCommand(() -> gripper.gripPiece()));
 
+    // DRIVER Start Button: Reset the robot's field oriented forward position.
+    driverOI.start().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
+
+    // DRIVER Back Button: Toggle defensive X position and prevent driving.
+    operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
 
     // DRIVER OI Controller Sample Mappings
     driverOI.a().onTrue(new InstantCommand(() -> System.out.println("OI: Driver A")));
@@ -155,9 +162,9 @@ public class RobotContainer {
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
     // OPERATOR Start Button: Cycle out all intake and grabber motors.
 
-    operatorOI.back().onTrue(new InstantCommand( () -> gripper.setGripperState() ) ); 
-    operatorOI.rightTrigger().whileTrue(new OuttakeGamePiece(gripper)); 
-    operatorOI.start().whileTrue( new SpinEverythingOut( intake, uprighter, gripper) ); 
+    operatorOI.back().onTrue(new InstantCommand(() -> gripper.setGripperState()));
+    operatorOI.rightTrigger().whileTrue(new OuttakeGamePiece(gripper));
+    operatorOI.start().whileTrue(new SpinEverythingOut(intake, uprighter, gripper));
 
     // Yeah I have no clue if this will work
     operatorOI.povRight().onTrue(new InstantCommand( () -> swerveDrive.drive( 0, 0.5, 0, false ) ).withTimeout(0.1) );
@@ -165,10 +172,14 @@ public class RobotContainer {
     operatorOI.povUp().onTrue(new InstantCommand( () -> swerveDrive.drive( -0.5, 0, 0, false ) ).withTimeout(0.1) );
     operatorOI.povDown().onTrue(new InstantCommand( () -> swerveDrive.drive( 0.5, 0, 0, false ) ).withTimeout(0.1) );
 
-
-
     // OPERATOR Back Button: Toggle defensive X position and prevent driving.
-    //operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
+    // operatorOI.back().whileTrue(new RunCommand(() -> swerveDrive.setX(),
+    // swerveDrive));
+
+    // not done yet
+    // operatorOI.rightTrigger().onTrue(new Gripper_Outtake(gripper));
+
+    operatorOI.leftTrigger().onTrue(pickupObject.runAutoSequence());
 
     // OPERATOR OI Controller Sample Mappings
     operatorOI.a().onTrue(new InstantCommand(() -> System.out.println("OI: Operator A")));
@@ -184,6 +195,7 @@ public class RobotContainer {
     operatorOI.rightBumper().onTrue(new InstantCommand(() -> System.out.println("OI: Operator Right Bumper")));
     operatorOI.back().onTrue(new InstantCommand(() -> System.out.println("OI: Operator Back")));
     operatorOI.start().onTrue(new InstantCommand(() -> System.out.println("OI: Operator Start")));
+
   }
 
   /**
