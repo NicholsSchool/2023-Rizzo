@@ -1,6 +1,6 @@
 package frc.robot.utils;
 
-import static frc.robot.RobotContainer.gamePieceIDs;
+import static frc.robot.RobotContainer.gamePieceIDs; // ???
 import static frc.robot.RobotContainer.gamePieceCoordinates;
 
 public class Detector {
@@ -10,9 +10,8 @@ public class Detector {
    * 
    * @return the x distance to a game piece
    */
-  public int getXDist()
-  {
-    return ( int )( gamePieceCoordinates.getDoubleTopic("X").subscribe(-0).get() ); 
+  public int getXDist() {
+    return (int) (gamePieceCoordinates.getDoubleTopic("X").subscribe(-0).get());
   }
 
   /**
@@ -20,9 +19,8 @@ public class Detector {
    * 
    * @return the y distance to a game piece
    */
-  public int getYDist()
-  {
-    return ( int )( gamePieceCoordinates.getDoubleTopic("Y").subscribe(-0).get() );
+  public int getYDist() {
+    return (int) (gamePieceCoordinates.getDoubleTopic("Y").subscribe(-0).get());
   }
 
   /**
@@ -30,8 +28,7 @@ public class Detector {
    * 
    * @return the angle of a game piece relative to the robot
    */
-  public double getAngle()
-  {
+  public double getAngle() {
     return gamePieceCoordinates.getDoubleTopic("Angle").subscribe(-0).get();
   }
 

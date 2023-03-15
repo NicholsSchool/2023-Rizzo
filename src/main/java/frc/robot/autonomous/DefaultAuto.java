@@ -25,32 +25,28 @@ public class DefaultAuto {
 
   public Command runAutoSequence() {
 
+    // Note: We'll have to take in consideration the starting position of the robot
+    // and that the field itself isn't a mirror image of itself.
+
     // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(
-        2.0,
-        2.4)
-        // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(SWERVE_DRIVE_KINEMATICS);
+    TrajectoryConfig config = new TrajectoryConfig(2.0, 2.4).setKinematics(SWERVE_DRIVE_KINEMATICS);
 
     // An example trajectory to follow. All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(new Translation2d(1, .75),
+        List.of(
+            new Translation2d(1, .75),
             new Translation2d(3, 0),
             new Translation2d(2, -0.75)),
-        new Pose2d(0.64, -0.07, new Rotation2d(3.14)),
-        config);
+        new Pose2d(0.64, -0.07, new Rotation2d(3.14)), config);
 
-    var thetaController = new ProfiledPIDController(
-        1, 0, 0, new TrapezoidProfile.Constraints(
-            Math.PI, Math.PI));
+    var thetaController = new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
         exampleTrajectory,
-        swerveDrive::getPose, // Functional interface to feed supplier
+        swerveDrive::getPose, // functional interface to feed supplier
         SWERVE_DRIVE_KINEMATICS,
-        // Position controllers
         new PIDController(0.85, 0, 0),
         new PIDController(0.85, 0, 0),
         thetaController,
@@ -59,6 +55,7 @@ public class DefaultAuto {
 
     // Reset odometry to the starting pose of the trajectory.
     swerveDrive.resetOdometry(exampleTrajectory.getInitialPose());
+
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> swerveDrive.drive(0, 0, 0, false));
   }

@@ -8,17 +8,15 @@ public class OuttakeGamePiece extends CommandBase {
 
   Gripper gripper;
 
-  public OuttakeGamePiece( Gripper gripperSubsystem ) {
-    gripper = gripperSubsystem; 
-
-    addRequirements( gripper );
+  public OuttakeGamePiece(Gripper gripperSubsystem) {
+    gripper = gripperSubsystem;
+    addRequirements(gripper);
   }
 
   @Override
   public void initialize() {
-    if( RobotContainer.readyForCone )
+    if (RobotContainer.readyForCone)
       gripper.openPincher();
-
   }
 
   @Override
