@@ -5,6 +5,7 @@
   "editor.detectIndentation": false,
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.server.launchMode": "Standard",
+  // "editor.inlayHints.enabled": "off",
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,

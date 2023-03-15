@@ -21,12 +21,6 @@ public final class Constants {
 
   // Arm (Manipulator)
   public static final class ArmConstants {
-    public static final double STATOR_CURRENT_LIMIT = 10.0;
-    public static final double SUPPLY_CURRENT_LIMIT = 10.0;
-    public static final double STATOR_TRIGGER_THRESHOLD_CURRENT = 3.0;
-    public static final double SUPPLY_TRIGGER_THRESHOLD_CURRENT = 3.0;
-    public static final double STATOR_TRIGGER_THRESHOLD_TIME = 1.0;
-    public static final double SUPPLY_TRIGGER_THRESHOLD_TIME = 1.0;
   }
 
   // Gripper/Pinchers/Spinners (End Effector)
@@ -93,8 +87,8 @@ public final class Constants {
     public static final IdleMode DRIVING_MOTOR_IDLE_MODE = IdleMode.kBrake;
     public static final IdleMode TURNING_MOTOR_IDLE_MODE = IdleMode.kBrake;
 
-    public static final int DRIVING_MOTOR_CURRENT_LIMIT = 15; // amps
-    public static final int TURNING_MOTOR_CURRENT_LIMIT = 10; // amps
+    public static final int DRIVING_MOTOR_CURRENT_LIMIT = 17; // amps
+    public static final int TURNING_MOTOR_CURRENT_LIMIT = 12; // amps
   }
 
   public static final class WebcamConstants {
