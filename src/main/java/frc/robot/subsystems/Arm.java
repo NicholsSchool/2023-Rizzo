@@ -9,7 +9,6 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import static frc.robot.Constants.CANID;
 import static frc.robot.Constants.ArmConstants.*;
@@ -25,7 +24,6 @@ public class Arm extends SubsystemBase {
   private Timer theTimer;
   private TrapezoidProfile.State targetState;
   private double feedForward;
-  private double manualValue;
 
   public Arm() {
 
@@ -95,21 +93,13 @@ public class Arm extends SubsystemBase {
     trapProfile = new TrapezoidProfile(PROFILE_CONSTRAINTS, targetState, targetState);
     feedForward = ARM_FEEDFORWARD.calculate(relEncoder.getPosition() + ARM_ZERO_COSINE_OFFSET, targetState.velocity);
     sparkMaxLeader.set(_power + (feedForward / 12.0));
-    manualValue = _power;
+  }
+
+  public double getEncoderVal() {
+    return relEncoder.getPosition();
   }
 
   @Override
   public void periodic() {
-  }
-
-  @Override
-  public void initSendable(SendableBuilder builder) {
-    super.initSendable(builder);
-    builder.addDoubleProperty("Final Setpoint", () -> setPoint, null);
-    builder.addDoubleProperty("Position", () -> relEncoder.getPosition(), null);
-    builder.addDoubleProperty("Applied Output", () -> sparkMaxLeader.getAppliedOutput(), null);
-    builder.addDoubleProperty("Elapsed Time", () -> theTimer.get(), null);
-    builder.addDoubleProperty("Target Position", () -> targetState.position, null);
-    builder.addDoubleProperty("Manual Value", () -> manualValue, null);
   }
 }
