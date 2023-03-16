@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.robot.utils.RevPIDGains;
 
 public final class Constants {
 
@@ -21,6 +22,22 @@ public final class Constants {
 
   // Arm (Manipulator)
   public static final class ArmConstants {
+
+    public static final double HOME_POSITION = 0.0;
+    public static final double SCORING_POSITION = 3.05;
+    public static final double INTAKE_POSITION = 4.52;
+    public static final double FEEDER_POSITION = 2.95;
+
+    public static final int ARM_CURRENT_LIMIT = 40;
+    public static final double ARM_SOFT_LIMIT_FORWARD = 4.6;
+    public static final double ARM_SOFT_LIMIT_REVERSE = 0.0;
+
+    // math and stuff
+    public static final double ARM_POSITION_FACTOR = 0.0;
+    public static final double ARM_VELOCITY_FACTOR = 0.0;
+
+    public static final RevPIDGains ARM_POSITION_GAINS = new RevPIDGains(0.6, 0.0, 0.0);
+
   }
 
   // Gripper/Pinchers/Spinners (End Effector)
@@ -45,7 +62,7 @@ public final class Constants {
     public static final int LEFT_UPRIGHTER_SPARKMAX = 22;
     public static final int RIGHT_UPRIGHTER_SPARKMAX = 23;
     public static final int GRIPPER_SPARKMAX = 24;
-    public static final int ARM_FALCON_FX = 25;
+    public static final int ARM_SPARKMAX = 25;
   }
 
   // Swerve Drive (Drive Train)
