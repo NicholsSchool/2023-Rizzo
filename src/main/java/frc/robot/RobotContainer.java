@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import static frc.robot.Constants.ArmConstants.*;
 
 public class RobotContainer {
 
@@ -132,8 +133,11 @@ public class RobotContainer {
     operatorOI.povUp().onTrue(new InstantCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)).withTimeout(0.25));
     operatorOI.povDown().onTrue(new InstantCommand(() -> swerveDrive.drive(0.0, -0.5, 0, true)).withTimeout(0.25));
 
-    // not done yet
-    // operatorOI.rightTrigger().onTrue(new Gripper_Outtake(gripper));
+    // OPERATOR A, B, X, Y: Set the arm to a specific predefined position.
+    operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(HOME_POSITION)));
+    operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(SCORING_POSITION)));
+    operatorOI.x().onTrue(new InstantCommand(() -> arm.setTargetPosition(INTAKE_POSITION)));
+    operatorOI.y().onTrue(new InstantCommand(() -> arm.setTargetPosition(FEEDER_POSITION)));
 
     // Button: Cycle out everything (intake, uprighter, gripper).
     operatorOI.start().whileTrue(new SpinEverythingOut(intake, uprighter, gripper));
