@@ -16,112 +16,88 @@ import static frc.robot.Constants.ArmConstants.*;
 
 public class Arm extends SubsystemBase {
 
-  private CANSparkMax m_motor;
-  private RelativeEncoder m_encoder;
-  private SparkMaxPIDController m_controller;
-  private double m_setpoint;
-  private TrapezoidProfile m_profile;
-  private Timer m_timer;
+  private CANSparkMax sparkmax;
+  private RelativeEncoder relEncoder;
+  private SparkMaxPIDController pidController;
+  private double setPoint;
+  private TrapezoidProfile trapProfile;
+  private Timer theTimer;
   private TrapezoidProfile.State targetState;
-  private double feedforward;
+  private double feedForward;
   private double manualValue;
 
   public Arm() {
 
-    m_motor = new CANSparkMax(CANID.ARM_SPARKMAX, MotorType.kBrushless);
-    m_motor.setInverted(false);
-    m_motor.setSmartCurrentLimit(ARM_CURRENT_LIMIT);
-    m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    m_motor.setSoftLimit(SoftLimitDirection.kForward, (float) ARM_SOFT_LIMIT_FORWARD);
-    m_motor.setSoftLimit(SoftLimitDirection.kReverse, (float) ARM_SOFT_LIMIT_REVERSE);
+    setPoint = HOME_POSITION;
+    sparkmax = new CANSparkMax(CANID.ARM_SPARKMAX, MotorType.kBrushless);
+    sparkmax.setInverted(false);
+    sparkmax.setSmartCurrentLimit(ARM_CURRENT_LIMIT);
+    sparkmax.enableSoftLimit(SoftLimitDirection.kForward, true);
+    sparkmax.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    sparkmax.setSoftLimit(SoftLimitDirection.kForward, (float) ARM_SOFT_LIMIT_FORWARD);
+    sparkmax.setSoftLimit(SoftLimitDirection.kReverse, (float) ARM_SOFT_LIMIT_REVERSE);
 
-    m_encoder = m_motor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-    m_encoder.setPositionConversionFactor(ARM_POSITION_FACTOR);
-    m_encoder.setVelocityConversionFactor(ARM_VELOCITY_FACTOR);
+    relEncoder = sparkmax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    relEncoder.setPositionConversionFactor(ARM_POSITION_FACTOR);
+    relEncoder.setVelocityConversionFactor(ARM_VELOCITY_FACTOR);
 
-    m_controller = m_motor.getPIDController();
-    RevPIDGains.setSparkMaxGains(m_controller, ARM_POSITION_GAINS);
+    pidController = sparkmax.getPIDController();
+    RevPIDGains.setSparkMaxGains(pidController, ARM_POSITION_GAINS);
+    sparkmax.burnFlash();
 
-    m_motor.burnFlash();
-
-    m_setpoint = HOME_POSITION;
-
-    m_timer = new Timer();
-    m_timer.start();
-    m_timer.reset();
+    theTimer = new Timer();
+    theTimer.start();
+    theTimer.reset();
 
     updateMotionProfile();
   }
 
   public void setTargetPosition(double _setpoint) {
-    if (_setpoint != m_setpoint) {
-      m_setpoint = _setpoint;
+    if (_setpoint != setPoint) {
+      setPoint = _setpoint;
       updateMotionProfile();
     }
   }
 
   private void updateMotionProfile() {
-    TrapezoidProfile.State state = new TrapezoidProfile.State(m_encoder.getPosition(), m_encoder.getVelocity());
-    TrapezoidProfile.State goal = new TrapezoidProfile.State(m_setpoint, 0.0);
-    m_profile = new TrapezoidProfile(Constants.Arm.kArmMotionConstraint, goal, state);
-    m_timer.reset();
+    TrapezoidProfile.State state = new TrapezoidProfile.State(relEncoder.getPosition(), relEncoder.getVelocity());
+    TrapezoidProfile.State goal = new TrapezoidProfile.State(setPoint, 0.0);
+    trapProfile = new TrapezoidProfile(PROFILE_CONSTRAINTS, goal, state);
+    theTimer.reset();
   }
 
   public void runAutomatic() {
-    double elapsedTime = m_timer.get();
-    if (m_profile.isFinished(elapsedTime)) {
-      targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
+    double elapsedTime = theTimer.get();
+    if (trapProfile.isFinished(elapsedTime)) {
+      targetState = new TrapezoidProfile.State(setPoint, 0.0);
     } else {
-      targetState = m_profile.calculate(elapsedTime);
+      targetState = trapProfile.calculate(elapsedTime);
     }
-
-    feedforward = Constants.Arm.kArmFeedforward.calculate(m_encoder.getPosition() + Constants.Arm.kArmZeroCosineOffset,
-        targetState.velocity);
-    m_controller.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedforward);
+    feedForward = ARM_FEEDFORWARD.calculate(relEncoder.getPosition() + ARM_ZERO_COSINE_OFFSET, targetState.velocity);
+    pidController.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedForward);
   }
 
   public void runManual(double _power) {
-    // reset and zero out a bunch of automatic mode stuff so exiting manual mode
-    // happens cleanly and passively
-    m_setpoint = m_encoder.getPosition();
-    targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
-    m_profile = new TrapezoidProfile(Constants.Arm.kArmMotionConstraint, targetState, targetState);
-    // update the feedforward variable with the newly zero target velocity
-    feedforward = Constants.Arm.kArmFeedforward.calculate(m_encoder.getPosition() + Constants.Arm.kArmZeroCosineOffset,
-        targetState.velocity);
-    m_motor.set(_power + (feedforward / 12.0));
+    setPoint = relEncoder.getPosition();
+    targetState = new TrapezoidProfile.State(setPoint, 0.0);
+    trapProfile = new TrapezoidProfile(PROFILE_CONSTRAINTS, targetState, targetState);
+    feedForward = ARM_FEEDFORWARD.calculate(relEncoder.getPosition() + ARM_ZERO_COSINE_OFFSET, targetState.velocity);
+    sparkmax.set(_power + (feedForward / 12.0));
     manualValue = _power;
   }
 
   @Override
-  public void periodic() { // This method will be called once per scheduler run
-
-  }
-
-  @Override
-  public void simulationPeriodic() { // This method will be called once per scheduler run during simulation
-
+  public void periodic() {
   }
 
   @Override
   public void initSendable(SendableBuilder builder) {
     super.initSendable(builder);
-    builder.addDoubleProperty("Final Setpoint", () -> m_setpoint, null);
-    builder.addDoubleProperty("Position", () -> m_encoder.getPosition(), null);
-    builder.addDoubleProperty("Applied Output", () -> m_motor.getAppliedOutput(), null);
-    builder.addDoubleProperty("Elapsed Time", () -> m_timer.get(), null);
-    /*
-     * builder.addDoubleProperty("Target Position", () -> targetState.position,
-     * null);
-     * builder.addDoubleProperty("Target Velocity", () -> targetState.velocity,
-     * null);
-     */
-    builder.addDoubleProperty("Feedforward", () -> feedforward, null);
+    builder.addDoubleProperty("Final Setpoint", () -> setPoint, null);
+    builder.addDoubleProperty("Position", () -> relEncoder.getPosition(), null);
+    builder.addDoubleProperty("Applied Output", () -> sparkmax.getAppliedOutput(), null);
+    builder.addDoubleProperty("Elapsed Time", () -> theTimer.get(), null);
+    builder.addDoubleProperty("Target Position", () -> targetState.position, null);
     builder.addDoubleProperty("Manual Value", () -> manualValue, null);
-    // builder.addDoubleProperty("Setpoint", () -> m_setpoint, (val) -> m_setpoint =
-    // val);
-    // builder.addBooleanProperty("At Setpoint", () -> atSetpoint(), null);
-    // addChild("Controller", m_controller);
   }
 }

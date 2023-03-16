@@ -1,10 +1,14 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax.IdleMode;
+
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.utils.RevPIDGains;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import java.lang.Math;
 
 public final class Constants {
 
@@ -32,11 +36,15 @@ public final class Constants {
     public static final double ARM_SOFT_LIMIT_FORWARD = 4.6;
     public static final double ARM_SOFT_LIMIT_REVERSE = 0.0;
 
-    // math and stuff
-    public static final double ARM_POSITION_FACTOR = 0.0;
-    public static final double ARM_VELOCITY_FACTOR = 0.0;
+    public static final double ARM_GEAR_RATIO = 1.0 / (80 * 1.6); // gear box ratio * belt offset
+    public static final double ARM_POSITION_FACTOR = ARM_GEAR_RATIO * 2.0 * Math.PI;
+    public static final double ARM_VELOCITY_FACTOR = ARM_GEAR_RATIO * 2.0 * Math.PI / 60.0;
+    public static final double ARM_FREE_SPEED = 5676.0 * ARM_VELOCITY_FACTOR;
 
+    public static final double ARM_ZERO_COSINE_OFFSET = -Math.PI / 6; // radians offset from zeroing arm
+    public static final ArmFeedforward ARM_FEEDFORWARD = new ArmFeedforward(0.0, 0.4, (12.0 / ARM_FREE_SPEED), 0.0);
     public static final RevPIDGains ARM_POSITION_GAINS = new RevPIDGains(0.6, 0.0, 0.0);
+    public static final TrapezoidProfile.Constraints PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(2.0, 2.0);
 
   }
 
