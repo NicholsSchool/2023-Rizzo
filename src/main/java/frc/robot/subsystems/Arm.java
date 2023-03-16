@@ -16,7 +16,8 @@ import static frc.robot.Constants.ArmConstants.*;
 
 public class Arm extends SubsystemBase {
 
-  private CANSparkMax sparkmax;
+  private CANSparkMax sparkMaxLeader;
+  private CANSparkMax sparkMaxFollower;
   private RelativeEncoder relEncoder;
   private SparkMaxPIDController pidController;
   private double setPoint;
@@ -29,21 +30,27 @@ public class Arm extends SubsystemBase {
   public Arm() {
 
     setPoint = HOME_POSITION;
-    sparkmax = new CANSparkMax(CANID.ARM_SPARKMAX, MotorType.kBrushless);
-    sparkmax.setInverted(false);
-    sparkmax.setSmartCurrentLimit(ARM_CURRENT_LIMIT);
-    sparkmax.enableSoftLimit(SoftLimitDirection.kForward, true);
-    sparkmax.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    sparkmax.setSoftLimit(SoftLimitDirection.kForward, (float) ARM_SOFT_LIMIT_FORWARD);
-    sparkmax.setSoftLimit(SoftLimitDirection.kReverse, (float) ARM_SOFT_LIMIT_REVERSE);
+    sparkMaxLeader = new CANSparkMax(CANID.ARM_SPARKMAX_LEADER, MotorType.kBrushless);
+    sparkMaxLeader.setInverted(false);
 
-    relEncoder = sparkmax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    sparkMaxFollower = new CANSparkMax(CANID.ARM_SPARKMAX_FOLLOWER, MotorType.kBrushless);
+    sparkMaxFollower.setInverted(false);
+
+    sparkMaxLeader.setSmartCurrentLimit(ARM_CURRENT_LIMIT);
+    sparkMaxLeader.enableSoftLimit(SoftLimitDirection.kForward, true);
+    sparkMaxLeader.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    sparkMaxLeader.setSoftLimit(SoftLimitDirection.kForward, (float) ARM_SOFT_LIMIT_FORWARD);
+    sparkMaxLeader.setSoftLimit(SoftLimitDirection.kReverse, (float) ARM_SOFT_LIMIT_REVERSE);
+
+    relEncoder = sparkMaxLeader.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     relEncoder.setPositionConversionFactor(ARM_POSITION_FACTOR);
     relEncoder.setVelocityConversionFactor(ARM_VELOCITY_FACTOR);
 
-    pidController = sparkmax.getPIDController();
+    pidController = sparkMaxLeader.getPIDController();
     RevPIDGains.setSparkMaxGains(pidController, ARM_POSITION_GAINS);
-    sparkmax.burnFlash();
+    sparkMaxFollower.follow(sparkMaxLeader);
+
+    sparkMaxLeader.burnFlash();
 
     theTimer = new Timer();
     theTimer.start();
@@ -87,7 +94,7 @@ public class Arm extends SubsystemBase {
     targetState = new TrapezoidProfile.State(setPoint, 0.0);
     trapProfile = new TrapezoidProfile(PROFILE_CONSTRAINTS, targetState, targetState);
     feedForward = ARM_FEEDFORWARD.calculate(relEncoder.getPosition() + ARM_ZERO_COSINE_OFFSET, targetState.velocity);
-    sparkmax.set(_power + (feedForward / 12.0));
+    sparkMaxLeader.set(_power + (feedForward / 12.0));
     manualValue = _power;
   }
 
@@ -100,7 +107,7 @@ public class Arm extends SubsystemBase {
     super.initSendable(builder);
     builder.addDoubleProperty("Final Setpoint", () -> setPoint, null);
     builder.addDoubleProperty("Position", () -> relEncoder.getPosition(), null);
-    builder.addDoubleProperty("Applied Output", () -> sparkmax.getAppliedOutput(), null);
+    builder.addDoubleProperty("Applied Output", () -> sparkMaxLeader.getAppliedOutput(), null);
     builder.addDoubleProperty("Elapsed Time", () -> theTimer.get(), null);
     builder.addDoubleProperty("Target Position", () -> targetState.position, null);
     builder.addDoubleProperty("Manual Value", () -> manualValue, null);
