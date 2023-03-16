@@ -1,6 +1,6 @@
 package frc.robot.utils;
 
-import static frc.robot.RobotContainer.gamePieceIDs; // ???
+// import static frc.robot.RobotContainer.gamePieceIDs; // ???
 import static frc.robot.RobotContainer.gamePieceCoordinates;
 
 public class Detector {

@@ -66,24 +66,6 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-
-    // DRIVER Left Stick: Translational movement relative to the field.
-    // DRIVER Right Stick: Rotational movement of the chassis along the X-axis.
-    swerveDrive.setDefaultCommand(
-        new RunCommand(
-            () -> swerveDrive.drive(
-                -MathUtil.applyDeadband(driverOI.getLeftY(), 0.07),
-                -MathUtil.applyDeadband(driverOI.getLeftX(), 0.07),
-                -MathUtil.applyDeadband(driverOI.getRightX(), 0.07),
-                true),
-            swerveDrive));
-
-    // OPERATOR Right Stick: Direct control over the Uprighter.
-    uprighter.setDefaultCommand(
-        new RunCommand(
-            () -> uprighter.spin(
-                -MathUtil.applyDeadband(operatorOI.getRightY(), 0.07)),
-            uprighter));
   }
 
   /** Define all button() to command() mappings. */
@@ -93,15 +75,25 @@ public class RobotContainer {
     // ################# DRIVER OI CONTROLLER #################
     // ########################################################
 
-    // DRIVER Left Trigger: While held, switch to virtual high gear.
+    // DRIVER Left & Right Stick: Field relative translational/rotational movement.
+    swerveDrive.setDefaultCommand(
+        new RunCommand(
+            () -> swerveDrive.drive(
+                -MathUtil.applyDeadband(driverOI.getLeftY(), 0.07),
+                -MathUtil.applyDeadband(driverOI.getLeftX(), 0.07),
+                -MathUtil.applyDeadband(driverOI.getRightX(), 0.07),
+                true),
+            swerveDrive));
+
+    // DRIVER Left Trigger: (WH) Switch to virtual high gear.
     driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
 
-    // DRIVER Right Trigger (WH): Deploy intake when pressed and spin motors.
+    // DRIVER Right Trigger: (WH) Deploy intake when pressed and spin motors.
     driverOI.rightTrigger().whileTrue(new DeployIntake(intake, uprighter, gripper));
 
-    // DRIVER Right Trigger (WR): Spin intake motors, close flappers, lifter up.
+    // DRIVER Right Trigger: (WR) Spin intake motors, close flappers, lifter up.
     driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter, gripper).withTimeout(1));
     driverOI.rightBumper().onTrue(new InstantCommand(() -> gripper.gripPiece()));
 
@@ -120,6 +112,13 @@ public class RobotContainer {
     // ########################################################
     // ################ OPERATOR OI CONTROLLER ################
     // ########################################################
+
+    // OPERATOR Left Stick: Direct control over the Arm.
+    arm.setDefaultCommand(new RunCommand(() -> arm.runAutomatic(operatorOI.getLeftY()), arm));
+
+    // OPERATOR Right Stick: Direct control over the Uprighter.
+    uprighter.setDefaultCommand(new RunCommand(
+        () -> uprighter.spin(-MathUtil.applyDeadband(operatorOI.getRightY(), 0.07)), uprighter));
 
     // OPERATOR Left Trigger: While held, auto pick up game object using ML/AI.
     operatorOI.leftTrigger().onTrue(pickupObject.runAutoSequence());
