@@ -8,16 +8,16 @@ import frc.robot.subsystems.Uprighter;
 /**
  * Deploys the intake and uprighter.
  */
-public class DeployIntake extends CommandBase {
+public class IntakeDeploy extends CommandBase {
 
   private Intake intake;
   private Uprighter uprighter;
-  private Gripper gripper; 
+  private Gripper gripper;
 
-  public DeployIntake(Intake intakeSubsystem, Uprighter uprighterSubsystem, Gripper gripperSubsystem) {
+  public IntakeDeploy(Intake intakeSubsystem, Uprighter uprighterSubsystem, Gripper gripperSubsystem) {
     intake = intakeSubsystem;
     uprighter = uprighterSubsystem;
-    gripper = gripperSubsystem; 
+    gripper = gripperSubsystem;
     addRequirements(intake, uprighter, gripper);
   }
 
