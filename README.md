@@ -22,13 +22,13 @@
 * +OPERATOR Right Trigger: Release game object from Grabber.
 * OPERATOR Left Bumper: Cycle through Grid numbers 1-9 for object placement.
 * OPERATOR Right Bumper: Cycle through Tier numbers 1-3 for object placement.
-* OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
+* +OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
 * +OPERATOR Right Stick: Direct control over the Uprighter.
 * +OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
-* OPERATOR X (←) Button: Go to Arm position #1 and lock.
-* OPERATOR Y (↑) Button: Go to Arm position #2 and lock.
-* OPERATOR B (→) Button: Go to Arm position #3 and lock.
-* OPERATOR A (↓) Button: Go to Arm position #4 and lock.
+* +OPERATOR X (←) Button: Go to Arm position #1 and lock.
+* +OPERATOR Y (↑) Button: Go to Arm position #2 and lock.
+* +OPERATOR B (→) Button: Go to Arm position #3 and lock.
+* +OPERATOR A (↓) Button: Go to Arm position #4 and lock.
 * +OPERATOR Start (→) Button: Cycle out everything (intake, uprighter, gripper).
 * +OPERATOR Back (←) Button: Toggle the gripper state. (Cube/Cone)
 

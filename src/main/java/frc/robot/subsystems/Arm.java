@@ -66,15 +66,20 @@ public class Arm extends SubsystemBase {
     theTimer.reset();
   }
 
-  public void runAutomatic() {
-    double elapsedTime = theTimer.get();
-    if (trapProfile.isFinished(elapsedTime)) {
-      targetState = new TrapezoidProfile.State(setPoint, 0.0);
+  public void runAutomatic(double _power) {
+    double deadband = 0.07;
+    if (_power > deadband || _power < -deadband) {
+      runManual(_power);
     } else {
-      targetState = trapProfile.calculate(elapsedTime);
+      double elapsedTime = theTimer.get();
+      if (trapProfile.isFinished(elapsedTime)) {
+        targetState = new TrapezoidProfile.State(setPoint, 0.0);
+      } else {
+        targetState = trapProfile.calculate(elapsedTime);
+      }
+      feedForward = ARM_FEEDFORWARD.calculate(relEncoder.getPosition() + ARM_ZERO_COSINE_OFFSET, targetState.velocity);
+      pidController.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedForward);
     }
-    feedForward = ARM_FEEDFORWARD.calculate(relEncoder.getPosition() + ARM_ZERO_COSINE_OFFSET, targetState.velocity);
-    pidController.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedForward);
   }
 
   public void runManual(double _power) {
