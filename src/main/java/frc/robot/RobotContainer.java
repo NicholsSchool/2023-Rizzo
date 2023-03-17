@@ -29,7 +29,7 @@ public class RobotContainer {
   private final DefaultAuto defaultAuto;
 
   // Used for determining if gripper is picking up cone or cube
-  public static boolean readyForCone = false;
+  public static boolean readyForCube = false;
 
   /** Robot Container Constructor. */
   public RobotContainer() {
@@ -46,8 +46,8 @@ public class RobotContainer {
     defaultAuto = new DefaultAuto(swerveDrive);
 
     // Instantiate all OI controllers
-    driverOI = new CommandXboxController(0);
-    operatorOI = new CommandXboxController(1);
+    driverOI = new CommandXboxController(1);
+    operatorOI = new CommandXboxController(0);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -80,10 +80,7 @@ public class RobotContainer {
     // DRIVER Right Trigger: (WH) Deploy intake when pressed and spin motors.
     // working
     driverOI.rightTrigger().whileTrue(new IntakeDeploy(intake, uprighter, gripper));
-
-    // DRIVER Right Trigger: (WR) Spin intake motors, close flappers, lifter up.
-    // working
-    driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter, gripper).withTimeout(0.5));
+    driverOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
     // not working
@@ -113,8 +110,9 @@ public class RobotContainer {
         () -> uprighter.spin(-MathUtil.applyDeadband(operatorOI.getRightY(), 0.07)), uprighter));
 
     // OPERATOR Right Trigger: Release game object from Grabber.
-    // not working
-    operatorOI.rightTrigger().whileTrue(new OuttakeGamePiece(intake, uprighter, gripper));
+    // working
+    operatorOI.rightTrigger().whileTrue(new IntakeExtract(intake, uprighter, gripper));
+    operatorOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
     // not working (Cameden)

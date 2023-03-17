@@ -63,11 +63,11 @@ public class Gripper extends SubsystemBase {
    * Changes gripper piston for picking up cones or cubes
    */
   public void setGripperState() {
-    RobotContainer.readyForCone = !RobotContainer.readyForCone;
+    RobotContainer.readyForCube = !RobotContainer.readyForCube;
   }
 
   public boolean getGripperState() {
-    return RobotContainer.readyForCone;
+    return RobotContainer.readyForCube;
   }
 
   public void gripPiece() {

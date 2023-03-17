@@ -33,12 +33,9 @@ public class DefaultAuto {
 
     // An example trajectory to follow. All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(
-            new Translation2d(1, .75),
-            new Translation2d(3, 0),
-            new Translation2d(2, -0.75)),
-        new Pose2d(0.64, -0.07, new Rotation2d(3.14)), config);
+        new Pose2d(0.0, 0.0, new Rotation2d(0.0)),
+        List.of(new Translation2d(3.6, 0.0)), // 5.54 meters to the cone/cube
+        new Pose2d(0.0, 0.0, new Rotation2d(0.0)), config);
 
     var thetaController = new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);

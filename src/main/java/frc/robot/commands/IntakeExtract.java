@@ -3,13 +3,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
-public class OuttakeGamePiece extends CommandBase {
+public class IntakeExtract extends CommandBase {
 
   Intake intake;
   Uprighter uprighter;
   Gripper gripper;
 
-  public OuttakeGamePiece(Intake _intake, Uprighter _uprighter, Gripper _gripper) {
+  public IntakeExtract(Intake _intake, Uprighter _uprighter, Gripper _gripper) {
     intake = _intake;
     uprighter = _uprighter;
     gripper = _gripper;
@@ -18,8 +18,7 @@ public class OuttakeGamePiece extends CommandBase {
 
   @Override
   public void initialize() {
-    // if (RobotContainer.readyForCone)
-    // gripper.openPincher();
+    intake.lifterDown();
   }
 
   @Override
