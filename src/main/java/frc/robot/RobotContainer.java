@@ -16,6 +16,7 @@ public class RobotContainer {
   // Create subsystems
   private final SwerveDrive swerveDrive;
   private final Gripper gripper;
+  private final Arm arm;
   private final Intake intake;
   private final Uprighter uprighter;
   Compressor compressor;
@@ -36,6 +37,7 @@ public class RobotContainer {
     // Instantiate all subsystems
     swerveDrive = new SwerveDrive();
     gripper = new Gripper();
+    arm = new Arm();
     intake = new Intake();
     uprighter = new Uprighter();
     compressor = new Compressor(PneumaticsModuleType.CTREPCM);
@@ -59,6 +61,7 @@ public class RobotContainer {
     // ########################################################
 
     // DRIVER Left & Right Stick: Field relative translational/rotational movement.
+    // working
     swerveDrive.setDefaultCommand(
         new RunCommand(
             () -> swerveDrive.drive(
@@ -69,40 +72,52 @@ public class RobotContainer {
             swerveDrive));
 
     // DRIVER Left Trigger: (WH) Switch to virtual high gear.
+    // working
     driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
 
     // DRIVER Right Trigger: (WH) Deploy intake when pressed and spin motors.
+    // working
     driverOI.rightTrigger().whileTrue(new IntakeDeploy(intake, uprighter, gripper));
 
     // DRIVER Right Trigger: (WR) Spin intake motors, close flappers, lifter up.
-    driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter, gripper).withTimeout(1));
+    // working
+    driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter, gripper).withTimeout(0.5));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
+    // not working
     driverOI.povRight().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, -0.5, 0, false)).withTimeout(0.25));
     driverOI.povLeft().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, 0.5, 0, false)).withTimeout(0.25));
     driverOI.povUp().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.5, 0.0, 0, false)).withTimeout(0.25));
     driverOI.povDown().whileTrue(new InstantCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, false)).withTimeout(0.25));
 
     // DRIVER Start Button: Reset the robot's field oriented forward position.
+    // working
     driverOI.start().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
 
     // DRIVER Back Button: While held, defensive X position and prevent driving.
+    // NOT working (Camden)
     driverOI.x().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
 
     // ########################################################
     // ################ OPERATOR OI CONTROLLER ################
     // ########################################################
 
+    // OPERATOR Left Stick: Direct control over the Arm.
+    arm.setDefaultCommand(new RunCommand(() -> arm.move(operatorOI.getLeftY()), arm));
+
     // OPERATOR Right Stick: Direct control over the Uprighter.
+    // working
     uprighter.setDefaultCommand(new RunCommand(
         () -> uprighter.spin(-MathUtil.applyDeadband(operatorOI.getRightY(), 0.07)), uprighter));
 
     // OPERATOR Right Trigger: Release game object from Grabber.
-    operatorOI.rightTrigger().whileTrue(new OuttakeGamePiece(gripper));
+    // not working
+    operatorOI.rightTrigger().whileTrue(new OuttakeGamePiece(intake, uprighter, gripper));
 
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
+    // not working (Cameden)
     operatorOI.povRight().whileTrue(new InstantCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)).withTimeout(0.25));
     operatorOI.povLeft().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)).withTimeout(0.25));
     operatorOI.povUp().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)).withTimeout(0.25));
