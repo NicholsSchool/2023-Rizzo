@@ -3,6 +3,7 @@ package frc.robot;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import java.lang.Math;
@@ -23,7 +24,10 @@ public final class Constants {
 
   // Arm (Manipulator)
   public static final class ArmConstants {
-
+    public static final double HOME_POSITION = 0.00;
+    public static final double HUMAN_PLAYER_POSITION = 67.17;
+    public static final double SCORING_POSITION = 76.10;
+    public static final double INTAKE_POSITION = 97.96;
   }
 
   // Gripper/Pinchers/Spinners (End Effector)
@@ -57,8 +61,8 @@ public final class Constants {
     public static final double DRIVETRAIN_WIDTH = Units.inchesToMeters(26.5);
     public static final double DRIVETRAIN_LENGTH = Units.inchesToMeters(26.5);
 
-    public static final double VIRTUAL_LOW_GEAR_RATE = 0.8;
-    public static final double VIRTUAL_HIGH_GEAR_RATE = 1.0;
+    public static final double VIRTUAL_LOW_GEAR_RATE = 0.7;
+    public static final double VIRTUAL_HIGH_GEAR_RATE = 0.9;
 
     public static final double MAX_METERS_PER_SECOND = 4.8;
     public static final double MAX_ANGULAR_SPEED = 2 * Math.PI;
@@ -91,8 +95,23 @@ public final class Constants {
     public static final IdleMode DRIVING_MOTOR_IDLE_MODE = IdleMode.kBrake;
     public static final IdleMode TURNING_MOTOR_IDLE_MODE = IdleMode.kBrake;
 
-    public static final int DRIVING_MOTOR_CURRENT_LIMIT = 25; // amps
-    public static final int TURNING_MOTOR_CURRENT_LIMIT = 20; // amps
+    public static final int DRIVING_MOTOR_CURRENT_LIMIT = 22; // amps
+    public static final int TURNING_MOTOR_CURRENT_LIMIT = 18; // amps
+  }
+
+  public static final class AutoConstants {
+
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+
+    public static final double kPXController = 1;
+    public static final double kPYController = 1;
+    public static final double kPThetaController = 1;
+
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
+        kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
 }
