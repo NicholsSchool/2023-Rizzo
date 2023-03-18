@@ -4,17 +4,14 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 public class CBArm extends SubsystemBase {
 
@@ -33,8 +30,8 @@ public class CBArm extends SubsystemBase {
     lMotor.restoreFactoryDefaults();
     rMotor.restoreFactoryDefaults();
 
-    lMotor.setIdleMode(IdleMode.kCoast);
-    rMotor.setIdleMode(IdleMode.kCoast);
+    lMotor.setIdleMode(IdleMode.kBrake);
+    rMotor.setIdleMode(IdleMode.kBrake);
 
     lMotor.setInverted(false);
     rMotor.setInverted(false);
@@ -65,6 +62,12 @@ public class CBArm extends SubsystemBase {
     rPID.setFF(0.00035);
     rPID.setOutputRange(-1.0, 1.0);
 
+    lMotor.setSmartCurrentLimit(30);
+    rMotor.setSmartCurrentLimit(30);
+
+    lMotor.burnFlash();
+    rMotor.burnFlash();
+
   }
 
   @Override
@@ -73,19 +76,19 @@ public class CBArm extends SubsystemBase {
   }
 
   public void move(double speed) {
-    if (speed < 0 && rEncoder.getPosition() < ArmConstants.HOME_POSITION + 10.00 ||
-        speed > 0 && rEncoder.getPosition() > ArmConstants.INTAKE_POSITION - 10.00) {
-      lMotor.set(0.25 * -speed);
-      rMotor.set(0.25 * speed);
+    if (-speed < 0 && rEncoder.getPosition() < ArmConstants.HOME_POSITION + 10.00 ||
+        -speed > 0 && rEncoder.getPosition() > ArmConstants.GROUND_POSITION - 10.00) {
+      lMotor.set(0.25 * speed);
+      rMotor.set(0.25 * -speed);
     } else {
-      lMotor.set(-speed);
-      rMotor.set(speed);
+      lMotor.set(speed);
+      rMotor.set(-speed);
     }
   }
 
-  public void moveToPositionPID(double pos) {
-    lPID.setReference(pos, CANSparkMax.ControlType.kPosition);
-    rPID.setReference(-pos, CANSparkMax.ControlType.kPosition);
+  public void setPositionUsingPID(double pos) {
+    lPID.setReference(-pos, CANSparkMax.ControlType.kPosition);
+    rPID.setReference(pos, CANSparkMax.ControlType.kPosition);
   }
 
   public void stop() {

@@ -27,7 +27,7 @@ public final class Constants {
     public static final double HOME_POSITION = 0.00;
     public static final double HUMAN_PLAYER_POSITION = 67.17;
     public static final double SCORING_POSITION = 76.10;
-    public static final double INTAKE_POSITION = 97.96;
+    public static final double GROUND_POSITION = 97.96;
   }
 
   // Gripper/Pinchers/Spinners (End Effector)
