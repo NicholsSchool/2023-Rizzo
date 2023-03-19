@@ -17,6 +17,7 @@ public final class Constants {
     public static final int INTAKE_PISTON_SOLENOID_CHANNEL = 1;
     public static final boolean INTAKE_CLOSED = true;
     public static final double INTAKE_SPEED = 0.6;
+    public static final double INTAKE_SPEED_OUT = 1.0;
     public static final int LIFTER_PISTON_SOLENOID_CHANNEL = 2;
     public static final boolean LIFTER_UP = false;
     public static final double UPRIGHTER_SPEED = 0.6;
@@ -24,8 +25,13 @@ public final class Constants {
 
   // Arm (Manipulator)
   public static final class ArmConstants {
+    public static final double P = 0.33;
+    public static final double I = 0.15;
+    public static final double D = 0.00;
+    public static final double dt = 0.1;
+
     public static final double HOME_POSITION = 0.00;
-    public static final double HUMAN_PLAYER_POSITION = 67.17;
+    public static final double HUMAN_PLAYER_POSITION = 67.17; // 0.952 meters
     public static final double SCORING_POSITION = 76.10;
     public static final double GROUND_POSITION = 97.96;
   }
