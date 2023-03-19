@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import java.util.List;
 
 import frc.robot.Constants.SwerveDriveConstants;
+import static frc.robot.Constants.ArmConstants.*;
 
 public class RobotContainer {
 
@@ -118,7 +119,16 @@ public class RobotContainer {
     // ########################################################
 
     // OPERATOR Left Stick: Direct control over the Arm.
-    cbarm.setDefaultCommand(new RunCommand(() -> cbarm.move(operatorOI.getLeftY()), cbarm));
+    cbarm.setDefaultCommand(new RunCommand(() -> cbarm.move(-operatorOI.getLeftY()), cbarm));
+
+    operatorOI.x().onTrue(new GoToPos(HOME_POSITION, cbarm));
+    // operatorOI.y().onTrue(new InstantCommand(() ->
+    // cbarm.setPositionUsingPID(HUMAN_PLAYER_POSITION)));
+    operatorOI.y().whileTrue(new GoToPos(20, cbarm));
+    // operatorOI.b().onTrue(new InstantCommand(() ->
+    // cbarm.setPositionUsingPID(SCORING_POSITION)));
+    // operatorOI.a().onTrue(new InstantCommand(() ->
+    // cbarm.setPositionUsingPID(GROUND_POSITION)));
 
     // OPERATOR Right Stick: Direct control over the Uprighter.
     // working

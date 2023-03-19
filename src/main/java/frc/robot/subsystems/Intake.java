@@ -51,8 +51,8 @@ public class Intake extends SubsystemBase {
   }
 
   public void spinOut() {
-    intakeMotorLeft.set(-INTAKE_SPEED);
-    intakeMotorRight.set(-INTAKE_SPEED);
+    intakeMotorLeft.set(-INTAKE_SPEED_OUT);
+    intakeMotorRight.set(-INTAKE_SPEED_OUT);
   }
 
   public void stop() {
