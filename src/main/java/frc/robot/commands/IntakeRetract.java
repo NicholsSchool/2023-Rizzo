@@ -9,16 +9,16 @@ import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Uprighter;
 
-public class RetractIntake extends CommandBase {
+public class IntakeRetract extends CommandBase {
 
   private Intake intake;
   private Uprighter uprighter;
   private Gripper gripper;
 
-  public RetractIntake(Intake intakeSubsystem, Uprighter uprighterSubsystem, Gripper gripperSubsystem) {
+  public IntakeRetract(Intake intakeSubsystem, Uprighter uprighterSubsystem, Gripper gripperSubsystem) {
     intake = intakeSubsystem;
     uprighter = uprighterSubsystem;
-    gripper = gripperSubsystem; 
+    gripper = gripperSubsystem;
     addRequirements(intake, uprighter, gripper);
   }
 
@@ -28,9 +28,6 @@ public class RetractIntake extends CommandBase {
 
   @Override
   public void execute() {
-    intake.spinIn();
-    uprighter.spinIn();
-    gripper.spinIn();
   }
 
   @Override
@@ -39,11 +36,10 @@ public class RetractIntake extends CommandBase {
     intake.stop();
     uprighter.stop();
     gripper.stopSpinner();
-    intake.flapperClose();
   }
 
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

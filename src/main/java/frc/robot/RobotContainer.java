@@ -3,7 +3,6 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.autonomous.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,12 +10,28 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.subsystems.SwerveDrive;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import java.util.List;
+
+import frc.robot.Constants.SwerveDriveConstants;
+
 public class RobotContainer {
 
   // Create subsystems
   private final SwerveDrive swerveDrive;
   private final Gripper gripper;
-  private final Arm arm;
+  // private final Arm arm;
+  private final CBArm cbarm;
   private final Intake intake;
   private final Uprighter uprighter;
   Compressor compressor;
@@ -26,10 +41,10 @@ public class RobotContainer {
   CommandXboxController operatorOI;
 
   // Autonomous Commands
-  private final DefaultAuto defaultAuto;
+  // private final DefaultAuto defaultAuto;
 
   // Used for determining if gripper is picking up cone or cube
-  public static boolean readyForCone = false;
+  public static boolean readyForCube = false;
 
   /** Robot Container Constructor. */
   public RobotContainer() {
@@ -37,17 +52,18 @@ public class RobotContainer {
     // Instantiate all subsystems
     swerveDrive = new SwerveDrive();
     gripper = new Gripper();
-    arm = new Arm();
+    // arm = new Arm();
+    cbarm = new CBArm();
     intake = new Intake();
     uprighter = new Uprighter();
     compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
     // Instantiate all autonomous commands
-    defaultAuto = new DefaultAuto(swerveDrive);
+    // defaultAuto = new DefaultAuto(swerveDrive);
 
     // Instantiate all OI controllers
-    driverOI = new CommandXboxController(0);
-    operatorOI = new CommandXboxController(1);
+    driverOI = new CommandXboxController(1);
+    operatorOI = new CommandXboxController(0);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -80,10 +96,7 @@ public class RobotContainer {
     // DRIVER Right Trigger: (WH) Deploy intake when pressed and spin motors.
     // working
     driverOI.rightTrigger().whileTrue(new IntakeDeploy(intake, uprighter, gripper));
-
-    // DRIVER Right Trigger: (WR) Spin intake motors, close flappers, lifter up.
-    // working
-    driverOI.rightTrigger().onFalse(new RetractIntake(intake, uprighter, gripper).withTimeout(0.5));
+    driverOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
     // not working
@@ -105,7 +118,7 @@ public class RobotContainer {
     // ########################################################
 
     // OPERATOR Left Stick: Direct control over the Arm.
-    arm.setDefaultCommand(new RunCommand(() -> arm.move(operatorOI.getLeftY()), arm));
+    cbarm.setDefaultCommand(new RunCommand(() -> cbarm.move(operatorOI.getLeftY()), cbarm));
 
     // OPERATOR Right Stick: Direct control over the Uprighter.
     // working
@@ -113,8 +126,9 @@ public class RobotContainer {
         () -> uprighter.spin(-MathUtil.applyDeadband(operatorOI.getRightY(), 0.07)), uprighter));
 
     // OPERATOR Right Trigger: Release game object from Grabber.
-    // not working
-    operatorOI.rightTrigger().whileTrue(new OuttakeGamePiece(intake, uprighter, gripper));
+    // working
+    operatorOI.rightTrigger().whileTrue(new IntakeExtract(intake, uprighter, gripper));
+    operatorOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
     // not working (Cameden)
@@ -129,7 +143,42 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return defaultAuto.runAutoSequence();
+
+    // Create config for trajectory
+    TrajectoryConfig config = new TrajectoryConfig(
+        SwerveDriveConstants.MAX_METERS_PER_SECOND,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS);
+
+    // An example trajectory to follow. All units in meters.
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(0, 0, new Rotation2d(0)),
+        List.of(
+            new Translation2d(4.0, 0)),
+        new Pose2d(4.5, 1.5, new Rotation2d(0)),
+        config);
+
+    var thetaController = new ProfiledPIDController(
+        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+        exampleTrajectory,
+        swerveDrive::getPose, // Functional interface to feed supplier
+        SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS,
+        // Position controllers
+        new PIDController(AutoConstants.kPXController, 0, 0),
+        new PIDController(AutoConstants.kPYController, 0, 0),
+        thetaController,
+        swerveDrive::setModuleStates,
+        swerveDrive);
+
+    // Reset odometry to the starting pose of the trajectory.
+    swerveDrive.resetOdometry(exampleTrajectory.getInitialPose());
+
+    // Run path following command, then stop at the end.
+    return swerveControllerCommand.andThen(() -> swerveDrive.drive(0, 0, 0, false));
   }
 
 }

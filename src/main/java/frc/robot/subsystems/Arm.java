@@ -45,8 +45,10 @@ public class Arm extends SubsystemBase {
   }
 
   public double[] getPos() {
-    System.out.println("left arm motor: " + leftMotor.getEncoder().getPosition());
-    System.out.println("right arm motor: " + rightMotor.getEncoder().getPosition());
+    // System.out.println("left arm motor: " +
+    // leftMotor.getEncoder().getPosition());
+    // System.out.println("right arm motor: " +
+    // rightMotor.getEncoder().getPosition());
     return new double[] {
         leftMotor.getEncoder().getPosition(),
         rightMotor.getEncoder().getPosition()
