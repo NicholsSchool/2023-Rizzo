@@ -32,7 +32,6 @@ public class RobotContainer {
   private final SwerveDrive swerveDrive;
   private final Gripper gripper;
   // private final Arm arm;
-  private final CBArm cbarm;
   private final Intake intake;
   private final Uprighter uprighter;
   Compressor compressor;
@@ -54,7 +53,6 @@ public class RobotContainer {
     swerveDrive = new SwerveDrive();
     gripper = new Gripper();
     // arm = new Arm();
-    cbarm = new CBArm();
     intake = new Intake();
     uprighter = new Uprighter();
     compressor = new Compressor(PneumaticsModuleType.CTREPCM);
@@ -119,12 +117,13 @@ public class RobotContainer {
     // ########################################################
 
     // OPERATOR Left Stick: Direct control over the Arm.
-    cbarm.setDefaultCommand(new RunCommand(() -> cbarm.move(-operatorOI.getLeftY()), cbarm));
+    // cbarm.setDefaultCommand(new RunCommand(() ->
+    // cbarm.move(-operatorOI.getLeftY()), cbarm));
 
-    operatorOI.x().onTrue(new GoToPos(HOME_POSITION, cbarm));
+    // operatorOI.x().onTrue(new GoToPos(HOME_POSITION, cbarm));
     // operatorOI.y().onTrue(new InstantCommand(() ->
     // cbarm.setPositionUsingPID(HUMAN_PLAYER_POSITION)));
-    operatorOI.y().whileTrue(new GoToPos(20, cbarm));
+    // operatorOI.y().whileTrue(new GoToPos(20, cbarm));
     // operatorOI.b().onTrue(new InstantCommand(() ->
     // cbarm.setPositionUsingPID(SCORING_POSITION)));
     // operatorOI.a().onTrue(new InstantCommand(() ->
