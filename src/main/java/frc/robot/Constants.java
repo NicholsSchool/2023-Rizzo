@@ -3,14 +3,13 @@ package frc.robot;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
 import java.lang.Math;
 
 public final class Constants {
-
-  public static final int MILLISECS_PER_SEC = 1000;
 
   // Intake/Lifter/Uprighter
   public static final class IntakeConstants {
@@ -20,16 +19,38 @@ public final class Constants {
     public static final double INTAKE_SPEED_OUT = 1.0;
     public static final int LIFTER_PISTON_SOLENOID_CHANNEL = 2;
     public static final boolean LIFTER_UP = false;
+  }
+
+  // Uprighter
+  public static final class UprighterConstants {
     public static final double UPRIGHTER_SPEED = 0.6;
   }
 
   // Arm (Manipulator)
   public static final class ArmConstants {
-    public static final double P = 0.33;
-    public static final double I = 0.15;
-    public static final double D = 0.00;
-    public static final double dt = 0.1;
+    public static final int kCurrentLimit = 40;
 
+    public static final double kSoftLimitReverse = 0.0;
+    public static final double kSoftLimitForward = 4.6;
+
+    public static final double kArmGearRatio = 1.0 / (48.0 * 4.0);
+    public static final double kPositionFactor = kArmGearRatio * 2.0 * Math.PI;
+    public static final double kVelocityFactor = kArmGearRatio * 2.0 * Math.PI / 60.0;
+    public static final double kArmFreeSpeed = 5676.0 * kVelocityFactor;
+    public static final double kArmZeroCosineOffset = -Math.PI / 6;
+    public static final ArmFeedforward kArmFeedforward = new ArmFeedforward(0.0, 0.4, 12.0 / kArmFreeSpeed, 0.0);
+    public static final double ARM_DEFAULT_P = 0.6;
+    public static final double ARM_DEFAULT_I = 0.0;
+    public static final double ARM_DEFAULT_D = 0.0;
+    public static final Constraints kArmMotionConstraint = new Constraints(2.0, 2.0);
+
+    // public static final double kHomePosition = 0.0;
+    // public static final double kScoringPosition = 3.05;
+    // public static final double kIntakePosition = 4.52;
+    // public static final double kFeederPosition = 2.95;
+
+    // Note: This seems wrong based on the values above. We'll need to test in the
+    // lab (use coast mode).
     public static final double HOME_POSITION = 0.00;
     public static final double HUMAN_PLAYER_POSITION = 67.17; // 0.952 meters
     public static final double SCORING_POSITION = 76.10;
@@ -58,8 +79,7 @@ public final class Constants {
     public static final int LEFT_UPRIGHTER_SPARKMAX = 22;
     public static final int RIGHT_UPRIGHTER_SPARKMAX = 23;
     public static final int GRIPPER_SPARKMAX = 24;
-    public static final int ARM_SPARKMAX_LEADER = 25;
-    public static final int ARM_SPARKMAX_FOLLOWER = 26;
+    public static final int ARM_SPARKMAX = 25;
   }
 
   // Swerve Drive (Drive Train)
@@ -89,14 +109,14 @@ public final class Constants {
     public static final double WHEEL_DIAMETER_IN_METERS = 0.0762; // 3 inch wheels
 
     public static final double DRIVING_P = 0.04;
-    public static final double DRIVING_I = 0;
-    public static final double DRIVING_D = 0;
-    public static final double DRIVING_FF = 1; // later offset by free spin rate
+    public static final double DRIVING_I = 0.0;
+    public static final double DRIVING_D = 0.0;
+    public static final double DRIVING_FF = 1.0; // later offset by free spin rate
 
-    public static final double TURNING_P = 1;
-    public static final double TURNING_I = 0;
-    public static final double TURNING_D = 0;
-    public static final double TURNING_FF = 0;
+    public static final double TURNING_P = 1.0;
+    public static final double TURNING_I = 0.0;
+    public static final double TURNING_D = 0.0;
+    public static final double TURNING_FF = 0.0;
 
     public static final IdleMode DRIVING_MOTOR_IDLE_MODE = IdleMode.kBrake;
     public static final IdleMode TURNING_MOTOR_IDLE_MODE = IdleMode.kBrake;
@@ -107,17 +127,17 @@ public final class Constants {
 
   public static final class AutoConstants {
 
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 3.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3.0;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 1;
-    public static final double kPYController = 1;
-    public static final double kPThetaController = 1;
+    public static final double kPXController = 1.0;
+    public static final double kPYController = 1.0;
+    public static final double kPThetaController = 1.0;
 
-    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
-        kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+    public static final Constraints kThetaControllerConstraints = new Constraints(kMaxAngularSpeedRadiansPerSecond,
+        kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
 }
