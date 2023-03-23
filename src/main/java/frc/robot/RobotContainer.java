@@ -153,54 +153,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-
-    double maxMPS = SwerveDriveConstants.MAX_METERS_PER_SECOND;
-    double maxAMPS = AutoConstants.kMaxAccelerationMetersPerSecondSquared;
-    double pTheta = AutoConstants.kPThetaController;
-    double pX = AutoConstants.kPXController;
-    double pY = AutoConstants.kPYController;
-
-    // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(maxMPS, maxAMPS).setKinematics(SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS);
-
-    // All X/Y positions are relative to the robot. Not field orientated.
-    // Positive X is forward, positive Y is left, positive rotation is clockwise.
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-        // Zero the starting pose of the trajectory.
-        new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(
-            new Translation2d(-2, 0.1)
-            // new Translation2d( -3, 0 ), 
-            // new Translation2d( -4, 0 ),
-            // new Translation2d( -5, 0 )
-        // Add interior waypoints to the list above.
-        ),
-        // Final X/Y position in meters and rotation in radians.
-        new Pose2d( -5.486, 0, new Rotation2d(Math.PI)),
-        config);
-
-    // Create a PID controller for the robot's translation and rotation.
-    var thetaController = new ProfiledPIDController(pTheta, 0, 0, AutoConstants.kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveCC = new SwerveControllerCommand(
-        trajectory,
-        swerveDrive::getPose,
-        SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS,
-        new PIDController(pX, 0, 0),
-        new PIDController(pY, 0, 0),
-        thetaController,
-        swerveDrive::setModuleStates,
-        swerveDrive);
-
-    // Reset odometry to the starting pose of the trajectory.
-    swerveDrive.resetOdometry(trajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    return swerveCC.andThen(() -> swerveDrive.drive(0, 0, 0, false)).andThen(new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper));
-    
-    //.andThen( new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper) );
-    //return new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper); 
+    return new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper); 
   }
 
 }
