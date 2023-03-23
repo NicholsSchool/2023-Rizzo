@@ -3,15 +3,16 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -22,7 +23,6 @@ import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import java.util.List;
 import static frc.robot.Constants.SwerveDriveConstants.*;
-import static frc.robot.Constants.AutoConstants.*;
 import static frc.robot.Constants.ArmConstants.*;
 
 public class RobotContainer {
@@ -92,7 +92,7 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
 
-    // DRIVER Right Trigger: (WH) Deploy intake when pressed and spin motors.
+    // DRIVER Right Trigger: (WH) Deploy intake when pressed and spin motors in.
     // working
     driverOI.rightTrigger().whileTrue(new IntakeDeploy(intake, uprighter, gripper));
     driverOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
@@ -117,26 +117,22 @@ public class RobotContainer {
     // ########################################################
 
     // OPERATOR Left Stick: Direct control over the Arm.
-    // NOT working
-    // arm.setDefaultCommand(new RunCommand(() ->
-    // arm.runManual(-operatorOI.getLeftY() * kArmManualScale), arm));
+    // NOT tested
+    new Trigger(() -> Math.abs(operatorOI.getLeftY()) > 0.05)
+        .whileTrue((new RunCommand(() -> arm.runManual(-operatorOI.getLeftY()), arm)));
 
     // OPERATOR X, Y, B, A: Move arm to preset positions.
     // NOT tested
-    // arm.setDefaultCommand(new RunCommand(() -> arm.runAutomatic(), arm));
-    // operatorOI.x().onTrue(new InstantCommand(() ->
-    // arm.setTargetPosition(HOME_POSITION)));
-    // operatorOI.y().onTrue(new InstantCommand(() ->
-    // arm.setTargetPosition(HUMAN_PLAYER_POSITION)));
-    // operatorOI.b().onTrue(new InstantCommand(() ->
-    // arm.setTargetPosition(SCORING_POSITION)));
-    // operatorOI.a().onTrue(new InstantCommand(() ->
-    // arm.setTargetPosition(GROUND_POSITION)));
+    arm.setDefaultCommand(new RunCommand(() -> arm.runAutomatic(), arm));
+    operatorOI.x().onTrue(new InstantCommand(() -> arm.setTargetPosition(HOME_POSITION)));
+    operatorOI.y().onTrue(new InstantCommand(() -> arm.setTargetPosition(HUMAN_PLAYER_POSITION)));
+    operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(SCORING_POSITION)));
+    operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(GROUND_POSITION)));
 
     // OPERATOR Right Stick: Direct control over the Uprighter.
     // working
-    uprighter.setDefaultCommand(new RunCommand(
-        () -> uprighter.spin(-MathUtil.applyDeadband(operatorOI.getRightY(), 0.07)), uprighter));
+    uprighter.setDefaultCommand(
+        new RunCommand(() -> uprighter.spin(-MathUtil.applyDeadband(operatorOI.getRightY(), 0.07)), uprighter));
 
     // OPERATOR Right Trigger: Release game object from Grabber.
     // working
@@ -157,16 +153,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    double maxMPS = MAX_METERS_PER_SECOND;
-    double maxAMPS = kMaxAccelerationMetersPerSecondSquared;
-    double pTheta = kPThetaController;
-    double pX = kPXController;
-    double pY = kPYController;
-
     // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(maxMPS, maxAMPS).setKinematics(SWERVE_DRIVE_KINEMATICS);
+    TrajectoryConfig config = new TrajectoryConfig(Math.PI, Math.PI).setKinematics(SWERVE_DRIVE_KINEMATICS);
 
-    // All X/Y positions are relative to the robot. Not field orientated.
+    // All X/Y positions are relative to the robot. Auto is not field orientated!
     // Positive X is forward, positive Y is left, positive rotation is clockwise.
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
         // Zero the starting pose of the trajectory.
@@ -176,19 +166,18 @@ public class RobotContainer {
         // Add interior waypoints to the list above.
         ),
         // Final X/Y position in meters and rotation in radians.
-        new Pose2d(4.5, 1.5, new Rotation2d(0)),
-        config);
+        new Pose2d(4.5, 1.5, new Rotation2d(0)), config);
 
     // Create a PID controller for the robot's translation and rotation.
-    var thetaController = new ProfiledPIDController(pTheta, 0, 0, kThetaControllerConstraints);
+    var thetaController = new ProfiledPIDController(1.0, 0, 0, new Constraints(Math.PI, Math.PI));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     SwerveControllerCommand swerveCC = new SwerveControllerCommand(
         trajectory,
         swerveDrive::getPose,
         SWERVE_DRIVE_KINEMATICS,
-        new PIDController(pX, 0, 0),
-        new PIDController(pY, 0, 0),
+        new PIDController(1.0, 0, 0),
+        new PIDController(1.0, 0, 0),
         thetaController,
         swerveDrive::setModuleStates,
         swerveDrive);

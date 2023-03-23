@@ -28,33 +28,29 @@ public final class Constants {
 
   // Arm (Manipulator)
   public static final class ArmConstants {
-    public static final int kCurrentLimit = 40;
+    public static final double HOME_POSITION = 0.00;
+    public static final double HUMAN_PLAYER_POSITION = 67.17; // ???
+    public static final double SCORING_POSITION = 76.10; // ???
+    public static final double GROUND_POSITION = 97.96; // ???
+    public static final double SOFT_LIMIT_REVERSE = 0.0;
+    public static final double SOFT_LIMIT_FORWARD = 4.6;
 
-    public static final double kSoftLimitReverse = 0.0;
-    public static final double kSoftLimitForward = 4.6;
+    public static final int ARM_LIMIT_SWITCH_DIO_CHANNEL = 0;
 
-    public static final double kArmGearRatio = 1.0 / (48.0 * 4.0);
-    public static final double kPositionFactor = kArmGearRatio * 2.0 * Math.PI;
-    public static final double kVelocityFactor = kArmGearRatio * 2.0 * Math.PI / 60.0;
-    public static final double kArmFreeSpeed = 5676.0 * kVelocityFactor;
-    public static final double kArmZeroCosineOffset = -Math.PI / 6;
-    public static final ArmFeedforward kArmFeedforward = new ArmFeedforward(0.0, 0.4, 12.0 / kArmFreeSpeed, 0.0);
+    public static final int ARM_CURRENT_LIMIT = 40;
+    public static final double ARM_MANUAL_SCALED = 0.45;
+
+    public static final double ARM_GEAR_RATIO = 1.0 / (224);
+    public static final double POSITION_CONVERSION_FACTOR = ARM_GEAR_RATIO * 2.0 * Math.PI;
+    public static final double VELOCITY_CONVERSION_FACTOR = ARM_GEAR_RATIO * 2.0 * Math.PI / 60.0;
+    public static final double ARM_FREE_SPEED = 5676.0 * VELOCITY_CONVERSION_FACTOR;
+    public static final double ARM_ZERO_COSINE_OFFSET = -Math.PI / 6;
+    public static final ArmFeedforward ARM_FF = new ArmFeedforward(0.0, 0.4, 12.0 / ARM_FREE_SPEED, 0.0);
     public static final double ARM_DEFAULT_P = 0.6;
     public static final double ARM_DEFAULT_I = 0.0;
     public static final double ARM_DEFAULT_D = 0.0;
     public static final Constraints kArmMotionConstraint = new Constraints(2.0, 2.0);
 
-    // public static final double kHomePosition = 0.0;
-    // public static final double kScoringPosition = 3.05;
-    // public static final double kIntakePosition = 4.52;
-    // public static final double kFeederPosition = 2.95;
-
-    // Note: This seems wrong based on the values above. We'll need to test in the
-    // lab (use coast mode).
-    public static final double HOME_POSITION = 0.00;
-    public static final double HUMAN_PLAYER_POSITION = 67.17; // 0.952 meters
-    public static final double SCORING_POSITION = 76.10;
-    public static final double GROUND_POSITION = 97.96;
   }
 
   // Gripper/Pinchers/Spinners (End Effector)
@@ -87,8 +83,8 @@ public final class Constants {
     public static final double DRIVETRAIN_WIDTH = Units.inchesToMeters(26.5);
     public static final double DRIVETRAIN_LENGTH = Units.inchesToMeters(26.5);
 
-    public static final double VIRTUAL_LOW_GEAR_RATE = 0.7;
-    public static final double VIRTUAL_HIGH_GEAR_RATE = 0.9;
+    public static final double VIRTUAL_LOW_GEAR_RATE = 0.71;
+    public static final double VIRTUAL_HIGH_GEAR_RATE = 0.96;
 
     public static final double MAX_METERS_PER_SECOND = 4.8;
     public static final double MAX_ANGULAR_SPEED = 2 * Math.PI;
@@ -123,21 +119,6 @@ public final class Constants {
 
     public static final int DRIVING_MOTOR_CURRENT_LIMIT = 22; // amps
     public static final int TURNING_MOTOR_CURRENT_LIMIT = 18; // amps
-  }
-
-  public static final class AutoConstants {
-
-    public static final double kMaxSpeedMetersPerSecond = 3.0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3.0;
-    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-
-    public static final double kPXController = 1.0;
-    public static final double kPYController = 1.0;
-    public static final double kPThetaController = 1.0;
-
-    public static final Constraints kThetaControllerConstraints = new Constraints(kMaxAngularSpeedRadiansPerSecond,
-        kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
 }

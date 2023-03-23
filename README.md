@@ -2,6 +2,9 @@
 
 ### FRC 4930's 2023 Competitive Robot for FRC Charged Up!
 
+## Robot Setup & Configuration
+* Note: When the robot starts, make sure the arm is at the "home" position.
+
 ## Diver OI Controller Setup:
 * +DRIVER Left Trigger: While held, switch to virtual high gear.
 * +DRIVER Right Trigger: While held, deploy and spin robot intake.
