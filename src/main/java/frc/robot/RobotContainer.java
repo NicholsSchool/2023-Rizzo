@@ -96,17 +96,19 @@ public class RobotContainer {
     // working
     driverOI.rightTrigger().whileTrue(new IntakeDeploy(intake, uprighter, gripper));
     driverOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
+  
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    // NOT tested
-    driverOI.povRight().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, -0.5, 0, false)).withTimeout(0.25));
-    driverOI.povLeft().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, 0.5, 0, false)).withTimeout(0.25));
-    driverOI.povUp().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.5, 0.0, 0, false)).withTimeout(0.25));
-    driverOI.povDown().whileTrue(new InstantCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, false)).withTimeout(0.25));
+    // working
+    driverOI.povLeft().whileTrue( new RunCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)));
+    driverOI.povRight().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, -0.5, 0, true)));
+    driverOI.povUp().whileTrue(new RunCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)));
+    driverOI.povDown().whileTrue(new RunCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)));
 
     // DRIVER Start Button: Reset the robot's field oriented forward position.
     // working
     driverOI.start().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
+  
 
     // DRIVER Back Button: While held, defensive X position and prevent driving.
     // NOT tested
@@ -144,11 +146,11 @@ public class RobotContainer {
     operatorOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
-    // NOT working
-    operatorOI.povRight().whileTrue(new InstantCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)).withTimeout(0.25));
-    operatorOI.povLeft().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)).withTimeout(0.25));
-    operatorOI.povUp().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)).withTimeout(0.25));
-    operatorOI.povDown().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, -0.5, 0, true)).withTimeout(0.25));
+    // working
+    operatorOI.povUp().whileTrue(new RunCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)));
+    operatorOI.povDown().whileTrue(new RunCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)));
+    operatorOI.povRight().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)));
+    operatorOI.povLeft().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, -0.5, 0, true)));
 
   }
 
@@ -156,54 +158,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-
-    double maxMPS = MAX_METERS_PER_SECOND;
-    double maxAMPS = kMaxAccelerationMetersPerSecondSquared;
-    double pTheta = kPThetaController;
-    double pX = kPXController;
-    double pY = kPYController;
-
-    // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(maxMPS, maxAMPS).setKinematics(SWERVE_DRIVE_KINEMATICS);
-
-    // All X/Y positions are relative to the robot. Not field orientated.
-    // Positive X is forward, positive Y is left, positive rotation is clockwise.
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-        // Zero the starting pose of the trajectory.
-        new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(
-            new Translation2d(-2, 0.1)
-            // new Translation2d( -3, 0 ), 
-            // new Translation2d( -4, 0 ),
-            // new Translation2d( -5, 0 )
-        // Add interior waypoints to the list above.
-        ),
-        // Final X/Y position in meters and rotation in radians.
-        new Pose2d( -5.486, 0, new Rotation2d(Math.PI)),
-        config);
-
-    // Create a PID controller for the robot's translation and rotation.
-    var thetaController = new ProfiledPIDController(pTheta, 0, 0, kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveCC = new SwerveControllerCommand(
-        trajectory,
-        swerveDrive::getPose,
-        SWERVE_DRIVE_KINEMATICS,
-        new PIDController(pX, 0, 0),
-        new PIDController(pY, 0, 0),
-        thetaController,
-        swerveDrive::setModuleStates,
-        swerveDrive);
-
-    // Reset odometry to the starting pose of the trajectory.
-    swerveDrive.resetOdometry(trajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    return swerveCC.andThen(() -> swerveDrive.drive(0, 0, 0, false)).andThen(new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper));
-    
-    //.andThen( new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper) );
-    //return new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper); 
+    return new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper); 
   }
 
 }
