@@ -87,8 +87,7 @@ public class AutoTest extends SequentialCommandGroup {
       new SwerveControllerCommand( firstTrajectory, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDController(pX, 0, 0),
       new PIDController(pY, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive),
       new SwerveControllerCommand( secondTrajectory, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDController(pX, 0, 0),
-      new PIDController(pY, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive).alongWith(new IntakeDeploy(intake, uprighter, gripper).withTimeout( 1.5 ))
-
+      new PIDController(pY, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive).raceWith(new IntakeDeploy(intake, uprighter, gripper).withTimeout( 1.5 ) )
       // new SwerveControllerCommand( secondTrajectory, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDController(pX, 0, 0),
       // new PIDController(pY, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive),
       // new SwerveControllerCommand( thirdTrajectory, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDController(pX, 0, 0),

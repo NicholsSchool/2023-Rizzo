@@ -98,17 +98,19 @@ public class RobotContainer {
     // working
     driverOI.rightTrigger().whileTrue(new IntakeDeploy(intake, uprighter, gripper));
     driverOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
+  
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    // not working
-    driverOI.povRight().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, -0.5, 0, false)).withTimeout(0.25));
-    driverOI.povLeft().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, 0.5, 0, false)).withTimeout(0.25));
-    driverOI.povUp().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.5, 0.0, 0, false)).withTimeout(0.25));
-    driverOI.povDown().whileTrue(new InstantCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, false)).withTimeout(0.25));
+    // working
+    driverOI.povLeft().whileTrue( new RunCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)));
+    driverOI.povRight().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, -0.5, 0, true)));
+    driverOI.povUp().whileTrue(new RunCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)));
+    driverOI.povDown().whileTrue(new RunCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)));
 
     // DRIVER Start Button: Reset the robot's field oriented forward position.
     // working
     driverOI.start().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
+  
 
     // DRIVER Back Button: While held, defensive X position and prevent driving.
     // NOT working (Camden)
@@ -141,11 +143,11 @@ public class RobotContainer {
     operatorOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
-    // not working (Cameden)
-    operatorOI.povRight().whileTrue(new InstantCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)).withTimeout(0.25));
-    operatorOI.povLeft().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)).withTimeout(0.25));
-    operatorOI.povUp().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)).withTimeout(0.25));
-    operatorOI.povDown().whileTrue(new InstantCommand(() -> swerveDrive.drive(0.0, -0.5, 0, true)).withTimeout(0.25));
+    // working
+    operatorOI.povUp().whileTrue(new RunCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)));
+    operatorOI.povDown().whileTrue(new RunCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)));
+    operatorOI.povRight().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)));
+    operatorOI.povLeft().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, -0.5, 0, true)));
 
   }
 
