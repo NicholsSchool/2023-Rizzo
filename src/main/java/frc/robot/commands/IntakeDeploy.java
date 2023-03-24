@@ -36,6 +36,12 @@ public class IntakeDeploy extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
+
+    intake.lifterUp();
+    intake.flapperClose();
+    intake.stop();
+    uprighter.stop();
+    gripper.stopSpinner();;
   }
 
   @Override

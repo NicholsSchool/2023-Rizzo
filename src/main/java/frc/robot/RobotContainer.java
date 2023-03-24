@@ -172,11 +172,14 @@ public class RobotContainer {
         // Zero the starting pose of the trajectory.
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
-            new Translation2d(4.0, 0)
+            new Translation2d(-2, 0.1)
+            // new Translation2d( -3, 0 ), 
+            // new Translation2d( -4, 0 ),
+            // new Translation2d( -5, 0 )
         // Add interior waypoints to the list above.
         ),
         // Final X/Y position in meters and rotation in radians.
-        new Pose2d(4.5, 1.5, new Rotation2d(0)),
+        new Pose2d( -5.486, 0, new Rotation2d(Math.PI)),
         config);
 
     // Create a PID controller for the robot's translation and rotation.
@@ -197,7 +200,10 @@ public class RobotContainer {
     swerveDrive.resetOdometry(trajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveCC.andThen(() -> swerveDrive.drive(0, 0, 0, false));
+    return swerveCC.andThen(() -> swerveDrive.drive(0, 0, 0, false)).andThen(new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper));
+    
+    //.andThen( new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper) );
+    //return new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper); 
   }
 
 }

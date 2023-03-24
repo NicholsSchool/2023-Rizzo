@@ -18,7 +18,7 @@ public class IntakeExtract extends CommandBase {
 
   @Override
   public void initialize() {
-    intake.lifterUp();
+    intake.lifterDown();
     intake.flapperClose();
   }
 
@@ -34,6 +34,7 @@ public class IntakeExtract extends CommandBase {
     intake.stop();
     uprighter.stop();
     gripper.stopSpinner();
+    intake.lifterUp();
   }
 
   @Override
