@@ -122,7 +122,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public void drive(double xSpeed, double ySpeed, double angularRotation, boolean fieldRelative) {
 
-    // Note: This Rotational Rate Limiter is experimental. It may need to be tuned.
+    // Note: This Rotational Rate Limiter is experimental.
     angularRotation = rotationRateLimiter.calculate(angularRotation);
 
     // Convert the commanded speeds into the correct units for the drivetrain
