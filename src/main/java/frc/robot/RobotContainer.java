@@ -4,6 +4,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,7 +29,7 @@ import static frc.robot.Constants.ArmConstants.*;
 
 public class RobotContainer {
 
-  // Create subsystems
+  // Subsystems
   private final SwerveDrive swerveDrive;
   private final Gripper gripper;
   private final Arm arm;
@@ -38,14 +40,16 @@ public class RobotContainer {
   // OI controllers
   CommandXboxController driverOI;
   CommandXboxController operatorOI;
+  XboxController driverRumbler;
+  XboxController operatorRumbler;
+
+  // Teleop Commands
 
   // Autonomous Commands
-  // private final DefaultAuto defaultAuto;
 
   // Used for determining if gripper is picking up cone or cube
   public static boolean readyForCube = false;
 
-  /** Robot Container Constructor. */
   public RobotContainer() {
 
     // Instantiate all subsystems
@@ -56,12 +60,13 @@ public class RobotContainer {
     uprighter = new Uprighter();
     compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
-    // Instantiate all autonomous commands
-    // defaultAuto = new DefaultAuto(swerveDrive);
-
-    // Instantiate all OI controllers
+    // OI (Operator Interface) Controllers & Rumblers
     driverOI = new CommandXboxController(1);
+    driverRumbler = new XboxController(1);
     operatorOI = new CommandXboxController(0);
+    operatorRumbler = new XboxController(0);
+
+    // driverRumbler.setRumble(RumbleType.kBothRumble, 1.0);
 
     // Configure the button bindings
     configureButtonBindings();

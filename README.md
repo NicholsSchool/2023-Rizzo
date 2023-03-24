@@ -6,13 +6,13 @@
 * Note: When the robot starts, make sure the arm is at the "home" position.
 
 ## Diver OI Controller Setup:
-* +DRIVER Left Trigger: While held, switch to virtual high gear.
-* +DRIVER Right Trigger: While held, deploy and spin robot intake.
-* DRIVER Left Bumper: Evasive left robot action button.
-* DRIVER Right Bumper: Evasive right robot action button.
 * +DRIVER Left Stick: Translational movement relative to the field.
 * +DRIVER Right Stick: Rotational movement of the chassis along the X-axis.
-* +DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
+* +DRIVER Left Trigger: While held, switch to virtual high gear.
+* +DRIVER Right Trigger: While held, deploy and spin robot intake in.
+* DRIVER Left Bumper:
+* DRIVER Right Bumper:
+* DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
 * DRIVER X (←) Button: Rotate to -90 degree Yaw relative to the field.
 * DRIVER Y (↑) Button: Rotate to 0 degree Yaw relative to the field.
 * DRIVER B (→) Button: Rotate to 90 degree Yaw relative to the field.
@@ -21,19 +21,19 @@
 * +DRIVER Back (←) Button: While held, defensive X position and prevent driving.
 
 ## Operator OI Controller Setup:
-* +OPERATOR Left Trigger: While held, auto pick up game object using ML/AI.
-* +OPERATOR Right Trigger: Release game object from Grabber.
+* ~OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
+* +OPERATOR Right Stick: Direct control over the Uprighter.
+* OPERATOR Left Trigger: While held, auto pick up game object using ML/AI.
+* OPERATOR Right Trigger: Release game object from Grabber.
 * OPERATOR Left Bumper: Cycle through Grid numbers 1-9 for object placement.
 * OPERATOR Right Bumper: Cycle through Tier numbers 1-3 for object placement.
-* +OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
-* +OPERATOR Right Stick: Direct control over the Uprighter.
-* +OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
-* +OPERATOR X (←) Button: Go to Arm position #1 and lock.
-* +OPERATOR Y (↑) Button: Go to Arm position #2 and lock.
-* +OPERATOR B (→) Button: Go to Arm position #3 and lock.
-* +OPERATOR A (↓) Button: Go to Arm position #4 and lock.
-* +OPERATOR Start (→) Button: Cycle out everything (intake, uprighter, gripper).
-* +OPERATOR Back (←) Button: Toggle the gripper state. (Cube/Cone)
+* OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
+* ~OPERATOR X (←) Button: Go to Arm position #1 and lock.
+* ~OPERATOR Y (↑) Button: Go to Arm position #2 and lock.
+* ~OPERATOR B (→) Button: Go to Arm position #3 and lock.
+* ~OPERATOR A (↓) Button: Go to Arm position #4 and lock.
+* OPERATOR Start (→) Button: Cycle out everything (intake, uprighter, gripper).
+* OPERATOR Back (←) Button: Toggle the gripper state. (Cube/Cone)
 
 ## CAN ID Assignments
 * CAN ID 10 = SparkMax = Rear Right Drive Motor

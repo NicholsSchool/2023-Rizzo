@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.CANID;
 import static frc.robot.Constants.ArmConstants.*;
 
@@ -68,7 +69,8 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     resetEncoderAtLimit();
-    System.out.println("Arm Position: " + armEncoder.getPosition());
+    SmartDashboard.putNumber("Arm Position: ", armEncoder.getPosition());
+    SmartDashboard.putBoolean("Arm at Home Position", isAtHomePosition());
   }
 
   /**
@@ -125,7 +127,7 @@ public class Arm extends SubsystemBase {
   /**
    * Checks if the limit switch is pressed.
    */
-  public boolean isAtLimit() {
+  public boolean isAtHomePosition() {
     if (armLimitSwitch.get() == armAtLimit) {
       return true;
     } else {
@@ -141,9 +143,8 @@ public class Arm extends SubsystemBase {
    * Resets the encoder if the limit switch is pressed.
    */
   public void resetEncoderAtLimit() {
-    if (isAtLimit()) {
+    if (isAtHomePosition()) {
       resetEncoder();
-      System.out.println("Resetting Arm Encoder to 0.0");
     }
   }
 
