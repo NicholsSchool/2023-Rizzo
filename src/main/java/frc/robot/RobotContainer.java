@@ -18,12 +18,11 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import java.util.List;
-
-import frc.robot.Constants.SwerveDriveConstants;
+import static frc.robot.Constants.SwerveDriveConstants.*;
+import static frc.robot.Constants.AutoConstants.*;
 import static frc.robot.Constants.ArmConstants.*;
 
 public class RobotContainer {
@@ -31,8 +30,7 @@ public class RobotContainer {
   // Create subsystems
   private final SwerveDrive swerveDrive;
   private final Gripper gripper;
-  // private final Arm arm;
-  private final CBArm cbarm;
+  private final Arm arm;
   private final Intake intake;
   private final Uprighter uprighter;
   Compressor compressor;
@@ -53,8 +51,7 @@ public class RobotContainer {
     // Instantiate all subsystems
     swerveDrive = new SwerveDrive();
     gripper = new Gripper();
-    // arm = new Arm();
-    cbarm = new CBArm();
+    arm = new Arm();
     intake = new Intake();
     uprighter = new Uprighter();
     compressor = new Compressor(PneumaticsModuleType.CTREPCM);
@@ -68,6 +65,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+
   }
 
   /** Define all button() to command() mappings. */
@@ -113,7 +111,7 @@ public class RobotContainer {
   
 
     // DRIVER Back Button: While held, defensive X position and prevent driving.
-    // NOT working (Camden)
+    // NOT tested
     driverOI.x().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
 
     // ########################################################
@@ -121,16 +119,21 @@ public class RobotContainer {
     // ########################################################
 
     // OPERATOR Left Stick: Direct control over the Arm.
-    cbarm.setDefaultCommand(new RunCommand(() -> cbarm.move(-operatorOI.getLeftY()), cbarm));
+    // NOT working
+    // arm.setDefaultCommand(new RunCommand(() ->
+    // arm.runManual(-operatorOI.getLeftY() * kArmManualScale), arm));
 
-    operatorOI.x().onTrue(new GoToPos(HOME_POSITION, cbarm));
+    // OPERATOR X, Y, B, A: Move arm to preset positions.
+    // NOT tested
+    // arm.setDefaultCommand(new RunCommand(() -> arm.runAutomatic(), arm));
+    // operatorOI.x().onTrue(new InstantCommand(() ->
+    // arm.setTargetPosition(HOME_POSITION)));
     // operatorOI.y().onTrue(new InstantCommand(() ->
-    // cbarm.setPositionUsingPID(HUMAN_PLAYER_POSITION)));
-    operatorOI.y().whileTrue(new GoToPos(20, cbarm));
+    // arm.setTargetPosition(HUMAN_PLAYER_POSITION)));
     // operatorOI.b().onTrue(new InstantCommand(() ->
-    // cbarm.setPositionUsingPID(SCORING_POSITION)));
+    // arm.setTargetPosition(SCORING_POSITION)));
     // operatorOI.a().onTrue(new InstantCommand(() ->
-    // cbarm.setPositionUsingPID(GROUND_POSITION)));
+    // arm.setTargetPosition(GROUND_POSITION)));
 
     // OPERATOR Right Stick: Direct control over the Uprighter.
     // working
