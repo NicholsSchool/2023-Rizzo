@@ -10,36 +10,53 @@ import frc.robot.subsystems.SwerveDrive;
 public class Nudge extends CommandBase {
 
   SwerveDrive swerveDrive;
-  char dir;
+  String direction;
   boolean fieldRelative;
 
-  public Nudge(SwerveDrive swerveDrive, char dir, boolean fieldRelative) {
+  public Nudge(SwerveDrive _swerveDrive, String _direction, boolean _fieldRelative) {
 
-    this.swerveDrive = swerveDrive;
-    this.dir = dir;
+    this.swerveDrive = _swerveDrive;
+    this.direction = _direction;
+    this.fieldRelative = _fieldRelative;
 
     addRequirements(swerveDrive);
   }
 
   @Override
   public void initialize() {
-
   }
 
   @Override
   public void execute() {
-    switch (dir) {
-      case 'r':
-        swerveDrive.drive(-0.5, 0.0, 0, fieldRelative);
-        break;
-      case 'l':
+    switch (direction) {
+
+      // DRIVER CONTROLS
+      case "DRIVER FORWARD":
         swerveDrive.drive(0.5, 0.0, 0, fieldRelative);
         break;
-      case 'u':
+      case "DRIVER BACKWARD":
+        swerveDrive.drive(-0.5, 0.0, 0, fieldRelative);
+        break;
+      case "DRIVER RIGHT":
+        swerveDrive.drive(0.0, -0.5, 0, fieldRelative);
+        break;
+      case "DRIVER LEFT":
         swerveDrive.drive(0.0, 0.5, 0, fieldRelative);
         break;
-      case 'd':
+
+      // OPERATOR CONTROLS
+      case "OPERATOR FORWARD":
+        swerveDrive.drive(-0.5, 0.0, 0, fieldRelative);
+        break;
+      case "OPERATOR BACKWARD":
+        swerveDrive.drive(0.5, 0.0, 0, fieldRelative);
+        break;
+      case "OPERATOR RIGHT":
+        swerveDrive.drive(0.0, 0.5, 0, fieldRelative);
+        break;
+      case "OPERATOR LEFT":
         swerveDrive.drive(0.0, -0.5, 0, fieldRelative);
+        break;
     }
   }
 
