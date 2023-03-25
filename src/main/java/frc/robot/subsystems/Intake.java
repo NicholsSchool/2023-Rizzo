@@ -32,11 +32,13 @@ public class Intake extends SubsystemBase {
 
     // Intake Pistons
     intakePistons = new Solenoid(PneumaticsModuleType.CTREPCM, INTAKE_PISTON_SOLENOID_CHANNEL);
-    intakePistons.set(INTAKE_CLOSED);
 
     // Lifter Pistons
     lifterPistons = new Solenoid(PneumaticsModuleType.CTREPCM, LIFTER_PISTON_SOLENOID_CHANNEL);
-    lifterPistons.set(LIFTER_UP);
+
+    // Start the robot with the intake down and flapper open.
+    flapperOpen();
+    lifterUp();
   }
 
   @Override
@@ -63,20 +65,20 @@ public class Intake extends SubsystemBase {
   // Intake Pistons
 
   public void flapperClose() {
-    intakePistons.set(INTAKE_CLOSED);
+    intakePistons.set(false);
   }
 
   public void flapperOpen() {
-    intakePistons.set(!INTAKE_CLOSED);
+    intakePistons.set(true);
   }
 
   // Lifter Pistons
 
   public void lifterUp() {
-    lifterPistons.set(LIFTER_UP);
+    lifterPistons.set(false);
   }
 
   public void lifterDown() {
-    lifterPistons.set(!LIFTER_UP);
+    lifterPistons.set(true);
   }
 }

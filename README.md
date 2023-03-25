@@ -2,35 +2,38 @@
 
 ### FRC 4930's 2023 Competitive Robot for FRC Charged Up!
 
+## Robot Setup & Configuration
+* Note: When the robot starts, make sure the arm is on the HOME position limit switch.
+
 ## Diver OI Controller Setup:
-* +DRIVER Left Trigger: While held, switch to virtual high gear.
-* +DRIVER Right Trigger: While held, deploy and spin robot intake.
-* DRIVER Left Bumper: Evasive left robot action button.
-* DRIVER Right Bumper: Evasive right robot action button.
 * +DRIVER Left Stick: Translational movement relative to the field.
-* +DRIVER Right Stick: Rotational movement of the chassis along the X-axis.
-* +DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-* DRIVER X (←) Button: Rotate to -90 degree Yaw relative to the field.
-* DRIVER Y (↑) Button: Rotate to 0 degree Yaw relative to the field.
-* DRIVER B (→) Button: Rotate to 90 degree Yaw relative to the field.
-* DRIVER A (↓) Button: Rotate to 180 degree Yaw relative to the field.
-* +DRIVER Start (→) Button: Reset the robot's field oriented forward position.
-* +DRIVER Back (←) Button: While held, defensive X position and prevent driving.
+* +DRIVER Right Stick: Rotational movement of the robot chassis.
+* +DRIVER Left Trigger: While held, switch to virtual high gear.
+* DRIVER Right Trigger: While held, deploy intake to pickup a Cube.
+* DRIVER Left Bumper: Open intake flappers.
+* DRIVER Right Bumper: Close intake flappers.
+* DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
+* DRIVER X (←) Button: Rotate to LEFT position relative to the field.
+* DRIVER Y (↑) Button: Rotate to FORWARDS position relative to the field.
+* DRIVER B (→) Button: Rotate to RIGHT position relative to the field.
+* DRIVER A (↓) Button: Rotate to BACKWARDS position relative to the field.
+* DRIVER Start (→) Button: Reset gyro to a new field oriented forward position.
+* DRIVER Back (←) Button: Set swerve drive to a stationary X position.
 
 ## Operator OI Controller Setup:
-* +OPERATOR Left Trigger: While held, auto pick up game object using ML/AI.
-* +OPERATOR Right Trigger: Release game object from Grabber.
-* OPERATOR Left Bumper: Cycle through Grid numbers 1-9 for object placement.
-* OPERATOR Right Bumper: Cycle through Tier numbers 1-3 for object placement.
-* +OPERATOR Left Stick: Direct control over the Arm. Overrides arm locks.
-* +OPERATOR Right Stick: Direct control over the Uprighter.
-* +OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
-* +OPERATOR X (←) Button: Go to Arm position #1 and lock.
-* +OPERATOR Y (↑) Button: Go to Arm position #2 and lock.
-* +OPERATOR B (→) Button: Go to Arm position #3 and lock.
-* +OPERATOR A (↓) Button: Go to Arm position #4 and lock.
-* +OPERATOR Start (→) Button: Cycle out everything (intake, uprighter, gripper).
-* +OPERATOR Back (←) Button: Toggle the gripper state. (Cube/Cone)
+* OPERATOR Left Stick: Spin gripper motors.
+* OPERATOR Right Stick: Direct control over the Arm.
+* OPERATOR Left Trigger: While held, lower the intake.
+* OPERATOR Right Trigger: While held, outtake Cube (intake, uprighter, gripper).
+* OPERATOR Left Bumper: Open gripper.
+* OPERATOR Right Bumper: Close gripper.
+* OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
+* OPERATOR X (←) Button: Go to HOME position and lock.
+* OPERATOR Y (↑) Button: Go to HUMAN PLAYER position and lock.
+* OPERATOR B (→) Button: Go to SCORING position and lock.
+* OPERATOR A (↓) Button: Go to GROUND/INTAKE position and lock.
+* OPERATOR Start (→) Button:
+* OPERATOR Back (←) Button:
 
 ## CAN ID Assignments
 * CAN ID 10 = SparkMax = Rear Right Drive Motor
@@ -51,7 +54,7 @@
 ## Solenoid ID Assignments
 * Solenoid ID 1 = Intake Pistons
 * Solenoid ID 2 = Lifter Pistons
-* Solenoid ID 3 = Grabber/Pincher Piston
+* Solenoid ID 3 = Gripper Piston
 
 ## Built with:
 * REV Robotics 3in MAXSwerve Modules https://www.revrobotics.com/rev-21-3005/
