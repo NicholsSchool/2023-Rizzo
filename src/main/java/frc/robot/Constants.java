@@ -27,16 +27,16 @@ public final class Constants {
   // Arm (Manipulator)
   public static final class ArmConstants {
     public static final double HOME_POSITION = 0.0;
-    public static final double HUMAN_PLAYER_POSITION = 0.0;
-    public static final double SCORING_POSITION = 0.0;
-    public static final double GROUND_POSITION = 0.0;
+    public static final double HUMAN_PLAYER_POSITION = 0.81; // 0.78 = parallel
+    public static final double SCORING_POSITION = 3.22; // 3.22
+    public static final double GROUND_POSITION = 4.77; // 4.77
     public static final double SOFT_LIMIT_REVERSE = 0.0;
-    public static final double SOFT_LIMIT_FORWARD = 4.6;
+    public static final double SOFT_LIMIT_FORWARD = 4.8;
 
     public static final int ARM_LIMIT_SWITCH_DIO_CHANNEL = 0;
 
-    public static final int ARM_CURRENT_LIMIT = 40;
-    public static final double ARM_MANUAL_SCALED = 0.45;
+    public static final int ARM_CURRENT_LIMIT = 28;
+    public static final double ARM_MANUAL_SCALED = 0.28;
 
     public static final double ARM_GEAR_RATIO = 1.0 / (224);
     public static final double POSITION_CONVERSION_FACTOR = ARM_GEAR_RATIO * 2.0 * Math.PI;
@@ -44,10 +44,10 @@ public final class Constants {
     public static final double ARM_FREE_SPEED = 5676.0 * VELOCITY_CONVERSION_FACTOR;
     public static final double ARM_ZERO_COSINE_OFFSET = -Math.PI / 6;
     public static final ArmFeedforward ARM_FF = new ArmFeedforward(0.0, 0.4, 12.0 / ARM_FREE_SPEED, 0.0);
-    public static final double ARM_DEFAULT_P = 0.6;
+    public static final double ARM_DEFAULT_P = 0.70;
     public static final double ARM_DEFAULT_I = 0.0;
     public static final double ARM_DEFAULT_D = 0.0;
-    public static final Constraints ARM_MOTION_CONSTRAINTS = new Constraints(2.0, 2.0);
+    public static final Constraints ARM_MOTION_CONSTRAINTS = new Constraints(0.5, 0.5);
 
   }
 
@@ -74,7 +74,7 @@ public final class Constants {
     public static final int LEFT_UPRIGHTER_SPARKMAX = 22;
     public static final int RIGHT_UPRIGHTER_SPARKMAX = 23;
     public static final int GRIPPER_SPARKMAX = 24;
-    public static final int ARM_SPARKMAX = 25;
+    public static final int ARM_SPARKMAX = 26;
   }
 
   // Swerve Drive (Drive Train)

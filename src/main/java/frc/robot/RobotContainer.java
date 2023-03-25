@@ -57,6 +57,7 @@ public class RobotContainer {
 
     // Setup the default command for the arm.
     arm.setDefaultCommand(new RunCommand(() -> arm.runAutomatic(), arm));
+    // arm.setDefaultCommand(new RunCommand(() -> arm.dummy(), arm));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -117,7 +118,7 @@ public class RobotContainer {
     driverOI.x().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 90));
     driverOI.y().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 0));
     driverOI.b().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) -90));
-    driverOI.x().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 180));
+    driverOI.a().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 180));
 
     // DRIVER Start Button: Reset gyro to a new field oriented forward position.
     // working
@@ -162,9 +163,9 @@ public class RobotContainer {
     operatorOI.x().onTrue(new InstantCommand(() -> arm.setTargetPosition(HOME_POSITION)));
     operatorOI.y().onTrue(new InstantCommand(() -> arm.setTargetPosition(HUMAN_PLAYER_POSITION)));
     operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(SCORING_POSITION)));
-    operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(GROUND_POSITION)));
 
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
+    // working
     operatorOI.povUp().whileTrue(new Nudge(swerveDrive, "OPERATOR NUDGE FORWARD", true).withTimeout(0.5));
     operatorOI.povDown().whileTrue(new Nudge(swerveDrive, "OPERATOR NUDGE BACKWARD", true).withTimeout(0.5));
     operatorOI.povLeft().whileTrue(new Nudge(swerveDrive, "OPERATOR NUDGE LEFT", true).withTimeout(0.5));

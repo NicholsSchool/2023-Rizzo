@@ -22,7 +22,6 @@ public class Arm extends SubsystemBase {
   private DigitalInput armLimitSwitch;
   private SparkMaxPIDController armPIDController;
   private double armSetpoint = 0.0;
-  private boolean armAtLimit;
   private TrapezoidProfile motorProfile;
   private TrapezoidProfile.State targetState;
   private double feedforward;
@@ -40,7 +39,7 @@ public class Arm extends SubsystemBase {
     armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) SOFT_LIMIT_FORWARD);
     armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) SOFT_LIMIT_REVERSE);
-    armMotor.setIdleMode(IdleMode.kCoast); // while testing, set to kCoast
+    armMotor.setIdleMode(IdleMode.kBrake); // while testing, set to kCoast
     // armMotor.setIdleMode(IdleMode.kBrake);
 
     armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
@@ -58,7 +57,6 @@ public class Arm extends SubsystemBase {
     timer.reset();
 
     // Set the starting state of the arm subsystem.
-    armAtLimit = armLimitSwitch.get();
     updateMotionProfile();
     resetEncoder();
   }
@@ -67,7 +65,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     resetEncoderAtLimit();
     SmartDashboard.putNumber("Arm Position: ", armEncoder.getPosition());
-    SmartDashboard.putBoolean("Arm Limit Switch: ", isAtHomePosition());
+    SmartDashboard.putBoolean("Arm Limit Switch: ", armLimitSwitch.get());
   }
 
   /**
@@ -90,6 +88,14 @@ public class Arm extends SubsystemBase {
     TrapezoidProfile.State goal = new TrapezoidProfile.State(armSetpoint, 0.0);
     motorProfile = new TrapezoidProfile(ARM_MOTION_CONSTRAINTS, goal, state);
     timer.reset();
+  }
+
+  /**
+   * Using during testing the arm.
+   * Don't use this method during competition.
+   */
+  public void dummy() {
+    return;
   }
 
   /**
@@ -127,26 +133,19 @@ public class Arm extends SubsystemBase {
     armMotor.set((power * ARM_MANUAL_SCALED) + (feedforward / 12.0));
   }
 
-  /**
-   * Checks if the limit switch is pressed.
-   */
-  public boolean isAtHomePosition() {
-    if (armLimitSwitch.get() == armAtLimit) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   public void resetEncoder() {
-    armEncoder.setPosition(0.0);
+    if (armEncoder.getPosition() != 0.0) {
+      armEncoder.setPosition(0.0);
+      System.out.println("Resetting encoder: " + armEncoder.getPosition());
+    }
+
   }
 
   /**
    * Resets the encoder if the limit switch is pressed.
    */
   public void resetEncoderAtLimit() {
-    if (isAtHomePosition()) {
+    if (armLimitSwitch.get() == false) {
       resetEncoder();
     }
   }
