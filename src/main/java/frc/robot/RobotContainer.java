@@ -86,10 +86,10 @@ public class RobotContainer {
     driverOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    driverOI.povUp().whileTrue(new Nudge(swerveDrive, "DRIVER FORWARD", true).withTimeout(0.5));
-    driverOI.povDown().whileTrue(new Nudge(swerveDrive, "DRIVER BACKWARD", true).withTimeout(0.5));
-    driverOI.povRight().whileTrue(new Nudge(swerveDrive, "DRIVER RIGHT", true).withTimeout(0.5));
-    driverOI.povLeft().whileTrue(new Nudge(swerveDrive, "DRIVER LEFT", true).withTimeout(0.5));
+    driverOI.povUp().whileTrue(new Nudge(swerveDrive, "DRIVER FORWARD", false).withTimeout(0.5));
+    driverOI.povDown().whileTrue(new Nudge(swerveDrive, "DRIVER BACKWARD", false).withTimeout(0.5));
+    driverOI.povRight().whileTrue(new Nudge(swerveDrive, "DRIVER RIGHT", false).withTimeout(0.5));
+    driverOI.povLeft().whileTrue(new Nudge(swerveDrive, "DRIVER LEFT", false).withTimeout(0.5));
 
     // DRIVER Start Button: Reset the robot's field oriented forward position.
     driverOI.start().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
