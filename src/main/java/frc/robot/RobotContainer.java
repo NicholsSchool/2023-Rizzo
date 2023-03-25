@@ -86,10 +86,10 @@ public class RobotContainer {
     driverOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    driverOI.povLeft().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)));
-    driverOI.povRight().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, -0.5, 0, true)));
-    driverOI.povUp().whileTrue(new RunCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)));
-    driverOI.povDown().whileTrue(new RunCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)));
+    driverOI.povUp().whileTrue(new Nudge(swerveDrive, "DRIVER FORWARD", true).withTimeout(0.5));
+    driverOI.povDown().whileTrue(new Nudge(swerveDrive, "DRIVER BACKWARD", true).withTimeout(0.5));
+    driverOI.povRight().whileTrue(new Nudge(swerveDrive, "DRIVER RIGHT", true).withTimeout(0.5));
+    driverOI.povLeft().whileTrue(new Nudge(swerveDrive, "DRIVER LEFT", true).withTimeout(0.5));
 
     // DRIVER Start Button: Reset the robot's field oriented forward position.
     driverOI.start().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
@@ -121,10 +121,10 @@ public class RobotContainer {
     operatorOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
-    operatorOI.povUp().whileTrue(new RunCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)));
-    operatorOI.povDown().whileTrue(new RunCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)));
-    operatorOI.povRight().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)));
-    operatorOI.povLeft().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, -0.5, 0, true)));
+    operatorOI.povUp().whileTrue(new Nudge(swerveDrive, "OPERATOR FORWARD", true).withTimeout(0.5));
+    operatorOI.povDown().whileTrue(new Nudge(swerveDrive, "OPERATOR BACKWARD", true).withTimeout(0.5));
+    operatorOI.povRight().whileTrue(new Nudge(swerveDrive, "OPERATOR RIGHT", true).withTimeout(0.5));
+    operatorOI.povLeft().whileTrue(new Nudge(swerveDrive, "OPERATOR LEFT", true).withTimeout(0.5));
 
   }
 
