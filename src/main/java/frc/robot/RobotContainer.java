@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+// import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -131,6 +131,7 @@ public class RobotContainer {
   public void configureAutoChooser(SendableChooser<Command> autoChooser) {
     autoChooser.setDefaultOption("Default Auto", null);
     autoChooser.addOption("Swerve Auto", new DefaultAuto(swerveDrive));
+    autoChooser.addOption("Auto Test Class", new AutoTest(swerveDrive, intake, uprighter, gripper));
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
@@ -138,7 +139,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return new AutoTest(swerveDrive, intake, uprighter, gripper);
     return autoChooser.getSelected();
   }
 
