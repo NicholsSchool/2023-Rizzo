@@ -76,24 +76,21 @@ public class RobotContainer {
     // ########################################################
 
     // DRIVER Left & Right Stick: Field relative translational/rotational movement.
-    // working
     swerveDrive.setDefaultCommand(
         new RunCommand(
             () -> swerveDrive.drive(
-                -MathUtil.applyDeadband(driverOI.getLeftY(), 0.07),
-                -MathUtil.applyDeadband(driverOI.getLeftX(), 0.07),
-                -MathUtil.applyDeadband(driverOI.getRightX(), 0.07),
+                -MathUtil.applyDeadband(driverOI.getLeftY(), 0.05),
+                -MathUtil.applyDeadband(driverOI.getLeftX(), 0.05),
+                -MathUtil.applyDeadband(driverOI.getRightX(), 0.05),
                 true),
             swerveDrive));
 
     // DRIVER Left Trigger: (WH) Switch to virtual high gear.
-    // working
     driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
 
     // DRIVER Right Trigger: (WH) Deploy intake when pressed and spin motors in.
-    // working
     driverOI.rightTrigger().whileTrue(new IntakeDeploy(intake, uprighter, gripper));
     driverOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 

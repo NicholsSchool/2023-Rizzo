@@ -45,7 +45,7 @@ public class Gripper extends SubsystemBase {
     spinner.set(-GRIPPER_SPEED);
   }
 
-  public void stopSpinner() {
+  public void stop() {
     spinner.stopMotor();
   }
 
