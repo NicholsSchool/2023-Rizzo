@@ -68,7 +68,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     resetEncoderAtLimit();
     SmartDashboard.putNumber("Arm Position: ", armEncoder.getPosition());
-    SmartDashboard.putBoolean("Arm is at Home Position", isAtHomePosition());
+    SmartDashboard.putBoolean("Arm Limit Switch: ", isAtHomePosition());
   }
 
   /**

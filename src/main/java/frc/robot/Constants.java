@@ -55,6 +55,7 @@ public final class Constants {
   public static final class GripperConstants {
     public static final double GRIPPER_SPEED = 0.45;
     public static final int PINCHER_SOLENOID_CHANNEL = 3;
+    public static final int GRIPPER_LIMIT_SWITCH_DIO_CHANNEL = 1;
   }
 
   // Controller Area Network (CAN) IDs
