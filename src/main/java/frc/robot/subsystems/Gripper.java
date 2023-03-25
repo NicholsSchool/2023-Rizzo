@@ -28,7 +28,7 @@ public class Gripper extends SubsystemBase {
     pincher = new Solenoid(PneumaticsModuleType.CTREPCM, PINCHER_SOLENOID_CHANNEL);
 
     // Set the starting state of the gripper subsystem.
-    openPincher();
+    open();
 
   }
 
@@ -48,11 +48,11 @@ public class Gripper extends SubsystemBase {
     spinner.stopMotor();
   }
 
-  public void openPincher() {
+  public void open() {
     pincher.set(true);
   }
 
-  public void closePincher() {
+  public void close() {
     pincher.set(false);
   }
 

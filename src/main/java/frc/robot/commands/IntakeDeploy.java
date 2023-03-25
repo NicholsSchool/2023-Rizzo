@@ -23,8 +23,8 @@ public class IntakeDeploy extends CommandBase {
 
   @Override
   public void initialize() {
-    intake.lifterDown();
-    intake.flapperOpen();
+    intake.goDown();
+    intake.open();
   }
 
   @Override
@@ -37,8 +37,8 @@ public class IntakeDeploy extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    intake.lifterUp();
-    intake.flapperClose();
+    intake.goUp();
+    intake.close();
     intake.stop();
     uprighter.stop();
     gripper.stop();

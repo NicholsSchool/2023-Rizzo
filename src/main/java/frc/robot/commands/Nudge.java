@@ -37,11 +37,11 @@ public class Nudge extends CommandBase {
       case "DRIVER BACKWARD":
         swerveDrive.drive(-0.5, 0.0, 0, fieldRelative);
         break;
-      case "DRIVER RIGHT":
-        swerveDrive.drive(0.0, -0.5, 0, fieldRelative);
-        break;
       case "DRIVER LEFT":
         swerveDrive.drive(0.0, 0.5, 0, fieldRelative);
+        break;
+      case "DRIVER RIGHT":
+        swerveDrive.drive(0.0, -0.5, 0, fieldRelative);
         break;
 
       // OPERATOR CONTROLS
@@ -51,11 +51,11 @@ public class Nudge extends CommandBase {
       case "OPERATOR BACKWARD":
         swerveDrive.drive(0.5, 0.0, 0, fieldRelative);
         break;
-      case "OPERATOR RIGHT":
-        swerveDrive.drive(0.0, 0.5, 0, fieldRelative);
-        break;
       case "OPERATOR LEFT":
         swerveDrive.drive(0.0, -0.5, 0, fieldRelative);
+        break;
+      case "OPERATOR RIGHT":
+        swerveDrive.drive(0.0, 0.5, 0, fieldRelative);
         break;
     }
   }

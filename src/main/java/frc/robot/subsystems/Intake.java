@@ -37,8 +37,8 @@ public class Intake extends SubsystemBase {
     lifterPistons = new Solenoid(PneumaticsModuleType.CTREPCM, LIFTER_PISTON_SOLENOID_CHANNEL);
 
     // Set the starting position of the intake subsystem.
-    flapperOpen();
-    lifterUp();
+    open();
+    goUp();
   }
 
   @Override
@@ -64,21 +64,21 @@ public class Intake extends SubsystemBase {
 
   // Intake Pistons
 
-  public void flapperClose() {
+  public void close() {
     intakePistons.set(false);
   }
 
-  public void flapperOpen() {
+  public void open() {
     intakePistons.set(true);
   }
 
   // Lifter Pistons
 
-  public void lifterUp() {
+  public void goUp() {
     lifterPistons.set(false);
   }
 
-  public void lifterDown() {
+  public void goDown() {
     lifterPistons.set(true);
   }
 }

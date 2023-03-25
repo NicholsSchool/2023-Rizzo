@@ -35,7 +35,7 @@ public class IntakeRetract extends CommandBase {
     gripper.stop();
     intake.stop();
     uprighter.stop();
-    intake.lifterUp();
+    intake.goUp();
   }
 
   @Override
