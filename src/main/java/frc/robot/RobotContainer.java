@@ -159,7 +159,8 @@ public class RobotContainer {
     // working
     operatorOI.rightBumper().onTrue(new InstantCommand(() -> gripper.open(), gripper));
 
-    // OPERATOR X, Y, B, A: Move arm to preset positions.
+    // OPERATOR X, Y, B: Move arm to preset positions.
+    // working
     operatorOI.x().onTrue(new InstantCommand(() -> arm.setTargetPosition(HOME_POSITION)));
     operatorOI.y().onTrue(new InstantCommand(() -> arm.setTargetPosition(HUMAN_PLAYER_POSITION)));
     operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(SCORING_POSITION)));

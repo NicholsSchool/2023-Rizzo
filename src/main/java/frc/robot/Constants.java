@@ -28,10 +28,9 @@ public final class Constants {
   public static final class ArmConstants {
     public static final double HOME_POSITION = 0.0;
     public static final double HUMAN_PLAYER_POSITION = 0.81; // 0.78 = parallel
-    public static final double SCORING_POSITION = 3.22; // 3.22
-    public static final double GROUND_POSITION = 4.77; // 4.77
+    public static final double SCORING_POSITION = 3.02;
     public static final double SOFT_LIMIT_REVERSE = 0.0;
-    public static final double SOFT_LIMIT_FORWARD = 4.8;
+    public static final double SOFT_LIMIT_FORWARD = 4.7;
 
     public static final int ARM_LIMIT_SWITCH_DIO_CHANNEL = 0;
 
