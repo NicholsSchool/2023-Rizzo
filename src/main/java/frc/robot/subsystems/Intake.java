@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
 
     // Set the starting position of the intake subsystem.
     open();
-    goUp();
+    raise();
   }
 
   @Override
@@ -74,11 +74,11 @@ public class Intake extends SubsystemBase {
 
   // Lifter Pistons
 
-  public void goUp() {
+  public void raise() {
     lifterPistons.set(false);
   }
 
-  public void goDown() {
+  public void lower() {
     lifterPistons.set(true);
   }
 }

@@ -1,12 +1,11 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.*;
 
+/**
+ * Nudges the robot in a specified direction.
+ */
 public class Nudge extends CommandBase {
 
   SwerveDrive swerveDrive;
@@ -15,9 +14,9 @@ public class Nudge extends CommandBase {
 
   public Nudge(SwerveDrive _swerveDrive, String _direction, boolean _fieldRelative) {
 
-    this.swerveDrive = _swerveDrive;
-    this.direction = _direction;
-    this.fieldRelative = _fieldRelative;
+    swerveDrive = _swerveDrive;
+    direction = _direction;
+    fieldRelative = _fieldRelative;
 
     addRequirements(swerveDrive);
   }
@@ -31,30 +30,30 @@ public class Nudge extends CommandBase {
     switch (direction) {
 
       // DRIVER CONTROLS
-      case "DRIVER FORWARD":
+      case "DRIVER NUDGE FORWARD":
         swerveDrive.drive(0.5, 0.0, 0, fieldRelative);
         break;
-      case "DRIVER BACKWARD":
+      case "DRIVER NUDGE BACKWARD":
         swerveDrive.drive(-0.5, 0.0, 0, fieldRelative);
         break;
-      case "DRIVER LEFT":
+      case "DRIVER NUDGE LEFT":
         swerveDrive.drive(0.0, 0.5, 0, fieldRelative);
         break;
-      case "DRIVER RIGHT":
+      case "DRIVER NUDGE RIGHT":
         swerveDrive.drive(0.0, -0.5, 0, fieldRelative);
         break;
 
       // OPERATOR CONTROLS
-      case "OPERATOR FORWARD":
+      case "OPERATOR NUDGE FORWARD":
         swerveDrive.drive(-0.5, 0.0, 0, fieldRelative);
         break;
-      case "OPERATOR BACKWARD":
+      case "OPERATOR NUDGE BACKWARD":
         swerveDrive.drive(0.5, 0.0, 0, fieldRelative);
         break;
-      case "OPERATOR LEFT":
+      case "OPERATOR NUDGE LEFT":
         swerveDrive.drive(0.0, -0.5, 0, fieldRelative);
         break;
-      case "OPERATOR RIGHT":
+      case "OPERATOR NUDGE RIGHT":
         swerveDrive.drive(0.0, 0.5, 0, fieldRelative);
         break;
     }

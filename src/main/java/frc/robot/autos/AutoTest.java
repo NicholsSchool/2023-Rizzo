@@ -14,7 +14,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.SwerveDriveConstants;
-import frc.robot.commands.IntakeDeploy;
+import frc.robot.commands.Deploy;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.SwerveDrive;
@@ -88,7 +88,7 @@ public class AutoTest extends SequentialCommandGroup {
         new SwerveControllerCommand(secondTrajectory, swerveDrive::getPose,
             SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDController(1.0, 0, 0),
             new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive)
-            .raceWith(new IntakeDeploy(intake, uprighter, gripper).withTimeout(1.5))
+            .raceWith(new Deploy(intake, uprighter, gripper).withTimeout(1.5))
     // new SwerveControllerCommand( secondTrajectory, swerveDrive::getPose,
     // SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDController(pX, 0, 0),
     // new PIDController(pY, 0, 0), thetaController, swerveDrive::setModuleStates,

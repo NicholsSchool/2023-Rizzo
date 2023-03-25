@@ -56,7 +56,7 @@ public class SwerveDrive extends SubsystemBase {
 
   /** Constructor for a new SwerveDrive Subsystem. */
   public SwerveDrive() {
-    // Note: NavX calibration takes approximately 3 to 5 seconds.
+    // Note: NavX calibration takes approximately 3 to 4 seconds.
     navX.calibrate();
   }
 
@@ -79,7 +79,7 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   /** Reset the AHRS to zero. */
-  public void resetFieldOrientedGyro() {
+  public void resetGyro() {
     navX.zeroYaw();
   }
 
@@ -152,7 +152,7 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   /** Sets the wheels into an X formation to prevent movement. */
-  public void setX() {
+  public void setWheelsToXFormation() {
     frontLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     frontRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     rearLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
@@ -168,7 +168,7 @@ public class SwerveDrive extends SubsystemBase {
     rearRightModule.setDesiredState(desiredStates[3]);
   }
 
-  /** Resets the drive encoders to currently read a position of 0. */
+  /** Resets the drive encoders to currently read a position of zero. */
   public void resetEncoders() {
     frontLeftModule.resetEncoders();
     rearLeftModule.resetEncoders();
@@ -179,6 +179,15 @@ public class SwerveDrive extends SubsystemBase {
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     navX.reset();
+  }
+
+  /**
+   * Returns the heading of the robot.
+   * 
+   * @return The current yaw value in degrees (-180 to 180).
+   */
+  public double getYaw() {
+    return navX.getYaw();
   }
 
   /** Returns the heading of the robot in degrees, from -180 to 180 */
