@@ -23,7 +23,7 @@ public class Uprighter extends SubsystemBase {
     uprighterMotorRight = new CANSparkMax(CANID.RIGHT_UPRIGHTER_SPARKMAX, MotorType.kBrushless);
     uprighterMotorRight.restoreFactoryDefaults();
     uprighterMotorRight.setIdleMode(IdleMode.kBrake);
-    uprighterMotorRight.setInverted(true);
+    uprighterMotorRight.setInverted(false);
   }
 
   @Override
@@ -32,12 +32,12 @@ public class Uprighter extends SubsystemBase {
 
   public void spinIn() {
     uprighterMotorLeft.set(-UPRIGHTER_SPEED);
-    uprighterMotorRight.set(-UPRIGHTER_SPEED);
+    uprighterMotorRight.set(UPRIGHTER_SPEED);
   }
 
   public void spinOut() {
     uprighterMotorLeft.set(UPRIGHTER_SPEED);
-    uprighterMotorRight.set(UPRIGHTER_SPEED);
+    uprighterMotorRight.set(-UPRIGHTER_SPEED);
   }
 
   public void stop() {

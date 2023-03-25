@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 // import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import static frc.robot.Constants.ArmConstants.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.GenericEntry;
 
 public class RobotContainer {
 
@@ -23,6 +25,9 @@ public class RobotContainer {
   private final Arm arm;
   private final Intake intake;
   private final Uprighter uprighter;
+
+  // Shuffleboard
+  public static GenericEntry encoderEntry;
 
   // OI controllers
   CommandXboxController driverOI;
@@ -56,9 +61,10 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // Configure autonomous chooser and add to SmartDashboard
+    // Configure autonomous chooser and SmartDashboard
     autoChooser = new SendableChooser<>();
     configureAutoChooser(autoChooser);
+    encoderEntry = Shuffleboard.getTab("Test Arm").add("Encoder Value", -7.7).getEntry();
 
   }
 
@@ -70,6 +76,7 @@ public class RobotContainer {
     // ########################################################
 
     // DRIVER Left & Right Stick: Translational and rotational robot movement.
+    // working
     swerveDrive.setDefaultCommand(
         new RunCommand(
             () -> swerveDrive.drive(
@@ -80,43 +87,52 @@ public class RobotContainer {
             swerveDrive));
 
     // DRIVER Left Trigger: While held, switch to virtual high gear.
+    // working
     driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
 
     // DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
+    // working
     driverOI.rightTrigger().whileTrue(new Deploy(intake, uprighter, gripper))
         .onFalse(new Retract(intake, uprighter, gripper));
 
     // DRIVER Left Bumper: Close intake flappers.
+    // working
     driverOI.leftBumper().onTrue(new InstantCommand(() -> intake.close(), intake));
 
     // DRIVER Right Bumper: Open intake flappers.
+    // working
     driverOI.rightBumper().onTrue(new InstantCommand(() -> intake.open(), intake));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
+    // working
     driverOI.povUp().whileTrue(new Nudge(swerveDrive, "DRIVER NUDGE FORWARD", false).withTimeout(0.5));
     driverOI.povDown().whileTrue(new Nudge(swerveDrive, "DRIVER NUDGE BACKWARD", false).withTimeout(0.5));
     driverOI.povLeft().whileTrue(new Nudge(swerveDrive, "DRIVER NUDGE LEFT", false).withTimeout(0.5));
     driverOI.povRight().whileTrue(new Nudge(swerveDrive, "DRIVER NUDGE RIGHT", false).withTimeout(0.5));
 
     // DRIVER X,Y,B,A Buttons: Set chassis to predefined field relative angle.
+    // NOT working (it's a math problem)
     driverOI.x().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 90));
     driverOI.y().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 0));
     driverOI.b().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) -90));
     driverOI.x().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 180));
 
     // DRIVER Start Button: Reset gyro to a new field oriented forward position.
+    // working
     driverOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetGyro(), swerveDrive));
 
     // DRIVER Back Button: Set swerve drive to a stationary X position.
-    driverOI.back().onTrue(new RunCommand(() -> swerveDrive.setWheelsToXFormation(), swerveDrive));
+    // working
+    driverOI.back().whileTrue(new RunCommand(() -> swerveDrive.setWheelsToXFormation(), swerveDrive));
 
     // ########################################################
     // ################ OPERATOR OI CONTROLLER ################
     // ########################################################
 
     // OPERATOR Left Stick: Spin gripper motors.
+    // working
     gripper.setDefaultCommand(
         new RunCommand(() -> gripper.spin(-MathUtil.applyDeadband(operatorOI.getLeftY(), 0.05)), gripper));
 
@@ -125,28 +141,28 @@ public class RobotContainer {
         .whileTrue((new RunCommand(() -> arm.runManual(-operatorOI.getRightY()), arm)));
 
     // OPERATOR Left Trigger: While held, lower the intake.
+    // working
     operatorOI.leftTrigger().onTrue(new InstantCommand(() -> intake.lower(), intake))
         .onFalse(new InstantCommand(() -> intake.raise(), intake));
 
     // OPERATOR Right Trigger: Outtake a Cube (intake, uprighter, gripper).
+    // working
     operatorOI.rightTrigger().whileTrue(new Outtake(intake, uprighter, gripper))
         .onFalse(new Retract(intake, uprighter, gripper));
 
     // OPERATOR Left Bumper: Close gripper.
+    // working
     operatorOI.leftBumper().onTrue(new InstantCommand(() -> gripper.close(), gripper));
 
     // OPERATOR Right Bumper: Open gripper.
-    operatorOI.rightBumper().onTrue(new InstantCommand(() -> gripper.close(), gripper));
+    // working
+    operatorOI.rightBumper().onTrue(new InstantCommand(() -> gripper.open(), gripper));
 
     // OPERATOR X, Y, B, A: Move arm to preset positions.
     operatorOI.x().onTrue(new InstantCommand(() -> arm.setTargetPosition(HOME_POSITION)));
     operatorOI.y().onTrue(new InstantCommand(() -> arm.setTargetPosition(HUMAN_PLAYER_POSITION)));
     operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(SCORING_POSITION)));
     operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(GROUND_POSITION)));
-
-    // OPERATOR Right Stick: Direct control over the Gripper motors.
-    uprighter.setDefaultCommand(
-        new RunCommand(() -> gripper.spin(-MathUtil.applyDeadband(operatorOI.getLeftY(), 0.05)), uprighter));
 
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
     operatorOI.povUp().whileTrue(new Nudge(swerveDrive, "OPERATOR NUDGE FORWARD", true).withTimeout(0.5));

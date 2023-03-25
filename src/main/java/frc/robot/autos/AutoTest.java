@@ -57,8 +57,7 @@ public class AutoTest extends SequentialCommandGroup {
         new Pose2d(1, 0, new Rotation2d(0)),
         config);
 
-    // Trajectory thirdTrajectory =
-    TrajectoryGenerator.generateTrajectory(
+    Trajectory thirdTrajectory = TrajectoryGenerator.generateTrajectory(
         // Zero the starting pose of the trajectory.
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(

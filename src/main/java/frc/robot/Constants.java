@@ -54,6 +54,7 @@ public final class Constants {
   // Gripper/Pinchers/Spinners (End Effector)
   public static final class GripperConstants {
     public static final double GRIPPER_SPEED = 0.45;
+    public static final double GRIPPER_SPEED_OFFSET = 0.25;
     public static final int PINCHER_SOLENOID_CHANNEL = 3;
     public static final int GRIPPER_LIMIT_SWITCH_DIO_CHANNEL = 1;
   }
@@ -115,8 +116,8 @@ public final class Constants {
     public static final IdleMode DRIVING_MOTOR_IDLE_MODE = IdleMode.kBrake;
     public static final IdleMode TURNING_MOTOR_IDLE_MODE = IdleMode.kBrake;
 
-    public static final int DRIVING_MOTOR_CURRENT_LIMIT = 22; // amps
-    public static final int TURNING_MOTOR_CURRENT_LIMIT = 18; // amps
+    public static final int DRIVING_MOTOR_CURRENT_LIMIT = 15; // amps
+    public static final int TURNING_MOTOR_CURRENT_LIMIT = 12; // amps
   }
 
 }

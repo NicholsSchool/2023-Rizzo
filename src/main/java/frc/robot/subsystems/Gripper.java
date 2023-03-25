@@ -23,7 +23,7 @@ public class Gripper extends SubsystemBase {
     spinner = new CANSparkMax(CANID.GRIPPER_SPARKMAX, MotorType.kBrushless);
     spinner.restoreFactoryDefaults();
     spinner.setIdleMode(IdleMode.kBrake);
-    spinner.setInverted(true);
+    spinner.setInverted(false);
 
     // Pincher
     pincher = new Solenoid(PneumaticsModuleType.CTREPCM, PINCHER_SOLENOID_CHANNEL);
@@ -42,11 +42,11 @@ public class Gripper extends SubsystemBase {
   }
 
   public void spinIn() {
-    spinner.set(GRIPPER_SPEED);
+    spinner.set(-GRIPPER_SPEED);
   }
 
   public void spinOut() {
-    spinner.set(-GRIPPER_SPEED);
+    spinner.set(GRIPPER_SPEED);
   }
 
   public void stop() {
@@ -54,11 +54,11 @@ public class Gripper extends SubsystemBase {
   }
 
   public void open() {
-    pincher.set(true);
+    pincher.set(false);
   }
 
   public void close() {
-    pincher.set(false);
+    pincher.set(true);
   }
 
   // Is limit switch pressed?
@@ -72,7 +72,7 @@ public class Gripper extends SubsystemBase {
    * @param speed double between -1.0 and 1.0
    */
   public void spin(double speed) {
-    spinner.set(speed);
+    spinner.set(speed * GRIPPER_SPEED_OFFSET);
   }
 
 }

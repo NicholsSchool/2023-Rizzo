@@ -43,7 +43,6 @@ public class Arm extends SubsystemBase {
     armMotor.setIdleMode(IdleMode.kCoast); // while testing, set to kCoast
     // armMotor.setIdleMode(IdleMode.kBrake);
 
-    armEncoder.setInverted(false);
     armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
     armEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION_FACTOR);
 
