@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase {
     intakeMotorRight = new CANSparkMax(CANID.RIGHT_INTAKE_SPARKMAX, MotorType.kBrushless);
     intakeMotorRight.restoreFactoryDefaults();
     intakeMotorRight.setIdleMode(IdleMode.kBrake);
-    intakeMotorRight.setInverted(true);
+    intakeMotorRight.setInverted(false);
 
     // Intake Pistons
     intakePistons = new Solenoid(PneumaticsModuleType.CTREPCM, INTAKE_PISTON_SOLENOID_CHANNEL);
@@ -49,12 +49,12 @@ public class Intake extends SubsystemBase {
 
   public void spinIn() {
     intakeMotorLeft.set(INTAKE_SPEED);
-    intakeMotorRight.set(INTAKE_SPEED);
+    intakeMotorRight.set(-INTAKE_SPEED);
   }
 
   public void spinOut() {
     intakeMotorLeft.set(-OUTTAKE_SPEED);
-    intakeMotorRight.set(-OUTTAKE_SPEED);
+    intakeMotorRight.set(OUTTAKE_SPEED);
   }
 
   public void stop() {
@@ -65,11 +65,11 @@ public class Intake extends SubsystemBase {
   // Intake Pistons
 
   public void close() {
-    intakePistons.set(false);
+    intakePistons.set(true);
   }
 
   public void open() {
-    intakePistons.set(true);
+    intakePistons.set(false);
   }
 
   // Lifter Pistons
