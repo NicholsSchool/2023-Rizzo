@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -25,13 +26,9 @@ public class AutoTest extends SequentialCommandGroup {
   /** Creates a new AutoTest. */
   public AutoTest(SwerveDrive swerveDrive, Intake intake, Uprighter uprighter, Gripper gripper) {
 
-    double maxMPS = SwerveDriveConstants.MAX_METERS_PER_SECOND;
-    double maxAMPS = AutoConstants.kMaxAccelerationMetersPerSecondSquared;
-    double pTheta = AutoConstants.kPThetaController;
-    double pX = AutoConstants.kPXController;
-    double pY = AutoConstants.kPYController;
+    // double pTheta = AutoConstants.kPThetaController;
 
-    TrajectoryConfig config = new TrajectoryConfig(maxMPS, maxAMPS)
+    TrajectoryConfig config = new TrajectoryConfig(Math.PI, Math.PI)
         .setKinematics(SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS);
 
     Trajectory firstTrajectory = TrajectoryGenerator.generateTrajectory(
@@ -73,12 +70,12 @@ public class AutoTest extends SequentialCommandGroup {
         new Pose2d(1.5, 0.1, new Rotation2d(0)),
         config);
 
-    var thetaController = new ProfiledPIDController(pTheta, 0, 0, AutoConstants.kThetaControllerConstraints);
+    var thetaController = new ProfiledPIDController(1.0, 0, 0, new Constraints(Math.PI, Math.PI));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     System.out.println("Angle: " + swerveDrive.getHeading());
 
-    addRequirements(swerveDrive, arm, intake, gripper);
+    addRequirements(swerveDrive, intake, gripper);
     addCommands(
 
         // Arm do stuff
@@ -87,11 +84,11 @@ public class AutoTest extends SequentialCommandGroup {
         // new PIDController(pY, 0, 0), thetaController, swerveDrive::setModuleStates,
         // swerveDrive).andThen(
         new SwerveControllerCommand(firstTrajectory, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS,
-            new PIDController(pX, 0, 0),
-            new PIDController(pY, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive),
+            new PIDController(1.0, 0, 0),
+            new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive),
         new SwerveControllerCommand(secondTrajectory, swerveDrive::getPose,
-            SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDController(pX, 0, 0),
-            new PIDController(pY, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive)
+            SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDController(1.0, 0, 0),
+            new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive)
             .raceWith(new IntakeDeploy(intake, uprighter, gripper).withTimeout(1.5))
     // new SwerveControllerCommand( secondTrajectory, swerveDrive::getPose,
     // SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDController(pX, 0, 0),
