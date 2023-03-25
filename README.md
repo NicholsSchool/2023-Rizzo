@@ -6,18 +6,18 @@
 * Note: When the robot starts, make sure the arm is on the HOME position limit switch.
 
 ## Diver OI Controller Setup:
-* +DRIVER Left Stick: Translational movement relative to the field.
-* +DRIVER Right Stick: Rotational movement of the robot chassis.
-* +DRIVER Left Trigger: While held, switch to virtual high gear.
-* DRIVER Right Trigger: While held, deploy intake to pickup a Cube.
-* DRIVER Left Bumper: Open intake flappers.
-* DRIVER Right Bumper: Close intake flappers.
-* DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
+* ~DRIVER Left Stick: Translational movement relative to the field.
+* ~DRIVER Right Stick: Rotational movement of the robot chassis.
+* ~DRIVER Left Trigger: While held, switch to virtual high gear.
+* ~DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
+* ~DRIVER Left Bumper: Close intake flappers.
+* ~DRIVER Right Bumper: Open intake flappers.
+* ~DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
 * DRIVER X (←) Button: Rotate to LEFT position relative to the field.
 * DRIVER Y (↑) Button: Rotate to FORWARDS position relative to the field.
 * DRIVER B (→) Button: Rotate to RIGHT position relative to the field.
 * DRIVER A (↓) Button: Rotate to BACKWARDS position relative to the field.
-* DRIVER Start (→) Button: Reset gyro to a new field oriented forward position.
+* ~DRIVER Start (→) Button: Reset gyro to a new field oriented forward position.
 * DRIVER Back (←) Button: Set swerve drive to a stationary X position.
 
 ## Operator OI Controller Setup:
@@ -25,8 +25,8 @@
 * OPERATOR Right Stick: Direct control over the Arm.
 * OPERATOR Left Trigger: While held, lower the intake.
 * OPERATOR Right Trigger: While held, outtake Cube (intake, uprighter, gripper).
-* OPERATOR Left Bumper: Open gripper.
-* OPERATOR Right Bumper: Close gripper.
+* OPERATOR Left Bumper: Close gripper.
+* OPERATOR Right Bumper: Open gripper.
 * OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
 * OPERATOR X (←) Button: Go to HOME position and lock.
 * OPERATOR Y (↑) Button: Go to HUMAN PLAYER position and lock.

@@ -18,8 +18,8 @@ public class IntakeExtract extends CommandBase {
 
   @Override
   public void initialize() {
-    intake.lifterUp();
-    intake.flapperOpen();
+    intake.goUp();
+    intake.open();
   }
 
   @Override
