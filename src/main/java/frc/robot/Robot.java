@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 /**
  * The Robot class extends TimedRobot. TimedRobot implements the
  * IterativeRobotBase robot program framework.
- * https://docs.wpilib.org/en/stable/docs/software/vscode-overview/creating-robot-program.html#timedrobot
  * 
  * Any method which contains the word "Init" is called only once.
  * Any method which contains the word "Periodic" is called repeatedly.
@@ -20,9 +19,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    robotContainer = new RobotContainer();
-
     CameraServer.startAutomaticCapture();
+    robotContainer = new RobotContainer();
   }
 
   @Override

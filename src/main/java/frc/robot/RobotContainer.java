@@ -3,49 +3,36 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import frc.robot.subsystems.SwerveDrive;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import java.util.List;
-import static frc.robot.Constants.SwerveDriveConstants.*;
-import static frc.robot.Constants.AutoConstants.*;
 import static frc.robot.Constants.ArmConstants.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotContainer {
 
-  // Create subsystems
+  // Subsystems
   private final SwerveDrive swerveDrive;
   private final Gripper gripper;
   private final Arm arm;
   private final Intake intake;
   private final Uprighter uprighter;
-  Compressor compressor;
 
   // OI controllers
   CommandXboxController driverOI;
   CommandXboxController operatorOI;
+  XboxController driverRumbler;
+  XboxController operatorRumbler;
 
-  // Autonomous Commands
-  // private final DefaultAuto defaultAuto;
+  // Autonomous Chooser
+  SendableChooser<Command> autoChooser;
 
-  // Used for determining if gripper is picking up cone or cube
-  public static boolean readyForCube = false;
-
-  /** Robot Container Constructor. */
   public RobotContainer() {
 
     // Instantiate all subsystems
@@ -54,17 +41,21 @@ public class RobotContainer {
     arm = new Arm();
     intake = new Intake();
     uprighter = new Uprighter();
-    compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
-    // Instantiate all autonomous commands
-    // defaultAuto = new DefaultAuto(swerveDrive);
-
-    // Instantiate all OI controllers
+    // OI (Operator Interface) Controllers & Rumblers
     driverOI = new CommandXboxController(1);
+    driverRumbler = new XboxController(1);
     operatorOI = new CommandXboxController(0);
+    operatorRumbler = new XboxController(0);
+
+    // EXAMPLE: driverRumbler.setRumble(RumbleType.kBothRumble, 1.0);
 
     // Configure the button bindings
     configureButtonBindings();
+
+    // Configure autonomous chooser and add to SmartDashboard
+    autoChooser = new SendableChooser<>();
+    configureAutoChooser(autoChooser);
 
   }
 
@@ -76,42 +67,34 @@ public class RobotContainer {
     // ########################################################
 
     // DRIVER Left & Right Stick: Field relative translational/rotational movement.
-    // working
     swerveDrive.setDefaultCommand(
         new RunCommand(
             () -> swerveDrive.drive(
-                -MathUtil.applyDeadband(driverOI.getLeftY(), 0.07),
-                -MathUtil.applyDeadband(driverOI.getLeftX(), 0.07),
-                -MathUtil.applyDeadband(driverOI.getRightX(), 0.07),
+                -MathUtil.applyDeadband(driverOI.getLeftY(), 0.05),
+                -MathUtil.applyDeadband(driverOI.getLeftX(), 0.05),
+                -MathUtil.applyDeadband(driverOI.getRightX(), 0.05),
                 true),
             swerveDrive));
 
     // DRIVER Left Trigger: (WH) Switch to virtual high gear.
-    // working
     driverOI.leftTrigger(0.25)
         .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
 
-    // DRIVER Right Trigger: (WH) Deploy intake when pressed and spin motors.
-    // working
+    // DRIVER Right Trigger: (WH) Deploy intake when pressed and spin motors in.
     driverOI.rightTrigger().whileTrue(new IntakeDeploy(intake, uprighter, gripper));
     driverOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
-  
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    // working
-    driverOI.povLeft().whileTrue( new RunCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)));
+    driverOI.povLeft().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)));
     driverOI.povRight().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, -0.5, 0, true)));
     driverOI.povUp().whileTrue(new RunCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)));
     driverOI.povDown().whileTrue(new RunCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)));
 
     // DRIVER Start Button: Reset the robot's field oriented forward position.
-    // working
     driverOI.start().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
-  
 
     // DRIVER Back Button: While held, defensive X position and prevent driving.
-    // NOT tested
     driverOI.x().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
 
     // ########################################################
@@ -119,34 +102,25 @@ public class RobotContainer {
     // ########################################################
 
     // OPERATOR Left Stick: Direct control over the Arm.
-    // NOT working
-    // arm.setDefaultCommand(new RunCommand(() ->
-    // arm.runManual(-operatorOI.getLeftY() * kArmManualScale), arm));
+    new Trigger(() -> Math.abs(operatorOI.getLeftY()) > 0.05)
+        .whileTrue((new RunCommand(() -> arm.runManual(-operatorOI.getLeftY()), arm)));
 
     // OPERATOR X, Y, B, A: Move arm to preset positions.
-    // NOT tested
-    // arm.setDefaultCommand(new RunCommand(() -> arm.runAutomatic(), arm));
-    // operatorOI.x().onTrue(new InstantCommand(() ->
-    // arm.setTargetPosition(HOME_POSITION)));
-    // operatorOI.y().onTrue(new InstantCommand(() ->
-    // arm.setTargetPosition(HUMAN_PLAYER_POSITION)));
-    // operatorOI.b().onTrue(new InstantCommand(() ->
-    // arm.setTargetPosition(SCORING_POSITION)));
-    // operatorOI.a().onTrue(new InstantCommand(() ->
-    // arm.setTargetPosition(GROUND_POSITION)));
+    arm.setDefaultCommand(new RunCommand(() -> arm.runAutomatic(), arm));
+    operatorOI.x().onTrue(new InstantCommand(() -> arm.setTargetPosition(HOME_POSITION)));
+    operatorOI.y().onTrue(new InstantCommand(() -> arm.setTargetPosition(HUMAN_PLAYER_POSITION)));
+    operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(SCORING_POSITION)));
+    operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(GROUND_POSITION)));
 
-    // OPERATOR Right Stick: Direct control over the Uprighter.
-    // working
-    uprighter.setDefaultCommand(new RunCommand(
-        () -> uprighter.spin(-MathUtil.applyDeadband(operatorOI.getRightY(), 0.07)), uprighter));
+    // OPERATOR Right Stick: Direct control over the Gripper motors.
+    uprighter.setDefaultCommand(
+        new RunCommand(() -> gripper.spin(-MathUtil.applyDeadband(operatorOI.getLeftY(), 0.05)), uprighter));
 
     // OPERATOR Right Trigger: Release game object from Grabber.
-    // working
     operatorOI.rightTrigger().whileTrue(new IntakeExtract(intake, uprighter, gripper));
     operatorOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
 
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
-    // working
     operatorOI.povUp().whileTrue(new RunCommand(() -> swerveDrive.drive(-0.5, 0.0, 0, true)));
     operatorOI.povDown().whileTrue(new RunCommand(() -> swerveDrive.drive(0.5, 0.0, 0, true)));
     operatorOI.povRight().whileTrue(new RunCommand(() -> swerveDrive.drive(0.0, 0.5, 0, true)));
@@ -154,11 +128,18 @@ public class RobotContainer {
 
   }
 
+  public void configureAutoChooser(SendableChooser<Command> autoChooser) {
+    autoChooser.setDefaultOption("Default Auto", null);
+    autoChooser.addOption("Swerve Auto", new DefaultAuto(swerveDrive));
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+  }
+
   /**
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new AutoTest(swerveDrive, cbarm, intake, uprighter, gripper); 
+    // return new AutoTest(swerveDrive, intake, uprighter, gripper);
+    return autoChooser.getSelected();
   }
 
 }

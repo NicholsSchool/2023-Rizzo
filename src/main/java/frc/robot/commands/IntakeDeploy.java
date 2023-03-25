@@ -41,7 +41,7 @@ public class IntakeDeploy extends CommandBase {
     intake.flapperClose();
     intake.stop();
     uprighter.stop();
-    gripper.stopSpinner();;
+    gripper.stop();
   }
 
   @Override

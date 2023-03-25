@@ -32,10 +32,10 @@ public class IntakeRetract extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    intake.lifterUp();
+    gripper.stop();
     intake.stop();
     uprighter.stop();
-    gripper.stopSpinner();
+    intake.lifterUp();
   }
 
   @Override

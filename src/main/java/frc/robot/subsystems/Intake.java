@@ -32,11 +32,13 @@ public class Intake extends SubsystemBase {
 
     // Intake Pistons
     intakePistons = new Solenoid(PneumaticsModuleType.CTREPCM, INTAKE_PISTON_SOLENOID_CHANNEL);
-    intakePistons.set(INTAKE_CLOSED);
 
     // Lifter Pistons
     lifterPistons = new Solenoid(PneumaticsModuleType.CTREPCM, LIFTER_PISTON_SOLENOID_CHANNEL);
-    lifterPistons.set(LIFTER_UP);
+
+    // Set the starting position of the intake subsystem.
+    flapperOpen();
+    lifterUp();
   }
 
   @Override
@@ -51,8 +53,8 @@ public class Intake extends SubsystemBase {
   }
 
   public void spinOut() {
-    intakeMotorLeft.set(-INTAKE_SPEED_OUT);
-    intakeMotorRight.set(-INTAKE_SPEED_OUT);
+    intakeMotorLeft.set(-OUTTAKE_SPEED);
+    intakeMotorRight.set(-OUTTAKE_SPEED);
   }
 
   public void stop() {
@@ -63,20 +65,20 @@ public class Intake extends SubsystemBase {
   // Intake Pistons
 
   public void flapperClose() {
-    intakePistons.set(INTAKE_CLOSED);
+    intakePistons.set(false);
   }
 
   public void flapperOpen() {
-    intakePistons.set(!INTAKE_CLOSED);
+    intakePistons.set(true);
   }
 
   // Lifter Pistons
 
   public void lifterUp() {
-    lifterPistons.set(LIFTER_UP);
+    lifterPistons.set(false);
   }
 
   public void lifterDown() {
-    lifterPistons.set(!LIFTER_UP);
+    lifterPistons.set(true);
   }
 }
