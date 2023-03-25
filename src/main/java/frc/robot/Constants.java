@@ -13,12 +13,10 @@ public final class Constants {
 
   // Intake/Lifter/Uprighter
   public static final class IntakeConstants {
-    public static final int INTAKE_PISTON_SOLENOID_CHANNEL = 1;
-    // public static final boolean INTAKE_CLOSED = true;
     public static final double INTAKE_SPEED = 0.6;
-    public static final double INTAKE_SPEED_OUT = 1.0;
+    public static final double OUTTAKE_SPEED = 1.0;
+    public static final int INTAKE_PISTON_SOLENOID_CHANNEL = 1;
     public static final int LIFTER_PISTON_SOLENOID_CHANNEL = 2;
-    // public static final boolean LIFTER_UP = false;
   }
 
   // Uprighter
@@ -28,10 +26,10 @@ public final class Constants {
 
   // Arm (Manipulator)
   public static final class ArmConstants {
-    public static final double HOME_POSITION = 0.00;
-    public static final double HUMAN_PLAYER_POSITION = 67.17; // ???
-    public static final double SCORING_POSITION = 76.10; // ???
-    public static final double GROUND_POSITION = 97.96; // ???
+    public static final double HOME_POSITION = 0.0;
+    public static final double HUMAN_PLAYER_POSITION = 0.0;
+    public static final double SCORING_POSITION = 0.0;
+    public static final double GROUND_POSITION = 0.0;
     public static final double SOFT_LIMIT_REVERSE = 0.0;
     public static final double SOFT_LIMIT_FORWARD = 4.6;
 
@@ -49,15 +47,14 @@ public final class Constants {
     public static final double ARM_DEFAULT_P = 0.6;
     public static final double ARM_DEFAULT_I = 0.0;
     public static final double ARM_DEFAULT_D = 0.0;
-    public static final Constraints kArmMotionConstraint = new Constraints(2.0, 2.0);
+    public static final Constraints ARM_MOTION_CONSTRAINTS = new Constraints(2.0, 2.0);
 
   }
 
   // Gripper/Pinchers/Spinners (End Effector)
   public static final class GripperConstants {
+    public static final double GRIPPER_SPEED = 0.45;
     public static final int PINCHER_SOLENOID_CHANNEL = 3;
-    public static final boolean PINCHER_CLOSED = false;
-    public static final double GRIPPER_SPEED = 0.4;
   }
 
   // Controller Area Network (CAN) IDs

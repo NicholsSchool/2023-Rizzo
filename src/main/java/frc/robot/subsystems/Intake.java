@@ -36,7 +36,7 @@ public class Intake extends SubsystemBase {
     // Lifter Pistons
     lifterPistons = new Solenoid(PneumaticsModuleType.CTREPCM, LIFTER_PISTON_SOLENOID_CHANNEL);
 
-    // Start the robot with the intake down and flapper open.
+    // Set the starting position of the intake subsystem.
     flapperOpen();
     lifterUp();
   }
@@ -53,8 +53,8 @@ public class Intake extends SubsystemBase {
   }
 
   public void spinOut() {
-    intakeMotorLeft.set(-INTAKE_SPEED_OUT);
-    intakeMotorRight.set(-INTAKE_SPEED_OUT);
+    intakeMotorLeft.set(-OUTTAKE_SPEED);
+    intakeMotorRight.set(-OUTTAKE_SPEED);
   }
 
   public void stop() {

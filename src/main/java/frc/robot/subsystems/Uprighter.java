@@ -45,13 +45,4 @@ public class Uprighter extends SubsystemBase {
     uprighterMotorRight.stopMotor();
   }
 
-  /**
-   * Spin the uprighter motors at a given speed directly with OI controller.
-   * 
-   * @param speed double between -1.0 and 1.0
-   */
-  public void spin(double speed) {
-    uprighterMotorLeft.set(speed);
-    uprighterMotorRight.set(speed);
-  }
 }

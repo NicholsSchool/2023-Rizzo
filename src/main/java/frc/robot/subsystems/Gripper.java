@@ -7,7 +7,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.CANID;
 import static frc.robot.Constants.GripperConstants.*;
 
@@ -19,17 +18,17 @@ public class Gripper extends SubsystemBase {
 
   public Gripper() {
 
-    state = PINCHER_CLOSED;
-
-    // Spinner - Brake mode enabled to hold a game piece during autonomous.
+    // Spinner
     spinner = new CANSparkMax(CANID.GRIPPER_SPARKMAX, MotorType.kBrushless);
     spinner.restoreFactoryDefaults();
     spinner.setIdleMode(IdleMode.kBrake);
     spinner.setInverted(true);
 
-    // Pincher - Set to closed to hold a game piece during autonomous.
+    // Pincher
     pincher = new Solenoid(PneumaticsModuleType.CTREPCM, PINCHER_SOLENOID_CHANNEL);
-    pincher.set(PINCHER_CLOSED);
+
+    // Set the starting state of the gripper subsystem.
+    openPincher();
 
   }
 
@@ -50,30 +49,20 @@ public class Gripper extends SubsystemBase {
   }
 
   public void openPincher() {
-    pincher.set(!PINCHER_CLOSED);
-    state = !PINCHER_CLOSED;
+    pincher.set(true);
   }
 
   public void closePincher() {
-    pincher.set(PINCHER_CLOSED);
-    state = PINCHER_CLOSED;
+    pincher.set(false);
   }
 
   /**
-   * Changes gripper piston for picking up cones or cubes
+   * Spin the gripper motor directly with OI controller.
+   * 
+   * @param speed double between -1.0 and 1.0
    */
-  public void setGripperState() {
-    RobotContainer.readyForCube = !RobotContainer.readyForCube;
-  }
-
-  public boolean getGripperState() {
-    return RobotContainer.readyForCube;
-  }
-
-  public void gripPiece() {
-    if (getGripperState()) {
-      closePincher();
-    }
+  public void spin(double speed) {
+    spinner.set(speed);
   }
 
 }

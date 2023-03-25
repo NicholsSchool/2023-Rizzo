@@ -21,7 +21,7 @@ public class Arm extends SubsystemBase {
   private RelativeEncoder armEncoder;
   private DigitalInput armLimitSwitch;
   private SparkMaxPIDController armPIDController;
-  private double armSetpoint;
+  private double armSetpoint = 0.0;
   private boolean armAtLimit;
   private TrapezoidProfile motorProfile;
   private TrapezoidProfile.State targetState;
@@ -47,9 +47,6 @@ public class Arm extends SubsystemBase {
     armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
     armEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION_FACTOR);
 
-    armAtLimit = armLimitSwitch.get();
-    resetEncoder();
-
     armPIDController = armMotor.getPIDController();
     armPIDController.setP(ARM_DEFAULT_P);
     armPIDController.setI(ARM_DEFAULT_I);
@@ -57,20 +54,21 @@ public class Arm extends SubsystemBase {
 
     armMotor.burnFlash();
 
-    armSetpoint = HOME_POSITION;
-
     timer = new Timer();
     timer.start();
     timer.reset();
 
+    // Set the starting state of the arm subsystem.
+    armAtLimit = armLimitSwitch.get();
     updateMotionProfile();
+    resetEncoder();
   }
 
   @Override
   public void periodic() {
     resetEncoderAtLimit();
     SmartDashboard.putNumber("Arm Position: ", armEncoder.getPosition());
-    SmartDashboard.putBoolean("Arm at Home Position", isAtHomePosition());
+    SmartDashboard.putBoolean("Arm is at Home Position", isAtHomePosition());
   }
 
   /**
@@ -91,7 +89,7 @@ public class Arm extends SubsystemBase {
   private void updateMotionProfile() {
     TrapezoidProfile.State state = new TrapezoidProfile.State(armEncoder.getPosition(), armEncoder.getVelocity());
     TrapezoidProfile.State goal = new TrapezoidProfile.State(armSetpoint, 0.0);
-    motorProfile = new TrapezoidProfile(kArmMotionConstraint, goal, state);
+    motorProfile = new TrapezoidProfile(ARM_MOTION_CONSTRAINTS, goal, state);
     timer.reset();
   }
 
@@ -117,7 +115,7 @@ public class Arm extends SubsystemBase {
   public void runManual(double power) {
     armSetpoint = armEncoder.getPosition();
     targetState = new TrapezoidProfile.State(armSetpoint, 0.0);
-    motorProfile = new TrapezoidProfile(kArmMotionConstraint, targetState, targetState);
+    motorProfile = new TrapezoidProfile(ARM_MOTION_CONSTRAINTS, targetState, targetState);
     // update the feedforward variable with the new target state
     feedforward = ARM_FF.calculate(armEncoder.getPosition() + ARM_ZERO_COSINE_OFFSET, targetState.velocity);
     // set arm motor speed to manual control with scaled power
