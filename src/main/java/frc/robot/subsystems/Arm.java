@@ -98,12 +98,15 @@ public class Arm extends SubsystemBase {
    */
   public void runAutomatic() {
     double elapsedTime = timer.get();
+    // if motion profile is finished, set the target state to the current position
     if (motorProfile.isFinished(elapsedTime)) {
       targetState = new TrapezoidProfile.State(armSetpoint, 0.0);
     } else {
       targetState = motorProfile.calculate(elapsedTime);
     }
+    // update the feedforward variable with the new target state
     feedforward = ARM_FF.calculate(armEncoder.getPosition() + ARM_ZERO_COSINE_OFFSET, targetState.velocity);
+    // set the arm motor speed to the target position
     armPIDController.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedforward);
   }
 
@@ -113,12 +116,15 @@ public class Arm extends SubsystemBase {
    * @param power
    */
   public void runManual(double power) {
+    // get the current position of the encoder
     armSetpoint = armEncoder.getPosition();
+    // create a new target state with the current encoder position and zero velocity
     targetState = new TrapezoidProfile.State(armSetpoint, 0.0);
+    // create a new motion profile with the current state as the target state
     motorProfile = new TrapezoidProfile(ARM_MOTION_CONSTRAINTS, targetState, targetState);
     // update the feedforward variable with the new target state
     feedforward = ARM_FF.calculate(armEncoder.getPosition() + ARM_ZERO_COSINE_OFFSET, targetState.velocity);
-    // set arm motor speed to manual control with scaled power
+    // set the arm motor speed to manual control with scaled power
     armMotor.set((power * ARM_MANUAL_SCALED) + (feedforward / 12.0));
   }
 

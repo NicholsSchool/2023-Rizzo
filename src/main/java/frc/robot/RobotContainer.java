@@ -50,6 +50,9 @@ public class RobotContainer {
 
     // EXAMPLE: driverRumbler.setRumble(RumbleType.kBothRumble, 1.0);
 
+    // Setup the default command for the arm.
+    arm.setDefaultCommand(new RunCommand(() -> arm.runAutomatic(), arm));
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -82,37 +85,60 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
 
     // DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
-    driverOI.rightTrigger(0.25).whileTrue(new IntakeDeploy(intake, uprighter, gripper));
-    driverOI.rightTrigger(0.75).onFalse(new IntakeRetract(intake, uprighter, gripper));
+    driverOI.rightTrigger().whileTrue(new Deploy(intake, uprighter, gripper))
+        .onFalse(new Retract(intake, uprighter, gripper));
 
     // DRIVER Left Bumper: Close intake flappers.
-    driverOI.leftBumper().onTrue(new InstantCommand(() -> intake.close()));
+    driverOI.leftBumper().onTrue(new InstantCommand(() -> intake.close(), intake));
 
     // DRIVER Right Bumper: Open intake flappers.
-    driverOI.rightBumper().onTrue(new InstantCommand(() -> intake.open()));
+    driverOI.rightBumper().onTrue(new InstantCommand(() -> intake.open(), intake));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    driverOI.povUp().whileTrue(new Nudge(swerveDrive, "DRIVER FORWARD", false).withTimeout(0.5));
-    driverOI.povDown().whileTrue(new Nudge(swerveDrive, "DRIVER BACKWARD", false).withTimeout(0.5));
-    driverOI.povLeft().whileTrue(new Nudge(swerveDrive, "DRIVER LEFT", false).withTimeout(0.5));
-    driverOI.povRight().whileTrue(new Nudge(swerveDrive, "DRIVER RIGHT", false).withTimeout(0.5));
+    driverOI.povUp().whileTrue(new Nudge(swerveDrive, "DRIVER NUDGE FORWARD", false).withTimeout(0.5));
+    driverOI.povDown().whileTrue(new Nudge(swerveDrive, "DRIVER NUDGE BACKWARD", false).withTimeout(0.5));
+    driverOI.povLeft().whileTrue(new Nudge(swerveDrive, "DRIVER NUDGE LEFT", false).withTimeout(0.5));
+    driverOI.povRight().whileTrue(new Nudge(swerveDrive, "DRIVER NUDGE RIGHT", false).withTimeout(0.5));
 
-    // DRIVER Start Button: Reset the robot's field oriented forward position.
-    driverOI.start().whileTrue(new RunCommand(() -> swerveDrive.resetFieldOrientedGyro(), swerveDrive));
+    // DRIVER X,Y,B,A Buttons: Set chassis to predefined field relative angle.
+    driverOI.x().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 90));
+    driverOI.y().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 0));
+    driverOI.b().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) -90));
+    driverOI.x().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 180));
 
-    // DRIVER Back Button: While held, defensive X position and prevent driving.
-    driverOI.x().whileTrue(new RunCommand(() -> swerveDrive.setX(), swerveDrive));
+    // DRIVER Start Button: Reset gyro to a new field oriented forward position.
+    driverOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetGyro(), swerveDrive));
+
+    // DRIVER Back Button: Set swerve drive to a stationary X position.
+    driverOI.back().onTrue(new RunCommand(() -> swerveDrive.setWheelsToXFormation(), swerveDrive));
 
     // ########################################################
     // ################ OPERATOR OI CONTROLLER ################
     // ########################################################
 
-    // OPERATOR Left Stick: Direct control over the Arm.
-    new Trigger(() -> Math.abs(operatorOI.getLeftY()) > 0.05)
-        .whileTrue((new RunCommand(() -> arm.runManual(-operatorOI.getLeftY()), arm)));
+    // OPERATOR Left Stick: Spin gripper motors.
+    gripper.setDefaultCommand(
+        new RunCommand(() -> gripper.spin(-MathUtil.applyDeadband(operatorOI.getLeftY(), 0.05)), gripper));
+
+    // OPERATOR Right Stick: Direct control over the Arm.
+    new Trigger(() -> Math.abs(operatorOI.getRightY()) > 0.05)
+        .whileTrue((new RunCommand(() -> arm.runManual(-operatorOI.getRightY()), arm)));
+
+    // OPERATOR Left Trigger: While held, lower the intake.
+    operatorOI.leftTrigger().onTrue(new InstantCommand(() -> intake.lower(), intake))
+        .onFalse(new InstantCommand(() -> intake.raise(), intake));
+
+    // OPERATOR Right Trigger: Outtake a Cube (intake, uprighter, gripper).
+    operatorOI.rightTrigger().whileTrue(new Outtake(intake, uprighter, gripper))
+        .onFalse(new Retract(intake, uprighter, gripper));
+
+    // OPERATOR Left Bumper: Close gripper.
+    operatorOI.leftBumper().onTrue(new InstantCommand(() -> gripper.close(), gripper));
+
+    // OPERATOR Right Bumper: Open gripper.
+    operatorOI.rightBumper().onTrue(new InstantCommand(() -> gripper.close(), gripper));
 
     // OPERATOR X, Y, B, A: Move arm to preset positions.
-    arm.setDefaultCommand(new RunCommand(() -> arm.runAutomatic(), arm));
     operatorOI.x().onTrue(new InstantCommand(() -> arm.setTargetPosition(HOME_POSITION)));
     operatorOI.y().onTrue(new InstantCommand(() -> arm.setTargetPosition(HUMAN_PLAYER_POSITION)));
     operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(SCORING_POSITION)));
@@ -122,15 +148,11 @@ public class RobotContainer {
     uprighter.setDefaultCommand(
         new RunCommand(() -> gripper.spin(-MathUtil.applyDeadband(operatorOI.getLeftY(), 0.05)), uprighter));
 
-    // OPERATOR Right Trigger: Release game object from Grabber.
-    operatorOI.rightTrigger().whileTrue(new IntakeExtract(intake, uprighter, gripper));
-    operatorOI.rightTrigger().onFalse(new IntakeRetract(intake, uprighter, gripper));
-
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
-    operatorOI.povUp().whileTrue(new Nudge(swerveDrive, "OPERATOR FORWARD", true).withTimeout(0.5));
-    operatorOI.povDown().whileTrue(new Nudge(swerveDrive, "OPERATOR BACKWARD", true).withTimeout(0.5));
-    operatorOI.povLeft().whileTrue(new Nudge(swerveDrive, "OPERATOR LEFT", true).withTimeout(0.5));
-    operatorOI.povRight().whileTrue(new Nudge(swerveDrive, "OPERATOR RIGHT", true).withTimeout(0.5));
+    operatorOI.povUp().whileTrue(new Nudge(swerveDrive, "OPERATOR NUDGE FORWARD", true).withTimeout(0.5));
+    operatorOI.povDown().whileTrue(new Nudge(swerveDrive, "OPERATOR NUDGE BACKWARD", true).withTimeout(0.5));
+    operatorOI.povLeft().whileTrue(new Nudge(swerveDrive, "OPERATOR NUDGE LEFT", true).withTimeout(0.5));
+    operatorOI.povRight().whileTrue(new Nudge(swerveDrive, "OPERATOR NUDGE RIGHT", true).withTimeout(0.5));
 
   }
 
