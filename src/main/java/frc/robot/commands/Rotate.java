@@ -30,51 +30,22 @@ public class Rotate extends CommandBase {
   @Override
   public void execute() {
 
-    double currentYaw = swerveDrive.getYaw();
+    double currentYaw = 3;
+    double desiredAngle = -113;
     double difference = desiredAngle - currentYaw;
-    double error = difference;
+    double error = 0.0;
     double angularRotation = 0.0;
+    double kP = 0.85;
 
-    if (difference > 180) {
-      difference -= 360;
-    } else if (difference < -180) {
-      difference += 360;
+    if (Math.abs(difference) > 180) {
+      error = difference - (360 * (Math.abs(difference) / difference));
+    } else {
+      error = difference;
     }
 
-    if (difference > 0) {
-      // turn clockwise
-    } else if (difference < 0) {
-      // turn counter-clockwise
-
-    }
+    angularRotation = error / 180 * (Math.PI * kP);
 
     swerveDrive.drive(xSpeed, ySpeed, angularRotation, true);
-
-  }
-
-  public void executed() {
-
-    double currentYaw = swerveDrive.getYaw();
-    double error = desiredAngle - currentYaw;
-    double angularRotation = 0.0;
-    double Kp = 0.5;
-
-    if (Math.abs(error) > 1) {
-      // Calculate the output
-      double output = Kp * error;
-      // Limit output to -1.0 to 1.0
-      output = Math.max(-1.0, Math.min(1.0, output));
-      if (output > 0) {
-        // Rotate clockwise
-        angularRotation = Math.PI * -output;
-      } else if (output < 0) {
-        // Rotate counter-clockwise
-        angularRotation = Math.PI * output;
-      }
-      swerveDrive.drive(xSpeed, ySpeed, angularRotation, true);
-    } else {
-      System.out.println("Reached desired angle: " + desiredAngle);
-    }
 
   }
 

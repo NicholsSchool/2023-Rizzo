@@ -49,7 +49,7 @@
 * CAN ID 22 = SparkMax = Left Uprighter
 * CAN ID 23 = SparkMax = Right Uprighter
 * CAN ID 24 = SparkMax = Gripper
-* CAN ID 25 = SparkMax = UNASSIGNED
+* CAN ID 25 = SparkMax = (UNASSIGNED)
 * CAN ID 26 = SparkMax = Arm
 
 ## Solenoid ID Assignments
