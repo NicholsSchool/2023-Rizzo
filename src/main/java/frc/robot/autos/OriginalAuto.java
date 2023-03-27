@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import java.util.List;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 
-public class DefaultAuto extends SequentialCommandGroup {
+public class OriginalAuto extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
 
-  public DefaultAuto(SwerveDrive _swerveDrive) {
+  public OriginalAuto(SwerveDrive _swerveDrive) {
 
     swerveDrive = _swerveDrive;
 

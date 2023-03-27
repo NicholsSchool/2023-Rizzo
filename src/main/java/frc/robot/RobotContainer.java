@@ -178,8 +178,8 @@ public class RobotContainer {
 
   public void configureAutoChooser(SendableChooser<Command> autoChooser) {
     autoChooser.setDefaultOption("Default Auto", null);
-    autoChooser.addOption("Swerve Auto", new DefaultAuto(swerveDrive));
-    autoChooser.addOption("Auto Test Class", new AutoTest(swerveDrive, intake, uprighter, gripper));
+    autoChooser.addOption("Original Auto", new OriginalAuto(swerveDrive));
+    autoChooser.addOption("Auto Test", new AutoTest(swerveDrive, intake, uprighter, gripper));
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
