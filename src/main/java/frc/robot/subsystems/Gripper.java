@@ -6,8 +6,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.CANID;
 import static frc.robot.Constants.GripperConstants.*;
 
@@ -38,7 +38,7 @@ public class Gripper extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Gripper Limit Switch: ", isPressed());
+    RobotContainer.gripperLimit.setBoolean(isPressed());
   }
 
   public void spinIn() {

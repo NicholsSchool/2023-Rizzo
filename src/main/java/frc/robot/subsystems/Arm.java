@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.CANID;
 import static frc.robot.Constants.ArmConstants.*;
 
@@ -64,8 +64,8 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     resetEncoderAtLimit();
-    SmartDashboard.putNumber("Arm Position: ", armEncoder.getPosition());
-    SmartDashboard.putBoolean("Arm Limit Switch: ", armLimitSwitch.get());
+    RobotContainer.armPos.setDouble(armEncoder.getPosition());
+    RobotContainer.armLimit.setBoolean(armLimitSwitch.get());
   }
 
   /**
