@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
 /**
- * Rotate chassis to a predefined position relative to the field.
+ * Rotate robot chassis to a predefined position relative to the field.
  */
 public class Rotate extends CommandBase {
 
@@ -29,6 +29,30 @@ public class Rotate extends CommandBase {
 
   @Override
   public void execute() {
+
+    double currentYaw = swerveDrive.getYaw();
+    double difference = desiredAngle - currentYaw;
+    double error = difference;
+    double angularRotation = 0.0;
+
+    if (difference > 180) {
+      difference -= 360;
+    } else if (difference < -180) {
+      difference += 360;
+    }
+
+    if (difference > 0) {
+      // turn clockwise
+    } else if (difference < 0) {
+      // turn counter-clockwise
+
+    }
+
+    swerveDrive.drive(xSpeed, ySpeed, angularRotation, true);
+
+  }
+
+  public void executed() {
 
     double currentYaw = swerveDrive.getYaw();
     double error = desiredAngle - currentYaw;

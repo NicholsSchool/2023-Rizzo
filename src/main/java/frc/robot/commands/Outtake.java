@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
 /**
- * Extracts a Cube using the intake, uprighter, and gripper.
+ * Outtake a Cube from the intake using the intake/uprighter/gripper motors.
  */
 public class Outtake extends CommandBase {
 
