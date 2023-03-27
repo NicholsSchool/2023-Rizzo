@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 // import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -14,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import static frc.robot.Constants.ArmConstants.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.GenericEntry;
 
 public class RobotContainer {
@@ -27,7 +28,11 @@ public class RobotContainer {
   private final Uprighter uprighter;
 
   // Shuffleboard
-  public static GenericEntry encoderEntry;
+  ShuffleboardTab walterTab;
+  public static GenericEntry armPos;
+  public static GenericEntry armLimit;
+  public static GenericEntry gripperLimit;
+  ComplexWidget autoChooserWidget;
 
   // OI controllers
   CommandXboxController driverOI;
@@ -62,11 +67,16 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // Configure autonomous chooser and SmartDashboard
+    // Configure autonomous chooser and Shuffleboard
     autoChooser = new SendableChooser<>();
     configureAutoChooser(autoChooser);
-    encoderEntry = Shuffleboard.getTab("Test Arm").add("Encoder Value", -7.7).getEntry();
-
+    walterTab = Shuffleboard.getTab("Walter");
+    armPos = walterTab.add("Arm Position", -7.7) //assuming arm starts back, 0.0 as default value?
+        .withPosition(4, 0).withSize(2, 2).getEntry();
+    armLimit = walterTab.add("Arm Limit Switch", false)
+        .withPosition(2, 0).withSize(2, 2).getEntry();
+    gripperLimit = walterTab.add("Gripper Limit Switch", false)
+        .withPosition(0, 0).withSize(2, 2).getEntry();
   }
 
   /** Define all button() to command() mappings. */
@@ -178,7 +188,7 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Default Auto", null);
     autoChooser.addOption("Swerve Auto", new DefaultAuto(swerveDrive));
     autoChooser.addOption("Auto Test Class", new AutoTest(swerveDrive, intake, uprighter, gripper));
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    autoChooserWidget = walterTab.add("Auto Chooser", autoChooser).withPosition(6, 0).withSize(2, 2);
   }
 
   /**
