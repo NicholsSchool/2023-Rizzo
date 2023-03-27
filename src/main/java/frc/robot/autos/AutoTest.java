@@ -90,28 +90,28 @@ public class AutoTest extends SequentialCommandGroup {
         new InstantCommand( () -> arm.setTargetPosition( ArmConstants.SCORING_POSITION ) ), //Bring arm to scoring position
         new InstantCommand( () -> gripper.open() ), //Open gripper
         new InstantCommand( () -> arm.setTargetPosition( ArmConstants.HUMAN_PLAYER_POSITION ) ), //Might change. Depends on if we trust the slowing down
-        new InstantCommand( () -> arm.setTargetPosition( ArmConstants.HOME_POSITION ) ), //Bring arm back to home position
+        new InstantCommand( () -> arm.setTargetPosition( ArmConstants.HOME_POSITION ) ) //Bring arm back to home position
 
-        //Test
-        //Drive backward one meter
-        new SwerveControllerCommand( backUpOneMeter, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS,
-            new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive),
+        // //Test
+        // //Drive backward one meter
+        // new SwerveControllerCommand( backUpOneMeter, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS,
+        //     new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive),
         
-        //new Rotate()
+        // //new Rotate()
 
-        //Test
-        //Drive to pick up cube
-        new SwerveControllerCommand( driveToGamePiece, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, 
-          new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive).raceWith(new Deploy(intake, uprighter, gripper).withTimeout(1.5) ),
+        // //Test
+        // //Drive to pick up cube
+        // new SwerveControllerCommand( driveToGamePiece, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, 
+        //   new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive).raceWith(new Deploy(intake, uprighter, gripper).withTimeout(1.5) ),
 
-        //new Rotate()
+        // //new Rotate()
 
-        //Test
-        //Drive to charge station
-        new SwerveControllerCommand( driveToChargeStation, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, 
-          new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive)
+        // //Test
+        // //Drive to charge station
+        // new SwerveControllerCommand( driveToChargeStation, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, 
+        //   new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive)
 
-        //new ShootCube()
+        // //new ShootCube()
 
     );
   }
