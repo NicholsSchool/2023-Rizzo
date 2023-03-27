@@ -22,7 +22,7 @@ public class RobotContainer {
   // Subsystems
   private final SwerveDrive swerveDrive;
   private final Gripper gripper;
-  private final Arm arm;
+  public final Arm arm;
   private final Intake intake;
   private final Uprighter uprighter;
 
@@ -95,7 +95,8 @@ public class RobotContainer {
 
     // DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
     // working
-    driverOI.rightTrigger().whileTrue(new Deploy(intake, uprighter, gripper))
+    driverOI.rightTrigger()
+        .whileTrue(new Deploy(intake, uprighter, gripper))
         .onFalse(new Retract(intake, uprighter, gripper));
 
     // DRIVER Left Bumper: Close intake flappers.
@@ -138,6 +139,7 @@ public class RobotContainer {
         new RunCommand(() -> gripper.spin(-MathUtil.applyDeadband(operatorOI.getLeftY(), 0.05)), gripper));
 
     // OPERATOR Right Stick: Direct control over the Arm.
+    // working
     new Trigger(() -> Math.abs(operatorOI.getRightY()) > 0.05)
         .whileTrue((new RunCommand(() -> arm.runManual(-operatorOI.getRightY()), arm)));
 

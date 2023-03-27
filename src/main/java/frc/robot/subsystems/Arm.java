@@ -39,8 +39,7 @@ public class Arm extends SubsystemBase {
     armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) SOFT_LIMIT_FORWARD);
     armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) SOFT_LIMIT_REVERSE);
-    armMotor.setIdleMode(IdleMode.kBrake); // while testing, set to kCoast
-    // armMotor.setIdleMode(IdleMode.kBrake);
+    armMotor.setIdleMode(IdleMode.kBrake);
 
     armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
     armEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION_FACTOR);
@@ -88,14 +87,6 @@ public class Arm extends SubsystemBase {
     TrapezoidProfile.State goal = new TrapezoidProfile.State(armSetpoint, 0.0);
     motorProfile = new TrapezoidProfile(ARM_MOTION_CONSTRAINTS, goal, state);
     timer.reset();
-  }
-
-  /**
-   * Using during testing the arm.
-   * Don't use this method during competition.
-   */
-  public void dummy() {
-    return;
   }
 
   /**
@@ -148,6 +139,21 @@ public class Arm extends SubsystemBase {
     if (armLimitSwitch.get() == false) {
       resetEncoder();
     }
+  }
+
+  /**
+   * Testing Init. Setup the arm for testing.
+   */
+  public void armTestingInit() {
+    armMotor.setIdleMode(IdleMode.kCoast);
+  }
+
+  /**
+   * Testing Periodic. Put arm values on network tables.
+   */
+  public void armTestingPeriodic() {
+    SmartDashboard.putNumber("Arm Position: ", armEncoder.getPosition());
+    SmartDashboard.putBoolean("Arm Limit Switch: ", armLimitSwitch.get());
   }
 
 }
