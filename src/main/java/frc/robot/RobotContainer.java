@@ -124,10 +124,18 @@ public class RobotContainer {
 
     // DRIVER X,Y,B,A Buttons: Set chassis to predefined field relative angle.
     // NOT working (it's a math problem)
-    driverOI.x().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 90));
-    driverOI.y().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 0));
-    driverOI.b().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) -90));
-    driverOI.a().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 180));
+    // driverOI.x().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(),
+    // driverOI.getLeftX(), (double) 90));
+    // driverOI.y().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(),
+    // driverOI.getLeftX(), (double) 0));
+    // driverOI.b().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(),
+    // driverOI.getLeftX(), (double) -90));
+    // driverOI.a().whileTrue(new Rotate(swerveDrive, driverOI.getLeftY(),
+    // driverOI.getLeftX(), (double) 180));
+    driverOI.x().whileTrue(new TurnToAngle(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 90));
+    driverOI.y().whileTrue(new TurnToAngle(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 0));
+    driverOI.b().whileTrue(new TurnToAngle(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) -90));
+    driverOI.a().whileTrue(new TurnToAngle(swerveDrive, driverOI.getLeftY(), driverOI.getLeftX(), (double) 180));
 
     // DRIVER Start Button: Reset gyro to a new field oriented forward position.
     // working
