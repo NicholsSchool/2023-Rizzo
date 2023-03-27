@@ -37,7 +37,7 @@ public final class Constants {
     public static final int ARM_CURRENT_LIMIT = 28;
     public static final double ARM_MANUAL_SCALED = 0.28;
 
-    public static final double ARM_GEAR_RATIO = 1.0 / (224);
+    public static final double ARM_GEAR_RATIO = 1.0 / (224); // 1:224 planetary gear ratio
     public static final double POSITION_CONVERSION_FACTOR = ARM_GEAR_RATIO * 2.0 * Math.PI;
     public static final double VELOCITY_CONVERSION_FACTOR = ARM_GEAR_RATIO * 2.0 * Math.PI / 60.0;
     public static final double ARM_FREE_SPEED = 5676.0 * VELOCITY_CONVERSION_FACTOR;

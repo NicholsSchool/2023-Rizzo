@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 // import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -23,7 +24,7 @@ public class RobotContainer {
   // Subsystems
   private final SwerveDrive swerveDrive;
   private final Gripper gripper;
-  private final Arm arm;
+  public final Arm arm;
   private final Intake intake;
   private final Uprighter uprighter;
 
@@ -71,12 +72,9 @@ public class RobotContainer {
     autoChooser = new SendableChooser<>();
     configureAutoChooser(autoChooser);
     walterTab = Shuffleboard.getTab("Walter");
-    armPos = walterTab.add("Arm Position", -7.7) //assuming arm starts back, 0.0 as default value?
-        .withPosition(4, 0).withSize(2, 2).getEntry();
-    armLimit = walterTab.add("Arm Limit Switch", false)
-        .withPosition(2, 0).withSize(2, 2).getEntry();
-    gripperLimit = walterTab.add("Gripper Limit Switch", false)
-        .withPosition(0, 0).withSize(2, 2).getEntry();
+    armPos = walterTab.add("Arm Position", -7.7).withPosition(4, 0).withSize(2, 2).getEntry();
+    armLimit = walterTab.add("Arm Limit Switch", false).withPosition(2, 0).withSize(2, 2).getEntry();
+    gripperLimit = walterTab.add("Gripper Limit Switch", false).withPosition(0, 0).withSize(2, 2).getEntry();
   }
 
   /** Define all button() to command() mappings. */
@@ -105,7 +103,8 @@ public class RobotContainer {
 
     // DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
     // working
-    driverOI.rightTrigger().whileTrue(new Deploy(intake, uprighter, gripper))
+    driverOI.rightTrigger()
+        .whileTrue(new Deploy(intake, uprighter, gripper))
         .onFalse(new Retract(intake, uprighter, gripper));
 
     // DRIVER Left Bumper: Close intake flappers.
@@ -148,6 +147,7 @@ public class RobotContainer {
         new RunCommand(() -> gripper.spin(-MathUtil.applyDeadband(operatorOI.getLeftY(), 0.05)), gripper));
 
     // OPERATOR Right Stick: Direct control over the Arm.
+    // working
     new Trigger(() -> Math.abs(operatorOI.getRightY()) > 0.05)
         .whileTrue((new RunCommand(() -> arm.runManual(-operatorOI.getRightY()), arm)));
 
@@ -186,9 +186,9 @@ public class RobotContainer {
 
   public void configureAutoChooser(SendableChooser<Command> autoChooser) {
     autoChooser.setDefaultOption("Default Auto", null);
-    autoChooser.addOption("Swerve Auto", new DefaultAuto(swerveDrive));
-    autoChooser.addOption("Auto Test Class", new AutoTest(swerveDrive, intake, uprighter, gripper));
-    autoChooserWidget = walterTab.add("Auto Chooser", autoChooser).withPosition(6, 0).withSize(2, 2);
+    autoChooser.addOption("Original Auto", new OriginalAuto(swerveDrive));
+    autoChooser.addOption("Auto Test", new AutoTest(swerveDrive, intake, uprighter, gripper));
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   /**
