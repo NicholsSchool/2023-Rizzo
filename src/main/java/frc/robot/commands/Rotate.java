@@ -32,6 +32,7 @@ public class Rotate extends CommandBase {
 
     double currentYaw = swerveDrive.getYaw();
     double difference = desiredAngle - currentYaw;
+    double error = difference;
     double angularRotation = 0.0;
 
     if (difference > 180) {
@@ -42,7 +43,6 @@ public class Rotate extends CommandBase {
 
     if (difference > 0) {
       // turn clockwise
-
     } else if (difference < 0) {
       // turn counter-clockwise
 
