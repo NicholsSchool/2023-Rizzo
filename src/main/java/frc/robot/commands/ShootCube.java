@@ -10,29 +10,27 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Uprighter;
 
 public class ShootCube extends CommandBase {
-    Intake intake;
-    Uprighter uprighter;
-    Gripper gripper;
+  Intake intake;
+  Uprighter uprighter;
+  Gripper gripper;
 
-
-  public ShootCube( Gripper gripper, Intake intake, Uprighter uprighter ) {
+  public ShootCube(Gripper gripper, Intake intake, Uprighter uprighter) {
 
     this.gripper = gripper;
-    this.intake = intake; 
-    this.uprighter = uprighter; 
+    this.intake = intake;
+    this.uprighter = uprighter;
 
-    addRequirements( this.gripper, this.intake, this.uprighter );
-    
+    addRequirements(this.gripper, this.intake, this.uprighter);
+
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
+  public void initialize() {
+  }
 
   @Override
-  public void execute()
-  {
+  public void execute() {
     gripper.spinOut();
     uprighter.spinOut();
     intake.spinOut();
@@ -41,8 +39,7 @@ public class ShootCube extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted)
-  {
+  public void end(boolean interrupted) {
     gripper.stop();
     uprighter.stop();
     intake.stop();

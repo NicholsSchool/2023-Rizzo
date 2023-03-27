@@ -66,6 +66,7 @@ public class Arm extends SubsystemBase {
     resetEncoderAtLimit();
     RobotContainer.armPos.setDouble(armEncoder.getPosition());
     RobotContainer.armLimit.setBoolean(armLimitSwitch.get());
+    // System.out.println(armEncoder.getPosition());
   }
 
   /**
@@ -128,7 +129,7 @@ public class Arm extends SubsystemBase {
   public void resetEncoder() {
     if (armEncoder.getPosition() != 0.0) {
       armEncoder.setPosition(0.0);
-      System.out.println("Resetting encoder: " + armEncoder.getPosition());
+      // System.out.println("Resetting encoder: " + armEncoder.getPosition());
     }
 
   }
