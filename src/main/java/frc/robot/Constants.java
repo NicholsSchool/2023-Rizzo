@@ -26,16 +26,20 @@ public final class Constants {
 
   // Arm (Manipulator)
   public static final class ArmConstants {
-    public static final double HOME_POSITION = 0.0;
-    public static final double HUMAN_PLAYER_POSITION = 0.81; // 0.78 = parallel
-    public static final double SCORING_POSITION = 3.02;
+    public static final double POSITION_00 = 0.0;
+    public static final double POSITION_01 = 0.75; // ~0.80 = parallel
+    public static final double POSITION_02 = 1.25;
+    public static final double POSITION_03 = 1.75;
+    public static final double POSITION_04 = 2.33;
+    public static final double POSITION_05 = 2.75;
+    public static final double POSITION_06 = 3.14; // scoring position
     public static final double SOFT_LIMIT_REVERSE = 0.0;
     public static final double SOFT_LIMIT_FORWARD = 4.7;
 
     public static final int ARM_LIMIT_SWITCH_DIO_CHANNEL = 0;
 
-    public static final int ARM_CURRENT_LIMIT = 28;
-    public static final double ARM_MANUAL_SCALED = 0.28;
+    public static final int ARM_CURRENT_LIMIT = 34;
+    public static final double ARM_MANUAL_SCALED = 0.42;
 
     public static final double ARM_GEAR_RATIO = 1.0 / (224); // 1:224 planetary gear ratio
     public static final double POSITION_CONVERSION_FACTOR = ARM_GEAR_RATIO * 2.0 * Math.PI;
@@ -43,8 +47,8 @@ public final class Constants {
     public static final double ARM_FREE_SPEED = 5676.0 * VELOCITY_CONVERSION_FACTOR;
     public static final double ARM_ZERO_COSINE_OFFSET = -Math.PI / 6;
     public static final ArmFeedforward ARM_FF = new ArmFeedforward(0.0, 0.4, 12.0 / ARM_FREE_SPEED, 0.0);
-    public static final double ARM_DEFAULT_P = 0.70;
-    public static final double ARM_DEFAULT_I = 0.0;
+    public static final double ARM_DEFAULT_P = 0.81;
+    public static final double ARM_DEFAULT_I = 0.03;
     public static final double ARM_DEFAULT_D = 0.0;
     public static final Constraints ARM_MOTION_CONSTRAINTS = new Constraints(0.5, 0.5);
 

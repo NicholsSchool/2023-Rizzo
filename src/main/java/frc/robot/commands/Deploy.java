@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.subsystems.*;
 
 /**
@@ -11,12 +13,14 @@ public class Deploy extends CommandBase {
   private Intake intake;
   private Uprighter uprighter;
   private Gripper gripper;
+  XboxController rumbler;
 
-  public Deploy(Intake _intake, Uprighter _uprighter, Gripper _gripper) {
+  public Deploy(Intake _intake, Uprighter _uprighter, Gripper _gripper, XboxController _rumbler) {
 
     intake = _intake;
     uprighter = _uprighter;
     gripper = _gripper;
+    rumbler = _rumbler;
 
     addRequirements(intake, uprighter, gripper);
   }
@@ -32,6 +36,9 @@ public class Deploy extends CommandBase {
     intake.spinIn();
     uprighter.spinIn();
     gripper.spinIn();
+    if (!gripper.isPressed()) {
+      rumbler.setRumble(RumbleType.kBothRumble, 0.75);
+    }
   }
 
   @Override
@@ -41,6 +48,7 @@ public class Deploy extends CommandBase {
     intake.stop();
     uprighter.stop();
     gripper.stop();
+    rumbler.setRumble(RumbleType.kBothRumble, 0.0);
   }
 
   @Override

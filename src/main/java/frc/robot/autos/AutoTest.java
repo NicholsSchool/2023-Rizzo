@@ -37,8 +37,7 @@ public class AutoTest extends SequentialCommandGroup {
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
 
-            new Translation2d(1, 0.1)
-        ),
+            new Translation2d(1, 0.1)),
         // Final X/Y position in meters and rotation in radians.
         new Pose2d(1.5, 0, new Rotation2d(0)),
         config);
@@ -47,71 +46,81 @@ public class AutoTest extends SequentialCommandGroup {
         // Zero the starting pose of the trajectory.
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
-            new Translation2d( -0.5, 0.1 )
-        ),
+            new Translation2d(-0.5, 0.1)),
         // Final X/Y position in meters and rotation in radians.
-        new Pose2d( -1, 0, new Rotation2d(0)),
+        new Pose2d(-1, 0, new Rotation2d(0)),
         config);
 
-        Trajectory driveToChargeStation = TrajectoryGenerator.generateTrajectory(
+    Trajectory driveToChargeStation = TrajectoryGenerator.generateTrajectory(
         // Zero the starting pose of the trajectory.
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
-            new Translation2d( 1, -0.5 )
-        ),
+            new Translation2d(1, -0.5)),
         // Final X/Y position in meters and rotation in radians.
-        new Pose2d( 1, -1, new Rotation2d(0)),
+        new Pose2d(1, -1, new Rotation2d(0)),
         config);
-
-   
 
     var thetaController = new ProfiledPIDController(1.0, 0, 0, new Constraints(Math.PI, Math.PI));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    System.out.println("Angle: " + swerveDrive.getHeading());
+    // System.out.println("Angle: " + swerveDrive.getHeading());
+    System.out.println("I AM RUNNING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-    addRequirements(swerveDrive, intake, gripper);
+    addRequirements(swerveDrive, intake, gripper, arm, uprighter);
     addCommands(
 
-      //TEST EVERYTHING INDIVIDUALLY AND THEN CHAIN TOGETHER
+        // TEST EVERYTHING INDIVIDUALLY AND THEN CHAIN TOGETHER
 
-      //Arm stuff
-      //Backup a little
-      //Turn
-      //Forward
-      //Forward to pickup game piece
-      //Turn
-      //Drive to charge station
-      //Shoot cube
+        // Arm stuff
+        // Backup a little
+        // Turn
+        // Forward
+        // Forward to pickup game piece
+        // Turn
+        // Drive to charge station
+        // Shoot cube
 
+        // Test
+        new InstantCommand(() -> gripper.close()), // Close gripper on cone
+        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_01)), // will it move off of 0.0 ???
+        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_02)),
+        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_03)),
+        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_04)),
+        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_05)),
+        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_06)), // Bring arm to scoring position
+        new InstantCommand(() -> gripper.open()), // Open gripper
+        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_00)) // Might change. Depends on if we
+                                                                                  // trust the slowing down
+    // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_00)) //
+    // Bring arm back to home position
 
-        //Test
-        new InstantCommand( () -> gripper.close() ), //Close gripper on cone
-        new InstantCommand( () -> arm.setTargetPosition( ArmConstants.SCORING_POSITION ) ), //Bring arm to scoring position
-        new InstantCommand( () -> gripper.open() ), //Open gripper
-        new InstantCommand( () -> arm.setTargetPosition( ArmConstants.HUMAN_PLAYER_POSITION ) ), //Might change. Depends on if we trust the slowing down
-        new InstantCommand( () -> arm.setTargetPosition( ArmConstants.HOME_POSITION ) ) //Bring arm back to home position
+    // //Test
+    // //Drive backward one meter
+    // new SwerveControllerCommand( backUpOneMeter, swerveDrive::getPose,
+    // SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS,
+    // new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController,
+    // swerveDrive::setModuleStates, swerveDrive),
 
-        // //Test
-        // //Drive backward one meter
-        // new SwerveControllerCommand( backUpOneMeter, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS,
-        //     new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive),
-        
-        // //new Rotate()
+    // //new Rotate()
 
-        // //Test
-        // //Drive to pick up cube
-        // new SwerveControllerCommand( driveToGamePiece, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, 
-        //   new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive).raceWith(new Deploy(intake, uprighter, gripper).withTimeout(1.5) ),
+    // //Test
+    // //Drive to pick up cube
+    // new SwerveControllerCommand( driveToGamePiece, swerveDrive::getPose,
+    // SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS,
+    // new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController,
+    // swerveDrive::setModuleStates, swerveDrive).raceWith(new Deploy(intake,
+    // uprighter, gripper).withTimeout(1.5) ),
 
-        // //new Rotate()
+    // //new Rotate()
 
-        // //Test
-        // //Drive to charge station
-        // new SwerveControllerCommand( driveToChargeStation, swerveDrive::getPose, SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, 
-        //   new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController, swerveDrive::setModuleStates, swerveDrive)
+    // //Test
+    // //Drive to charge station
+    // new SwerveControllerCommand( driveToChargeStation, swerveDrive::getPose,
+    // SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS,
+    // new PIDController(1.0, 0, 0), new PIDController(1.0, 0, 0), thetaController,
+    // swerveDrive::setModuleStates, swerveDrive)
 
-        // //new ShootCube()
+    // //new ShootCube()
 
     );
   }
