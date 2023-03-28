@@ -103,11 +103,11 @@ public class RobotContainer {
         .whileTrue(new Deploy(intake, uprighter, gripper, driverRumbler))
         .onFalse(new Retract(intake, uprighter, gripper));
 
-    // DRIVER Left Bumper: Close intake flappers.
-    driverOI.leftBumper().onTrue(new InstantCommand(() -> intake.close(), intake));
+    // DRIVER Right Bumper: Close intake flappers.
+    driverOI.rightBumper().onTrue(new InstantCommand(() -> intake.close(), intake));
 
-    // DRIVER Right Bumper: Open intake flappers.
-    driverOI.rightBumper().onTrue(new InstantCommand(() -> intake.open(), intake));
+    // DRIVER Left Bumper: Open intake flappers.
+    driverOI.leftBumper().onTrue(new InstantCommand(() -> intake.open(), intake));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
     driverOI.povUp().whileTrue(new Nudge(swerveDrive, "DRIVER NUDGE FORWARD", false).withTimeout(0.5));
