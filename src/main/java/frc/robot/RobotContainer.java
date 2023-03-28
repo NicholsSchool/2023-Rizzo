@@ -41,7 +41,7 @@ public class RobotContainer {
   public static XboxController operatorRumbler;
 
   // Autonomous Chooser
-  SendableChooser<Command> autoChooser;
+  public static SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
 
@@ -68,8 +68,8 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure autonomous chooser and Shuffleboard
-    autoChooser = new SendableChooser<>();
-    configureAutoChooser(autoChooser);
+    autoChooser = new SendableChooser<Command>();
+    configureAutoChooser();
     walterTab = Shuffleboard.getTab("Walter");
     armPos = walterTab.add("Arm Position", -7.7).withPosition(4, 0).withSize(2, 2).getEntry();
     armLimit = walterTab.add("Arm Limit Switch", false).withPosition(2, 0).withSize(2, 2).getEntry();
@@ -178,11 +178,11 @@ public class RobotContainer {
 
   }
 
-  public void configureAutoChooser(SendableChooser<Command> autoChooser) {
+  public void configureAutoChooser() {
     autoChooser.setDefaultOption("Default Auto", null);
     autoChooser.addOption("Original Auto", new OriginalAuto(swerveDrive));
     autoChooser.addOption("Auto Test", new AutoTest(swerveDrive, intake, uprighter, gripper, arm));
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData(RobotContainer.autoChooser);
   }
 
   /**
