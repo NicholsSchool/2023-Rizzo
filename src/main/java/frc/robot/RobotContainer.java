@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
@@ -144,7 +145,7 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> intake.raise(), intake));
 
     // OPERATOR Right Trigger: Outtake a Cube (intake, uprighter, gripper).
-    operatorOI.rightTrigger().whileTrue(new Outtake(intake, uprighter, gripper))
+    operatorOI.rightTrigger().whileTrue(new Outtake(intake))
         .onFalse(new Retract(intake, uprighter, gripper));
 
     // OPERATOR Left Bumper: Close gripper.
@@ -168,7 +169,9 @@ public class RobotContainer {
         .andThen(new InstantCommand(() -> arm.setTargetPosition(POSITION_05)))
         .andThen(new InstantCommand(() -> arm.setTargetPosition(POSITION_06))));
 
-    operatorOI.start().onTrue(new ShootCube(gripper, intake, uprighter).withTimeout(1.0));
+    operatorOI.start().whileTrue(new OuttakeLow(intake));
+
+
 
     // OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
     operatorOI.povUp().whileTrue(new Nudge(swerveDrive, "OPERATOR NUDGE FORWARD", true).withTimeout(0.5));
@@ -179,8 +182,8 @@ public class RobotContainer {
   }
 
   public void configureAutoChooser() {
-    autoChooser.setDefaultOption("Default Auto", null);
-    autoChooser.addOption("Original Auto", new OriginalAuto(swerveDrive));
+    autoChooser.setDefaultOption("Default Auto", new PrintCommand( "I'm Working" ));
+    autoChooser.addOption("Cube Shoot Blue", new CubeShootBlue(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Auto Test", new AutoTest(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
   }

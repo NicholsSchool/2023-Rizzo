@@ -5,43 +5,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Uprighter;
 
-public class ShootCube extends CommandBase {
+public class OuttakeLow extends CommandBase {
+
   Intake intake;
-  Uprighter uprighter;
-  Gripper gripper;
 
-  public ShootCube(Gripper gripper, Intake intake, Uprighter uprighter) {
+  /** Creates a new ShootCubeLow. */
+  public OuttakeLow(Intake intake) {
 
-    this.gripper = gripper;
     this.intake = intake;
-    this.uprighter = uprighter;
 
-    addRequirements(this.gripper, this.intake, this.uprighter);
-
+    addRequirements(this.intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    gripper.spinOut();
-    uprighter.spinOut();
-    intake.spinOut();
-
+    intake.spinOutLow();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    gripper.stop();
-    uprighter.stop();
     intake.stop();
   }
 
