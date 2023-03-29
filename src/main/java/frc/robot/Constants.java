@@ -15,6 +15,7 @@ public final class Constants {
   public static final class IntakeConstants {
     public static final double INTAKE_SPEED = 0.6;
     public static final double OUTTAKE_SPEED = 1.0;
+    public static final double OUTTAKE_GOVERNOR = 0.5;
     public static final int INTAKE_PISTON_SOLENOID_CHANNEL = 1;
     public static final int LIFTER_PISTON_SOLENOID_CHANNEL = 2;
   }

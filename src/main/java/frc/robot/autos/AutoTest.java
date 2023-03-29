@@ -12,6 +12,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.ArmConstants;
@@ -81,15 +82,15 @@ public class AutoTest extends SequentialCommandGroup {
         // Shoot cube
 
         // Test
-        new InstantCommand(() -> gripper.close()), // Close gripper on cone
-        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_01)), // will it move off of 0.0 ???
-        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_02)),
-        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_03)),
-        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_04)),
-        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_05)),
-        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_06)), // Bring arm to scoring position
-        new InstantCommand(() -> gripper.open()), // Open gripper
-        new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_00)) // Might change. Depends on if we
+        new RunCommand(() -> gripper.close(), intake).withTimeout(2), // Close gripper on cone
+        // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_01)), // will it move off of 0.0 ???
+        // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_02)),
+        // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_03)),
+        // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_04)),
+        // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_05)),
+        // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_06)), // Bring arm to scoring position
+        new RunCommand(() -> gripper.open(), intake) // Open gripper
+       // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_00)) // Might change. Depends on if we
                                                                                   // trust the slowing down
     // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_00)) //
     // Bring arm back to home position

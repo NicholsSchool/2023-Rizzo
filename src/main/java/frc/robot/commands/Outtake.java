@@ -9,16 +9,13 @@ import frc.robot.subsystems.*;
 public class Outtake extends CommandBase {
 
   Intake intake;
-  Uprighter uprighter;
-  Gripper gripper;
 
-  public Outtake(Intake _intake, Uprighter _uprighter, Gripper _gripper) {
+  public Outtake(Intake _intake ) {
 
     intake = _intake;
-    uprighter = _uprighter;
-    gripper = _gripper;
+    
 
-    addRequirements(intake, uprighter, gripper);
+    addRequirements(intake);
   }
 
   @Override
@@ -28,15 +25,11 @@ public class Outtake extends CommandBase {
   @Override
   public void execute() {
     intake.spinOut();
-    uprighter.spinOut();
-    gripper.spinOut();
   }
 
   @Override
   public void end(boolean interrupted) {
     intake.stop();
-    uprighter.stop();
-    gripper.stop();
   }
 
   @Override
