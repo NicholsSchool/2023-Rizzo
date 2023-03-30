@@ -6,32 +6,32 @@
 * Note: When the robot starts, make sure the arm is on the HOME position limit switch.
 
 ## Diver OI Controller Setup:
-- [x] DRIVER Left Stick: Translational movement relative to the field.
+- [x] DRIVER Left & Right Stick: Translational and rotational robot movement.
 - [x] DRIVER Right Stick: Rotational movement of the robot chassis.
 - [x] DRIVER Left Trigger: While held, switch to virtual high gear.
 - [x] DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
-- [x] DRIVER Left Bumper: Close intake flappers.
-- [x] DRIVER Right Bumper: Open intake flappers.
+- [x] DRIVER Left Bumper: While held, switch to virtual high gear.
+- [x] DRIVER Right Bumper: While held, close intake flappers.
 - [x] DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-- [ ] DRIVER X (←) Button: Rotate chassis to +90-degree position relative to the field.
-- [ ] DRIVER Y (↑) Button: Rotate chassis to 0-degree position relative to the field.
-- [ ] DRIVER B (→) Button: Rotate chassis to -90-degree position relative to the field.
-- [ ] DRIVER A (↓) Button: Rotate chassis to 180-degree position relative to the field.
-- [x] DRIVER Start (→) Button: Reset gyro to a new field oriented forward position.
+- [x] DRIVER X (←) Button: Rotate chassis to +90-degree position relative to the field.
+- [x] DRIVER Y (↑) Button: Rotate chassis to 0-degree position relative to the field.
+- [x] DRIVER B (→) Button: Rotate chassis to -90-degree position relative to the field.
+- [x] DRIVER A (↓) Button: Rotate chassis to 180-degree position relative to the field.
 - [x] DRIVER Back (←) Button: Set swerve drive to a stationary X position.
+- [x] DRIVER Start (→) Button: Reset gyro to a new field oriented forward position.
 
 ## Operator OI Controller Setup:
-- [x] OPERATOR Left Stick: Spin gripper motors.
+- [x] OPERATOR Left Stick: Spin gripper motors and rumble.
 - [x] OPERATOR Right Stick: Direct control over the Arm.
 - [x] OPERATOR Left Trigger: While held, lower the intake.
-- [x] OPERATOR Right Trigger: Outtake a Cube (intake, uprighter, gripper).
-- [x] OPERATOR Left Bumper: Close gripper.
-- [x] OPERATOR Right Bumper: Open gripper.
+- [x] OPERATOR Right Trigger: High power Outtake.
+- [x] OPERATOR Left Bumper: Toggle gripper piston.
+- [x] OPERATOR Right Bumper: Low power Outtake.
 - [x] OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
 - [x] OPERATOR X (←) Button: Go to HOME position and lock.
-- [x] OPERATOR Y (↑) Button: Go to HUMAN PLAYER position and lock.
-- [x] OPERATOR B (→) Button: Go to SCORING position and lock.
-- [ ] OPERATOR A (↓) Button:
+- [x] OPERATOR Y (↑) Button: Go to TEST position and lock.
+- [x] OPERATOR B (→) Button: Go to HIGH SCORING position and lock.
+- [x] OPERATOR A (↓) Button: Go to LOW SCORING / HUMAN PLAYER position and lock.
 - [ ] OPERATOR Start (→) Button:
 - [ ] OPERATOR Back (←) Button:
 

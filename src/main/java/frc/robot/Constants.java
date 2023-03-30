@@ -28,10 +28,9 @@ public final class Constants {
   // Arm (Manipulator)
   public static final class ArmConstants {
     public static final double POSITION_00 = 0.0; // home position
-    public static final double POSITION_01 = 0.80; // test position (parallel to ground)
-    public static final double POSITION_02 = 3.14; // scoring position
-    public static final double POSITION_03 = 3.29; // human player position
-    public static final double POSITION_04 = 3.32; // low goal position
+    public static final double POSITION_01 = 0.83; // test position (parallel to ground)
+    public static final double POSITION_02 = Math.PI; // high scoring position
+    public static final double POSITION_03 = 3.32; // low scoring position & human player position
 
     public static final double SOFT_LIMIT_REVERSE = 0.0;
     public static final double SOFT_LIMIT_FORWARD = 4.5;
