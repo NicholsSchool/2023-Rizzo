@@ -5,14 +5,17 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.subsystems.*;
 
-public class Close extends CommandBase {
+/**
+ * Closes the gripper.
+ */
+public class CloseGripper extends CommandBase {
 
   private Gripper gripper;
   XboxController driverRumbler;
   XboxController operatorRumbler;
   double startTime;
 
-  public Close(Gripper _gripper, XboxController _driverRumbler, XboxController _operatorRumbler) {
+  public CloseGripper(Gripper _gripper, XboxController _driverRumbler, XboxController _operatorRumbler) {
     gripper = _gripper;
     driverRumbler = _driverRumbler;
     operatorRumbler = _operatorRumbler;

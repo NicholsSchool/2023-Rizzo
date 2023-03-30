@@ -47,21 +47,20 @@ public class Intake extends SubsystemBase {
 
   // Intake Motors
 
+  public void spinOutAtSpeed(Double speed) {
+    intakeMotorLeft.set(-speed);
+    intakeMotorRight.set(speed);
+  }
+
   public void spinIn() {
     intakeMotorLeft.set(INTAKE_SPEED);
     intakeMotorRight.set(-INTAKE_SPEED);
   }
 
-  public void spinOutLow() {
-    intakeMotorLeft.set(-OUTTAKE_SPEED * OUTTAKE_GOVERNOR);
-    intakeMotorRight.set(OUTTAKE_SPEED * OUTTAKE_GOVERNOR);
-  }
-
   public void spinOut() {
-    intakeMotorLeft.set(-OUTTAKE_SPEED);
-    intakeMotorRight.set(OUTTAKE_SPEED);
+    intakeMotorLeft.set(-OUTTAKE_HIGH_SPEED);
+    intakeMotorRight.set(OUTTAKE_HIGH_SPEED);
   }
-
 
   public void stop() {
     intakeMotorLeft.stopMotor();

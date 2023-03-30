@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.SwerveDriveConstants;
-import frc.robot.commands.Deploy;
+import frc.robot.commands.DeployIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Intake;
@@ -83,15 +83,18 @@ public class AutoTest extends SequentialCommandGroup {
 
         // Test
         new RunCommand(() -> gripper.close(), intake).withTimeout(2), // Close gripper on cone
-        // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_01)), // will it move off of 0.0 ???
+        // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_01)), //
+        // will it move off of 0.0 ???
         // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_02)),
         // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_03)),
         // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_04)),
         // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_05)),
-        // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_06)), // Bring arm to scoring position
+        // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_06)), //
+        // Bring arm to scoring position
         new RunCommand(() -> gripper.open(), intake) // Open gripper
-       // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_00)) // Might change. Depends on if we
-                                                                                  // trust the slowing down
+    // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_00)) //
+    // Might change. Depends on if we
+    // trust the slowing down
     // new InstantCommand(() -> arm.setTargetPosition(ArmConstants.POSITION_00)) //
     // Bring arm back to home position
 

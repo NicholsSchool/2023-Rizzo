@@ -16,6 +16,7 @@ public class Gripper extends SubsystemBase {
   private CANSparkMax spinner;
   private Solenoid pincher;
   private DigitalInput limitSwitch;
+  private boolean isOpen = true;
 
   public Gripper() {
 
@@ -55,10 +56,20 @@ public class Gripper extends SubsystemBase {
 
   public void open() {
     pincher.set(false);
+    isOpen = true;
   }
 
   public void close() {
     pincher.set(true);
+    isOpen = false;
+  }
+
+  public void toggle() {
+    if (isOpen) {
+      close();
+    } else {
+      open();
+    }
   }
 
   // Is limit switch pressed?
