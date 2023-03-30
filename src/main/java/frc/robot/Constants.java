@@ -27,11 +27,10 @@ public final class Constants {
 
   // Arm (Manipulator)
   public static final class ArmConstants {
-    public static final double POSITION_00 = 0.0;
-    public static final double POSITION_01 = 0.80; // test position (parallel to ground)
-    public static final double POSITION_05 = 3.14; // scoring position
-    public static final double POSITION_02 = 3.29; // human player position
-    public static final double POSITION_03 = 3.34; // another human player position
+    public static final double POSITION_00 = 0.0; // home position
+    public static final double POSITION_01 = 0.83; // test position (parallel to ground)
+    public static final double POSITION_02 = Math.PI; // high scoring position
+    public static final double POSITION_03 = 3.32; // low scoring position & human player position
 
     public static final double SOFT_LIMIT_REVERSE = 0.0;
     public static final double SOFT_LIMIT_FORWARD = 4.5;
@@ -118,7 +117,7 @@ public final class Constants {
     public static final IdleMode DRIVING_MOTOR_IDLE_MODE = IdleMode.kBrake;
     public static final IdleMode TURNING_MOTOR_IDLE_MODE = IdleMode.kBrake;
 
-    public static final int DRIVING_MOTOR_CURRENT_LIMIT = 15; // amps
+    public static final int DRIVING_MOTOR_CURRENT_LIMIT = 18; // amps
     public static final int TURNING_MOTOR_CURRENT_LIMIT = 12; // amps
   }
 

@@ -140,7 +140,7 @@ public class RobotContainer {
     // ################ OPERATOR OI CONTROLLER ################
     // ########################################################
 
-    // OPERATOR Left Stick: Spin gripper motors.
+    // OPERATOR Left Stick: Spin gripper motors and rumble.
     gripper.setDefaultCommand(
         new SpinGripper(-MathUtil.applyDeadband(operatorOI.getLeftY(), 0.05), driverRumbler, operatorRumbler, gripper));
 
