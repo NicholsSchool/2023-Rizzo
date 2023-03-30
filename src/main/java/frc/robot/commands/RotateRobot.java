@@ -12,10 +12,10 @@ public class RotateRobot extends CommandBase {
   SwerveDrive swerveDrive;
   Double desiredAngle;
 
-  public RotateRobot(SwerveDrive _swerveDrive, Double _angle) {
+  public RotateRobot(SwerveDrive _swerveDrive, Double _desiredAngle) {
 
     swerveDrive = _swerveDrive;
-    desiredAngle = _angle;
+    desiredAngle = _desiredAngle;
 
     addRequirements(swerveDrive);
   }
