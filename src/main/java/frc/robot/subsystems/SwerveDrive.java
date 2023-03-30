@@ -9,6 +9,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANID;
@@ -63,6 +65,7 @@ public class SwerveDrive extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry with esitmated robot pose.
+    // System.out.println(getContinuousAngle());
     robotOdometry.update(
         Rotation2d.fromDegrees(getContinuousAngle()),
         new SwerveModulePosition[] {
@@ -75,7 +78,7 @@ public class SwerveDrive extends SubsystemBase {
 
   /** Get the current continuously accruing angle of the AHRS. */
   public double getContinuousAngle() {
-    return navX.getAngle();
+    return -navX.getAngle();
   }
 
   /** Reset the AHRS to zero. */

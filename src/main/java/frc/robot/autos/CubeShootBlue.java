@@ -56,9 +56,10 @@ public class CubeShootBlue extends SequentialCommandGroup {
     // thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     addCommands(
+        new RunCommand(() -> intake.close(), intake).withTimeout(0.1),
         new RunCommand(() -> intake.lower(), intake).withTimeout(1.0),
-        new RunCommand(() -> intake.raise(), intake).withTimeout(2.0),
-        new RunCommand(() -> intake.spinOut(), intake).withTimeout(5),
+        new RunCommand(() -> intake.raise(), intake).withTimeout(1.5),
+        new RunCommand(() -> intake.spinOut(), intake).withTimeout(2),
         new InstantCommand(() -> intake.stop(), intake)
 
     );

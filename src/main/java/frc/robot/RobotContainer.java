@@ -120,9 +120,9 @@ public class RobotContainer {
     driverOI.povRight().whileTrue(new NudgeRobot(swerveDrive, "NUDGE RIGHT", true).withTimeout(0.5));
 
     // DRIVER X,Y,B,A Buttons: Set chassis to predefined field relative angle.
-    driverOI.x().whileTrue(new RotateRobot(swerveDrive, (double) 90));
+    driverOI.x().whileTrue(new RotateRobot(swerveDrive, (double) -90));
     driverOI.y().whileTrue(new RotateRobot(swerveDrive, (double) 0));
-    driverOI.b().whileTrue(new RotateRobot(swerveDrive, (double) -90));
+    driverOI.b().whileTrue(new RotateRobot(swerveDrive, (double) 90));
     driverOI.a().whileTrue(new RotateRobot(swerveDrive, (double) 180));
 
     // DRIVER Back Button: Set swerve drive to a stationary X position.
