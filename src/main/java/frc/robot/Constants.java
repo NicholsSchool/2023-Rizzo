@@ -14,8 +14,8 @@ public final class Constants {
   // Intake/Lifter/Uprighter
   public static final class IntakeConstants {
     public static final double INTAKE_SPEED = 0.6;
-    public static final double OUTTAKE_SPEED = 1.0;
-    public static final double OUTTAKE_GOVERNOR = 0.5;
+    public static final double OUTTAKE_HIGH_SPEED = 1.0;
+    public static final double OUTTAKE_LOW_SPEED = 0.5;
     public static final int INTAKE_PISTON_SOLENOID_CHANNEL = 1;
     public static final int LIFTER_PISTON_SOLENOID_CHANNEL = 2;
   }
@@ -28,18 +28,17 @@ public final class Constants {
   // Arm (Manipulator)
   public static final class ArmConstants {
     public static final double POSITION_00 = 0.0;
-    public static final double POSITION_01 = 0.75; // ~0.80 = parallel
-    public static final double POSITION_02 = 1.25;
-    public static final double POSITION_03 = 1.75;
-    public static final double POSITION_04 = 2.33;
-    public static final double POSITION_05 = 2.75;
-    public static final double POSITION_06 = 3.14; // scoring position
+    public static final double POSITION_01 = 0.80; // test position (parallel to ground)
+    public static final double POSITION_05 = 3.14; // scoring position
+    public static final double POSITION_02 = 3.29; // human player position
+    public static final double POSITION_03 = 3.34; // another human player position
+
     public static final double SOFT_LIMIT_REVERSE = 0.0;
-    public static final double SOFT_LIMIT_FORWARD = 4.7;
+    public static final double SOFT_LIMIT_FORWARD = 4.5;
 
     public static final int ARM_LIMIT_SWITCH_DIO_CHANNEL = 0;
 
-    public static final int ARM_CURRENT_LIMIT = 34;
+    public static final int ARM_CURRENT_LIMIT = 22;
     public static final double ARM_MANUAL_SCALED = 0.42;
 
     public static final double ARM_GEAR_RATIO = 1.0 / (224); // 1:224 planetary gear ratio
@@ -51,14 +50,13 @@ public final class Constants {
     public static final double ARM_DEFAULT_P = 0.81;
     public static final double ARM_DEFAULT_I = 0.03;
     public static final double ARM_DEFAULT_D = 0.0;
-    public static final Constraints ARM_MOTION_CONSTRAINTS = new Constraints(0.5, 0.5);
-
+    public static final Constraints ARM_MOTION_CONSTRAINTS = new Constraints(0.75, 0.5);
   }
 
   // Gripper/Pinchers/Spinners (End Effector)
   public static final class GripperConstants {
     public static final double GRIPPER_SPEED = 0.45;
-    public static final double GRIPPER_SPEED_OFFSET = 0.25;
+    public static final double GRIPPER_SPEED_OFFSET = 0.33;
     public static final int PINCHER_SOLENOID_CHANNEL = 3;
     public static final int GRIPPER_LIMIT_SWITCH_DIO_CHANNEL = 1;
   }
@@ -86,8 +84,8 @@ public final class Constants {
     public static final double DRIVETRAIN_WIDTH = Units.inchesToMeters(26.5);
     public static final double DRIVETRAIN_LENGTH = Units.inchesToMeters(26.5);
 
-    public static final double VIRTUAL_LOW_GEAR_RATE = 0.71;
-    public static final double VIRTUAL_HIGH_GEAR_RATE = 0.96;
+    public static final double VIRTUAL_LOW_GEAR_RATE = 0.66;
+    public static final double VIRTUAL_HIGH_GEAR_RATE = 1.0;
 
     public static final double MAX_METERS_PER_SECOND = 4.8;
     public static final double MAX_ANGULAR_SPEED = 2 * Math.PI;

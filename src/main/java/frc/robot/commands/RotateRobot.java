@@ -7,12 +7,12 @@ import frc.robot.RobotContainer;
 /**
  * Rotate robot chassis to a predefined position relative to the field.
  */
-public class Rotate extends CommandBase {
+public class RotateRobot extends CommandBase {
 
   SwerveDrive swerveDrive;
   Double desiredAngle;
 
-  public Rotate(SwerveDrive _swerveDrive, Double _angle) {
+  public RotateRobot(SwerveDrive _swerveDrive, Double _angle) {
 
     swerveDrive = _swerveDrive;
     desiredAngle = _angle;
@@ -28,7 +28,7 @@ public class Rotate extends CommandBase {
   public void execute() {
 
     double xSpeed = -RobotContainer.driverOI.getLeftY();
-    double ySpeed = RobotContainer.driverOI.getLeftX();
+    double ySpeed = -RobotContainer.driverOI.getLeftX();
 
     double currentYaw = swerveDrive.getYaw();
     double difference = desiredAngle - currentYaw;
@@ -42,8 +42,6 @@ public class Rotate extends CommandBase {
     }
 
     angularRotation = error / 180 * (Math.PI * kP);
-
-    // System.out.println(ySpeed);
 
     swerveDrive.drive(xSpeed, ySpeed, angularRotation, true);
 

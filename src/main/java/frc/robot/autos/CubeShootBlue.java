@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.SwerveDriveConstants;
-import frc.robot.commands.Outtake;
+import frc.robot.commands.OuttakeCube;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Intake;
@@ -32,35 +32,32 @@ import frc.robot.subsystems.Uprighter;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class CubeShootBlue extends SequentialCommandGroup {
 
-
-
-
-
   /** Creates a new CubeShootBlue. */
-  public CubeShootBlue( SwerveDrive swerveDrive, Intake intake, Uprighter uprighter, Gripper gripper, Arm arm ) {
+  public CubeShootBlue(SwerveDrive swerveDrive, Intake intake, Uprighter uprighter, Gripper gripper, Arm arm) {
 
     // TrajectoryConfig config = new TrajectoryConfig(Math.PI, Math.PI)
-    //     .setKinematics(SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS);
+    // .setKinematics(SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS);
 
-    //   Trajectory backUpOneMeter = TrajectoryGenerator.generateTrajectory(
-    //   // Zero the starting pose of the trajectory.
-    //   new Pose2d(0, 0, new Rotation2d(0)),
-    //   List.of(
-    //       new Translation2d(0.5, 0),
-    //   // new Translation2d(1, 0.5),
-    //   // new Translation2d( 1.5, Math.PI / 2)
-    //   // Add interior waypoints to the list above.
-    //       new Translation2d( -0.5, 0.1 )
-    //   ),
-    //   // Final X/Y position in meters and rotation in radians.
-    //   new Pose2d(1, 0, new Rotation2d(0) ), config);
+    // Trajectory backUpOneMeter = TrajectoryGenerator.generateTrajectory(
+    // // Zero the starting pose of the trajectory.
+    // new Pose2d(0, 0, new Rotation2d(0)),
+    // List.of(
+    // new Translation2d(0.5, 0),
+    // // new Translation2d(1, 0.5),
+    // // new Translation2d( 1.5, Math.PI / 2)
+    // // Add interior waypoints to the list above.
+    // new Translation2d( -0.5, 0.1 )
+    // ),
+    // // Final X/Y position in meters and rotation in radians.
+    // new Pose2d(1, 0, new Rotation2d(0) ), config);
 
-    // ProfiledPIDController thetaController = new ProfiledPIDController(1.0, 0, 0, new Constraints(Math.PI, Math.PI));
+    // ProfiledPIDController thetaController = new ProfiledPIDController(1.0, 0, 0,
+    // new Constraints(Math.PI, Math.PI));
     // thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     addCommands(
-      new RunCommand(() -> intake.close(), intake).withTimeout( 0.1 ),
-      new InstantCommand( () -> intake.spinOut(), intake ).withTimeout( 1 ) 
+        new RunCommand(() -> intake.close(), intake).withTimeout(0.1),
+        new InstantCommand(() -> intake.spinOut(), intake).withTimeout(1)
 
     );
   }

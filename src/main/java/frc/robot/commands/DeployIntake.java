@@ -4,41 +4,43 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
 /**
- * Retracts the intake up and stops all intake motors.
+ * Deploys the intake down and spins the intake motors inwards.
  */
-public class Retract extends CommandBase {
+public class DeployIntake extends CommandBase {
 
   private Intake intake;
   private Uprighter uprighter;
-  private Gripper gripper;
 
-  public Retract(Intake _intake, Uprighter _uprighter, Gripper _gripper) {
+  public DeployIntake(Intake _intake, Uprighter _uprighter) {
 
     intake = _intake;
     uprighter = _uprighter;
-    gripper = _gripper;
 
-    addRequirements(intake, uprighter, gripper);
+    addRequirements(intake, uprighter);
   }
 
   @Override
   public void initialize() {
-    intake.raise();
+    intake.lower();
+    intake.open();
   }
 
   @Override
   public void execute() {
+    intake.spinIn();
+    uprighter.spinIn();
   }
 
   @Override
   public void end(boolean interrupted) {
-    gripper.stop();
+    intake.raise();
+    intake.open();
     intake.stop();
     uprighter.stop();
   }
 
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
