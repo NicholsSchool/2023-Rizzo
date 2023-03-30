@@ -10,9 +10,9 @@
 - [x] DRIVER Right Stick: Rotational movement of the robot chassis.
 - [x] DRIVER Left Trigger: While held, switch to virtual high gear.
 - [x] DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
-- [x] DRIVER Left Bumper: While held, switch to virtual high gear.
-- [x] DRIVER Right Bumper: While held, close intake flappers.
-- [x] DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
+- [x] DRIVER Left Bumper: While held, close intake flappers.
+- [x] DRIVER Right Bumper: (UNASSIGNED)
+- [x] DRIVER POV/D-Pad: Nudge robot (Left, Right, Up, Down) relative to the field.
 - [x] DRIVER X (←) Button: Rotate chassis to +90-degree position relative to the field.
 - [x] DRIVER Y (↑) Button: Rotate chassis to 0-degree position relative to the field.
 - [x] DRIVER B (→) Button: Rotate chassis to -90-degree position relative to the field.
@@ -27,13 +27,13 @@
 - [x] OPERATOR Right Trigger: High power Outtake.
 - [x] OPERATOR Left Bumper: Toggle gripper piston.
 - [x] OPERATOR Right Bumper: Low power Outtake.
-- [x] OPERATOR POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the field.
-- [x] OPERATOR X (←) Button: Go to HOME position and lock.
-- [x] OPERATOR Y (↑) Button: Go to TEST position and lock.
-- [x] OPERATOR B (→) Button: Go to HIGH SCORING position and lock.
-- [x] OPERATOR A (↓) Button: Go to LOW SCORING / HUMAN PLAYER position and lock.
-- [ ] OPERATOR Start (→) Button:
-- [ ] OPERATOR Back (←) Button:
+- [x] OPERATOR POV/D-Pad: (UNASSIGNED)
+- [x] OPERATOR X (←) Button: Go to position 00 and lock.
+- [x] OPERATOR Y (↑) Button: Go to position 01 and lock.
+- [x] OPERATOR B (→) Button: Go to position 02 and lock.
+- [x] OPERATOR A (↓) Button: Go to position 03 and lock.
+- [ ] OPERATOR Start (→) Button: (UNASSIGNED)
+- [ ] OPERATOR Back (←) Button: (UNASSIGNED)
 
 ## CAN ID Assignments
 * CAN ID 10 = SparkMax = Rear Right Drive Motor
