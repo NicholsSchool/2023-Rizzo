@@ -36,7 +36,7 @@ public class RobotContainer {
   public static GenericEntry armPos;
   public static GenericEntry armLimit;
   public static GenericEntry gripperLimit;
-  ComplexWidget autoChooserWidget;
+  public static ComplexWidget autoChooserWidget;
 
   // OI (Operator Interface) controllers
   public static CommandXboxController driverOI;
@@ -78,9 +78,9 @@ public class RobotContainer {
 
     // Configure the Shuffleboard
     walterTab = Shuffleboard.getTab("Walter");
-    armPos = walterTab.add("Arm Position", -7.7).withPosition(4, 0).withSize(2, 2).getEntry();
-    armLimit = walterTab.add("Arm Limit Switch", false).withPosition(2, 0).withSize(2, 2).getEntry();
-    gripperLimit = walterTab.add("Gripper Limit Switch", false).withPosition(0, 0).withSize(2, 2).getEntry();
+    armPos = walterTab.add("Arm Position", -7.7).withPosition(12, 0).withSize(6, 6).getEntry();
+    armLimit = walterTab.add("Arm LS", false).withPosition(6, 0).withSize(6, 6).getEntry();
+    gripperLimit = walterTab.add("Gripper LS", false).withPosition(0, 0).withSize(6, 6).getEntry();
   }
 
   /** Define all button() to command() mappings. */
@@ -136,8 +136,8 @@ public class RobotContainer {
     // ########################################################
 
     // OPERATOR Left Stick: Spin gripper motors and rumble.
-    gripper.setDefaultCommand(
-        new SpinGripper(-MathUtil.applyDeadband(operatorOI.getLeftY(), 0.05), driverRumbler, operatorRumbler, gripper));
+    new Trigger(() -> Math.abs(operatorOI.getLeftY()) > 0.05)
+        .whileTrue(new SpinGripper(driverRumbler, operatorRumbler, gripper));
 
     // OPERATOR Right Stick: Direct control over the Arm.
     new Trigger(() -> Math.abs(operatorOI.getRightY()) > 0.05)
@@ -169,6 +169,8 @@ public class RobotContainer {
     autoChooser.addOption("Cube Shoot Blue", new CubeShootBlue(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Auto Test", new AutoTest(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
+    // autoChooserWidget = walterTab.add("Auto Chooser",
+    // autoChooser).withPosition(18, 0).withSize(6, 6);
   }
 
   /**
