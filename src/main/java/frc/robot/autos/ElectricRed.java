@@ -20,7 +20,7 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 
-public class Electric extends SequentialCommandGroup {
+public class ElectricRed extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
   Intake intake;
@@ -28,7 +28,7 @@ public class Electric extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public Electric(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public ElectricRed(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;
@@ -45,7 +45,7 @@ public class Electric extends SequentialCommandGroup {
         // Zero the starting pose of the trajectory.
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
-            new Translation2d(-0.25, -0.25)
+            new Translation2d(-0.25, 0.25)
         // Add interior waypoints to the list above.
         ),
         // Final X/Y position in meters and rotation in radians.
@@ -53,11 +53,11 @@ public class Electric extends SequentialCommandGroup {
 
     Trajectory trajectory02 = TrajectoryGenerator.generateTrajectory(
         // Zero the starting pose of the trajectory.
-        new Pose2d(0, 0, new Rotation2d(Math.PI)),
+        new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
             new Translation2d(1.25, -0.25)),
         // Final X/Y position in meters and rotation in radians.
-        new Pose2d(4.15, -0.25, new Rotation2d(Math.PI)),
+        new Pose2d(3.75, -0.25, new Rotation2d(0)),
         config);
 
     // Create a PID controller for the robot's translation and rotation.
@@ -106,10 +106,10 @@ public class Electric extends SequentialCommandGroup {
     addCommands(back0point5meters);
 
     // Move -90 degrees
-    addCommands(new RotateRobot(swerveDrive, 90.0).withTimeout(0.88));
+    addCommands(new RotateRobot(swerveDrive, -90.0).withTimeout(0.88));
 
     // Move -90 degress and reset gyro
-    addCommands(new RotateRobot(swerveDrive, 180.0).withTimeout(0.88)
+    addCommands(new RotateRobot(swerveDrive, -180.0).withTimeout(0.88)
         .andThen(() -> swerveDrive.resetGyro(), swerveDrive));
 
     addCommands(forward4meters);

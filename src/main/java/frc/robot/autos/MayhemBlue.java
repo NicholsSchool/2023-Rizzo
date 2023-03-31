@@ -20,7 +20,7 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 
-public class Mayhem extends SequentialCommandGroup {
+public class MayhemBlue extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
   Intake intake;
@@ -28,7 +28,7 @@ public class Mayhem extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public Mayhem(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public MayhemBlue(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;
@@ -49,17 +49,17 @@ public class Mayhem extends SequentialCommandGroup {
         // Add interior waypoints to the list above.
         ),
         // Final X/Y position in meters and rotation in radians.
-        new Pose2d(-3.55, -0.33, new Rotation2d(0)), config);
+        new Pose2d(-2.75, -0.33, new Rotation2d(0)), config);
 
     Trajectory trajectory02 = TrajectoryGenerator.generateTrajectory(
         // Zero the starting pose of the trajectory.
-        new Pose2d(0, 0, new Rotation2d(Math.PI)),
+        new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
             new Translation2d(0.33, -0.33)
         // Add interior waypoints to the list above.
         ),
         // Final X/Y position in meters and rotation in radians.
-        new Pose2d(0.44, -0.33, new Rotation2d(Math.PI)), config);
+        new Pose2d(0.44, -0.55, new Rotation2d(0)), config);
 
     // Create a PID controller for the robot's translation and rotation.
     var thetaController = new ProfiledPIDController(1.0, 0, 0, new Constraints(Math.PI, Math.PI));
@@ -113,7 +113,7 @@ public class Mayhem extends SequentialCommandGroup {
     addCommands(new RotateRobot(swerveDrive, -180.0).withTimeout(0.88)
         .andThen(() -> swerveDrive.resetGyro(), swerveDrive));
 
-    addCommands(swerveCC02.raceWith(new DeployIntake(intake, uprighter)).withTimeout(2.0));
+    addCommands(swerveCC02.raceWith(new DeployIntake(intake, uprighter)).withTimeout(2.75));
 
   }
 
