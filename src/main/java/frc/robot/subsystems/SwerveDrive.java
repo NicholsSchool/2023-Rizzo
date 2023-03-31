@@ -83,6 +83,7 @@ public class SwerveDrive extends SubsystemBase {
 
   /** Reset the AHRS to zero. */
   public void resetGyro() {
+    System.out.println("RESETTINGGGG THE GYRO Yay!");
     navX.zeroYaw();
   }
 

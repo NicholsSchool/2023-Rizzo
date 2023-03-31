@@ -32,10 +32,11 @@ public final class Constants {
     public static final double POSITION_02 = 3.14; // high scoring position
     public static final double POSITION_03 = 3.32; // low scoring position & human player position
 
-    public static final double SOFT_LIMIT_REVERSE = 0.0;
-    public static final double SOFT_LIMIT_FORWARD = 4.0;
+    public static final double SOFT_LIMIT_REVERSE = -0.1;
+    public static final double SOFT_LIMIT_FORWARD = 4.5;
 
-    public static final int ARM_LIMIT_SWITCH_DIO_CHANNEL = 0;
+    public static final int ARM_LEFT_LIMIT_SWITCH_DIO_CHANNEL = 0;
+    public static final int ARM_RIGHT_LIMIT_SWITCH_DIO_CHANNEL = 2;
 
     public static final int ARM_CURRENT_LIMIT = 34;
     public static final double ARM_MANUAL_SCALED = 0.42;

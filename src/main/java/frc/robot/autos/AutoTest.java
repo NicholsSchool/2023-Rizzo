@@ -65,7 +65,7 @@ public class AutoTest extends SequentialCommandGroup {
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     // System.out.println("Angle: " + swerveDrive.getHeading());
-    System.out.println("I AM RUNNING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    // System.out.println("I AM RUNNING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
     addRequirements(swerveDrive, intake, gripper, arm, uprighter);
     addCommands(
