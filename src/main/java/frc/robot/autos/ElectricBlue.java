@@ -97,9 +97,11 @@ public class ElectricBlue extends SequentialCommandGroup {
 
     addCommands(
         // 1.08 seconds - Initial shooting cube is optimal.
+        new RunCommand(() -> intake.close(), intake).withTimeout(0.5),
         new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.65),
         new RunCommand(() -> uprighter.stop(), intake).withTimeout(0.0),
-        new RunCommand(() -> intake.spinOut(), intake).withTimeout(0.43),
+        new RunCommand(() -> intake.spinOut(), intake).withTimeout(0.5),
+        new RunCommand(() -> intake.open(), intake).withTimeout(0.5),
         new InstantCommand(() -> intake.stop(), intake));
 
     // Swerve Drive Auto

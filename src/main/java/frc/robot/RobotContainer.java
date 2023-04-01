@@ -110,8 +110,8 @@ public class RobotContainer {
     // DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
     driverOI.rightTrigger().whileTrue(new DeployIntake(intake, uprighter));
 
-    // DRIVER Left Bumper: While held, close intake flappers.
-    driverOI.leftBumper()
+    // DRIVER Right Bumper: While held, close intake flappers.
+    driverOI.rightBumper()
         .onTrue(new InstantCommand(() -> intake.close(), intake))
         .onFalse(new InstantCommand(() -> intake.open(), intake));
 
