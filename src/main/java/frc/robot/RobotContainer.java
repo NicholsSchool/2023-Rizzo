@@ -168,20 +168,10 @@ public class RobotContainer {
 
   public void configureAutoChooser() {
     autoChooser.setDefaultOption("Default Auto", new PrintCommand("I'm Working"));
-    autoChooser.addOption("Electric", new Electric(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Mayhem", new Mayhem(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Test 01 - Outtake", new Test01Outtake(swerveDrive, intake, uprighter, gripper, arm));
-    // Negative: Is the X axis of coordinate plain negative behind the robot?
-    autoChooser.addOption("Test 02 - Negative", new Test02Negative(swerveDrive, intake, uprighter, gripper, arm));
-    // Sping: Attempt to spin the robot using swervedrive()
-    autoChooser.addOption("Test 03 - Spin", new Test03Spin(swerveDrive, intake, uprighter, gripper, arm));
-    // Drive: Attempt to drive out of the community in the direction of a Cube
-    // (Red/Blue)
-    autoChooser.addOption("Test 04 - Drive", new Test04ResetGyro(swerveDrive, intake, uprighter, gripper, arm));
-    // Rotate: Can I reuse the rotate command to rotate in place.
-    autoChooser.addOption("Test 05 - Rotate", new Test05Rotate(swerveDrive, intake, uprighter, gripper, arm));
-    // Intake: Can I intake a cube while driving forward?
-    autoChooser.addOption("Test 06 - Intake", new Test06Intake(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Electric Red", new ElectricRed(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Electric Blue", new ElectricBlue(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Mayhem Red", new MayhemRed(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Mayhem Blue", new MayhemBlue(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
   }
 

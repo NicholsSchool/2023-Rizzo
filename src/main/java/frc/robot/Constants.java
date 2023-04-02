@@ -30,7 +30,7 @@ public final class Constants {
     public static final double POSITION_00 = 0.0; // home position
     public static final double POSITION_01 = 0.83; // test position (parallel to ground)
     public static final double POSITION_02 = 3.14; // high scoring position
-    public static final double POSITION_03 = 3.32; // low scoring position & human player position
+    public static final double POSITION_03 = 3.45; // low scoring position & human player position
 
     public static final double SOFT_LIMIT_REVERSE = -0.1;
     public static final double SOFT_LIMIT_FORWARD = 4.5;
