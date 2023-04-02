@@ -20,7 +20,8 @@ public class Arm extends SubsystemBase {
 
   private CANSparkMax armMotor;
   private RelativeEncoder armEncoder;
-  private DigitalInput armLimitSwitch;
+  private DigitalInput leftArmLimitSwitch;
+  private DigitalInput rightArmLimitSwitch;
   private SparkMaxPIDController armPIDController;
   private double armSetpoint = 0.0;
   private TrapezoidProfile motorProfile;
@@ -32,7 +33,8 @@ public class Arm extends SubsystemBase {
 
     armMotor = new CANSparkMax(CANID.ARM_SPARKMAX, MotorType.kBrushless);
     armEncoder = armMotor.getEncoder(Type.kHallSensor, 42);
-    armLimitSwitch = new DigitalInput(ARM_LIMIT_SWITCH_DIO_CHANNEL);
+    leftArmLimitSwitch = new DigitalInput(ARM_LEFT_LIMIT_SWITCH_DIO_CHANNEL);
+    rightArmLimitSwitch = new DigitalInput(ARM_RIGHT_LIMIT_SWITCH_DIO_CHANNEL);
 
     armMotor.setInverted(false);
     armMotor.setSmartCurrentLimit(ARM_CURRENT_LIMIT);
@@ -65,7 +67,8 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     resetEncoderAtLimit();
     RobotContainer.armPos.setDouble(armEncoder.getPosition());
-    RobotContainer.armLimit.setBoolean(armLimitSwitch.get());
+    RobotContainer.leftArmLimit.setBoolean(leftArmLimitSwitch.get());
+    RobotContainer.rightArmLimit.setBoolean(rightArmLimitSwitch.get());
   }
 
   /**
@@ -136,7 +139,7 @@ public class Arm extends SubsystemBase {
    * Resets the encoder if the limit switch is pressed.
    */
   public void resetEncoderAtLimit() {
-    if (armLimitSwitch.get() == false) {
+    if (!leftArmLimitSwitch.get() && !rightArmLimitSwitch.get()) {
       resetEncoder();
     }
   }
@@ -153,7 +156,8 @@ public class Arm extends SubsystemBase {
    */
   public void armTestingPeriodic() {
     SmartDashboard.putNumber("Arm Position: ", armEncoder.getPosition());
-    SmartDashboard.putBoolean("Arm Limit Switch: ", armLimitSwitch.get());
+    SmartDashboard.putBoolean("Left Arm Limit Switch: ", leftArmLimitSwitch.get());
+    SmartDashboard.putBoolean("Right Arm Limit Switch: ", rightArmLimitSwitch.get());
   }
 
 }
