@@ -49,7 +49,7 @@ public class MayhemRed extends SequentialCommandGroup {
         // Add interior waypoints to the list above.
         ),
         // Final X/Y position in meters and rotation in radians.
-        new Pose2d(-2.75, 0.33, new Rotation2d(0)), config);
+        new Pose2d(-3.5, 0.33, new Rotation2d(0)), config);
 
     Trajectory trajectory02 = TrajectoryGenerator.generateTrajectory(
         // Zero the starting pose of the trajectory.
@@ -98,10 +98,14 @@ public class MayhemRed extends SequentialCommandGroup {
 
     addCommands(
         // 1.08 seconds - Initial shooting cube is optimal.
+        new RunCommand(() -> intake.close(), intake).withTimeout(0.5),
         new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.65),
         new RunCommand(() -> uprighter.stop(), intake).withTimeout(0.0),
-        new RunCommand(() -> intake.spinOut(), intake).withTimeout(0.43),
+        new RunCommand(() -> intake.spinOut(), intake).withTimeout(0.5),
+        new RunCommand(() -> intake.open(), intake).withTimeout(0.5),
         new InstantCommand(() -> intake.stop(), intake));
+
+    addCommands(new NudgeRobot(swerveDrive, "NUDGE BACKWARD", true).withTimeout(0.5));
 
     // Swerve Drive Auto
     addCommands(swerveCC01);
@@ -113,7 +117,8 @@ public class MayhemRed extends SequentialCommandGroup {
     addCommands(new RotateRobot(swerveDrive, 180.0).withTimeout(0.88)
         .andThen(() -> swerveDrive.resetGyro(), swerveDrive));
 
-    addCommands(swerveCC02.raceWith(new DeployIntake(intake, uprighter)).withTimeout(2.75));
+    // addCommands(swerveCC02.raceWith(new DeployIntake(intake,
+    // uprighter)).withTimeout(2.75));
 
   }
 

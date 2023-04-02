@@ -80,8 +80,8 @@ public class RobotContainer {
     // Configure the Shuffleboard
     walterTab = Shuffleboard.getTab("Walter");
     armPos = walterTab.add("Arm Position", -7.7).withPosition(18, 0).withSize(6, 6).getEntry();
-    leftArmLimit = walterTab.add("Arm L LS", false).withPosition(12, 0).withSize(6, 6).getEntry();
-    rightArmLimit = walterTab.add("Arm R LS", false).withPosition(6, 0).withSize(6, 6).getEntry();
+    leftArmLimit = walterTab.add("Arm L LS", false).withPosition(6, 0).withSize(6, 6).getEntry();
+    rightArmLimit = walterTab.add("Arm R LS", false).withPosition(12, 0).withSize(6, 6).getEntry();
     gripperLimit = walterTab.add("Gripper LS", false).withPosition(0, 0).withSize(6, 6).getEntry();
   }
 
@@ -110,8 +110,8 @@ public class RobotContainer {
     // DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
     driverOI.rightTrigger().whileTrue(new DeployIntake(intake, uprighter));
 
-    // DRIVER Left Bumper: While held, close intake flappers.
-    driverOI.leftBumper()
+    // DRIVER Right Bumper: While held, close intake flappers.
+    driverOI.rightBumper()
         .onTrue(new InstantCommand(() -> intake.close(), intake))
         .onFalse(new InstantCommand(() -> intake.open(), intake));
 
@@ -170,7 +170,7 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Default Auto", new PrintCommand("I'm Working"));
     autoChooser.addOption("Electric Red", new ElectricRed(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Electric Blue", new ElectricBlue(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Mayhem Red", new MayhemRed(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Path Planner", new MayhemRedPP(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Mayhem Blue", new MayhemBlue(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
   }
