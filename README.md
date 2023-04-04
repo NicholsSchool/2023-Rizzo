@@ -7,11 +7,10 @@
 
 ## Diver OI Controller Setup:
 - [x] DRIVER Left & Right Stick: Translational and rotational robot movement.
-- [x] DRIVER Right Stick: Rotational movement of the robot chassis.
 - [x] DRIVER Left Trigger: While held, switch to virtual high gear.
 - [x] DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
-- [x] DRIVER Left Bumper: While held, close intake flappers.
-- [x] DRIVER Right Bumper: (UNASSIGNED)
+- [ ] DRIVER Left Bumper: (UNASSIGNED)
+- [x] DRIVER Right Bumper: While held, close intake flappers.
 - [x] DRIVER POV/D-Pad: Nudge robot (Left, Right, Up, Down) relative to the field.
 - [x] DRIVER X (←) Button: Rotate chassis to +90-degree position relative to the field.
 - [x] DRIVER Y (↑) Button: Rotate chassis to 0-degree position relative to the field.
@@ -25,9 +24,9 @@
 - [x] OPERATOR Right Stick: Direct control over the Arm.
 - [x] OPERATOR Left Trigger: While held, lower the intake.
 - [x] OPERATOR Right Trigger: High power Outtake.
-- [x] OPERATOR Left Bumper: Toggle gripper piston.
+- [x] OPERATOR Left Bumper: While held, open the gripper.
 - [x] OPERATOR Right Bumper: Low power Outtake.
-- [x] OPERATOR POV/D-Pad: (UNASSIGNED)
+- [ ] OPERATOR POV/D-Pad: (UNASSIGNED)
 - [x] OPERATOR X (←) Button: Go to position 00 and lock.
 - [x] OPERATOR Y (↑) Button: Go to position 01 and lock.
 - [x] OPERATOR B (→) Button: Go to position 02 and lock.
