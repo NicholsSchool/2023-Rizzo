@@ -152,8 +152,9 @@ public class RobotContainer {
     // OPERATOR Right Trigger: High power Outtake.
     operatorOI.rightTrigger().whileTrue(new OuttakeCube(intake, uprighter, gripper, OUTTAKE_HIGH_SPEED));
 
-    // OPERATOR Left Bumper: Toggle gripper piston.
-    operatorOI.leftBumper().onTrue(new InstantCommand(() -> gripper.toggle(), gripper));
+    // OPERATOR Left Bumper: While held, open the gripper.
+    operatorOI.leftBumper().onTrue(new InstantCommand(() -> gripper.open(), gripper))
+        .onFalse(new InstantCommand(() -> gripper.close(), gripper));
 
     // OPERATOR Right Bumper: Low power Outtake.
     operatorOI.rightBumper().whileTrue(new OuttakeCube(intake, uprighter, gripper, OUTTAKE_LOW_SPEED));
