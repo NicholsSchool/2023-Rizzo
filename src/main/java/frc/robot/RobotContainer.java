@@ -6,10 +6,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.autos.*;
@@ -51,9 +50,6 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    // FMS/Driverstation Information
-    Alliance alliance = DriverStation.getAlliance();
-
     // Instantiate all subsystems
     swerveDrive = new SwerveDrive();
     intake = new Intake();
@@ -87,10 +83,6 @@ public class RobotContainer {
 
   /** Define all button() to command() mappings. */
   private void configureButtonBindings() {
-
-    // ########################################################
-    // ################# DRIVER OI CONTROLLER #################
-    // ########################################################
 
     // DRIVER Left & Right Stick: Translational and rotational robot movement.
     swerveDrive.setDefaultCommand(
@@ -132,10 +124,6 @@ public class RobotContainer {
 
     // DRIVER Start Button: Reset gyro to a new field oriented forward position.
     driverOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetGyro(), swerveDrive));
-
-    // ########################################################
-    // ################ OPERATOR OI CONTROLLER ################
-    // ########################################################
 
     // OPERATOR Left Stick: Spin gripper motors and rumble.
     new Trigger(() -> Math.abs(operatorOI.getLeftY()) > 0.05)
