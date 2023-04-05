@@ -156,11 +156,13 @@ public class RobotContainer {
   }
 
   public void configureAutoChooser() {
-    autoChooser.setDefaultOption("Default Auto", new PrintCommand("I'm Working"));
+    autoChooser.setDefaultOption("Default Auto", new PrintCommand("Default Auto = Do Nothing"));
     autoChooser.addOption("Electric Red", new ElectricRed(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Electric Blue", new ElectricBlue(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Path Planner", new MayhemRedPP(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Electric PP", new ElectricPathPlanner(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Mayhem Red", new MayhemRed(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Mayhem Blue", new MayhemBlue(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Test 07", new Test07PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
   }
 

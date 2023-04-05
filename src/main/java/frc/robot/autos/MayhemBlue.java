@@ -1,7 +1,6 @@
 package frc.robot.autos;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.math.controller.PIDController;
@@ -117,8 +116,8 @@ public class MayhemBlue extends SequentialCommandGroup {
     addCommands(new RotateRobot(swerveDrive, -180.0).withTimeout(0.88)
         .andThen(() -> swerveDrive.resetGyro(), swerveDrive));
 
-    // addCommands(swerveCC02.raceWith(new DeployIntake(intake,
-    // uprighter)).withTimeout(2.75));
+    addCommands(swerveCC02.raceWith(new DeployIntake(intake,
+        uprighter)).withTimeout(2.75));
 
   }
 

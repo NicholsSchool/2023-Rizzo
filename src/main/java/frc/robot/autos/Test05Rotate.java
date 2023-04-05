@@ -1,9 +1,9 @@
 package frc.robot.autos;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+// import edu.wpi.first.wpilibj2.command.InstantCommand;
+// import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -13,7 +13,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import frc.robot.subsystems.SwerveDrive;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+// import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import java.util.List;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
@@ -54,15 +54,15 @@ public class Test05Rotate extends SequentialCommandGroup {
     var thetaController = new ProfiledPIDController(1.0, 0, 0, new Constraints(Math.PI, Math.PI));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    SwerveControllerCommand swerveCC = new SwerveControllerCommand(
-        trajectory,
-        swerveDrive::getPose,
-        SWERVE_DRIVE_KINEMATICS,
-        new PIDController(1.0, 0, 0),
-        new PIDController(1.0, 0, 0),
-        thetaController,
-        swerveDrive::setModuleStates,
-        swerveDrive);
+    // SwerveControllerCommand swerveCC = new SwerveControllerCommand(
+    // trajectory,
+    // swerveDrive::getPose,
+    // SWERVE_DRIVE_KINEMATICS,
+    // new PIDController(1.0, 0, 0),
+    // new PIDController(1.0, 0, 0),
+    // thetaController,
+    // swerveDrive::setModuleStates,
+    // swerveDrive);
 
     // Reset odometry to the starting pose of the trajectory.
     swerveDrive.resetOdometry(trajectory.getInitialPose());

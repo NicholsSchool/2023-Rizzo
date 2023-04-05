@@ -2,36 +2,19 @@ package frc.robot.autos;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import frc.robot.subsystems.SwerveDrive;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
-
 import frc.robot.subsystems.*;
-import frc.robot.commands.*;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 
-public class MayhemRedPP extends SequentialCommandGroup {
+public class ElectricPathPlanner extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
   Intake intake;
@@ -39,7 +22,8 @@ public class MayhemRedPP extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public MayhemRedPP(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public ElectricPathPlanner(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper,
+      Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;
