@@ -108,10 +108,10 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> intake.open(), intake));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
-    driverOI.povUp().whileTrue(new NudgeRobot(swerveDrive, "NUDGE FORWARD", true).withTimeout(0.5));
-    driverOI.povDown().whileTrue(new NudgeRobot(swerveDrive, "NUDGE BACKWARD", true).withTimeout(0.5));
-    driverOI.povLeft().whileTrue(new NudgeRobot(swerveDrive, "NUDGE LEFT", true).withTimeout(0.5));
-    driverOI.povRight().whileTrue(new NudgeRobot(swerveDrive, "NUDGE RIGHT", true).withTimeout(0.5));
+    driverOI.povUp().whileTrue(new NudgeRobot(swerveDrive, "NUDGE FORWARD").withTimeout(0.5));
+    driverOI.povDown().whileTrue(new NudgeRobot(swerveDrive, "NUDGE BACKWARD").withTimeout(0.5));
+    driverOI.povLeft().whileTrue(new NudgeRobot(swerveDrive, "NUDGE LEFT").withTimeout(0.5));
+    driverOI.povRight().whileTrue(new NudgeRobot(swerveDrive, "NUDGE RIGHT").withTimeout(0.5));
 
     // DRIVER X,Y,B,A Buttons: Set chassis to predefined field relative angle.
     driverOI.x().whileTrue(new RotateRobot(swerveDrive, (double) -90));
@@ -156,7 +156,7 @@ public class RobotContainer {
   }
 
   public void configureAutoChooser() {
-    autoChooser.setDefaultOption("Default Auto", new PrintCommand("Default Auto = Do Nothing"));
+    autoChooser.setDefaultOption("Default Auto", new PrintCommand("Default Auto: Do Nothing"));
     autoChooser.addOption("Electric Red", new ElectricRed(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Electric Blue", new ElectricBlue(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Electric PP", new ElectricPathPlanner(swerveDrive, intake, uprighter, gripper, arm));
