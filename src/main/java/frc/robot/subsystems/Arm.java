@@ -31,10 +31,11 @@ public class Arm extends SubsystemBase {
 
   public Arm() {
 
-    armMotor = new CANSparkMax(CANID.ARM_SPARKMAX, MotorType.kBrushless);
-    armEncoder = armMotor.getEncoder(Type.kHallSensor, 42);
     leftArmLimitSwitch = new DigitalInput(ARM_LEFT_LIMIT_SWITCH_DIO_CHANNEL);
     rightArmLimitSwitch = new DigitalInput(ARM_RIGHT_LIMIT_SWITCH_DIO_CHANNEL);
+
+    armMotor = new CANSparkMax(CANID.ARM_SPARKMAX, MotorType.kBrushless);
+    armEncoder = armMotor.getEncoder(Type.kHallSensor, 42);
 
     armMotor.setInverted(false);
     armMotor.setSmartCurrentLimit(ARM_CURRENT_LIMIT);
@@ -43,15 +44,12 @@ public class Arm extends SubsystemBase {
     armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) SOFT_LIMIT_FORWARD);
     armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) SOFT_LIMIT_REVERSE);
     armMotor.setIdleMode(IdleMode.kBrake);
-
     armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
     armEncoder.setVelocityConversionFactor(VELOCITY_CONVERSION_FACTOR);
-
     armPIDController = armMotor.getPIDController();
     armPIDController.setP(ARM_DEFAULT_P);
     armPIDController.setI(ARM_DEFAULT_I);
     armPIDController.setD(ARM_DEFAULT_D);
-
     armMotor.burnFlash();
 
     timer = new Timer();
@@ -65,7 +63,7 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    resetEncoderAtLimit();
+    checkArmLimitSwitch();
     RobotContainer.armPos.setDouble(armEncoder.getPosition());
     RobotContainer.leftArmLimit.setBoolean(leftArmLimitSwitch.get());
     RobotContainer.rightArmLimit.setBoolean(rightArmLimitSwitch.get());
@@ -128,24 +126,27 @@ public class Arm extends SubsystemBase {
     armMotor.set((power * ARM_MANUAL_SCALED) + (feedforward / 12.0));
   }
 
+  /**
+   * Resets the encoder to zero.
+   */
   public void resetEncoder() {
     if (armEncoder.getPosition() != 0.0) {
       armEncoder.setPosition(0.0);
     }
-
   }
 
   /**
    * Resets the encoder if the limit switch is pressed.
+   * Note: Both limit switches return false by default.
    */
-  public void resetEncoderAtLimit() {
+  public void checkArmLimitSwitch() {
     if (!leftArmLimitSwitch.get() && !rightArmLimitSwitch.get()) {
       resetEncoder();
     }
   }
 
   /**
-   * Testing Init. Setup the arm for testing.
+   * Testing Init. Setup coast mode for testing the arm.
    */
   public void armTestingInit() {
     armMotor.setIdleMode(IdleMode.kCoast);

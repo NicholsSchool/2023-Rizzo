@@ -10,13 +10,11 @@ public class NudgeRobot extends CommandBase {
 
   SwerveDrive swerveDrive;
   String direction;
-  boolean fieldRelative;
 
-  public NudgeRobot(SwerveDrive _swerveDrive, String _direction, boolean _fieldRelative) {
+  public NudgeRobot(SwerveDrive _swerveDrive, String _direction) {
 
     swerveDrive = _swerveDrive;
     direction = _direction;
-    fieldRelative = _fieldRelative;
 
     addRequirements(swerveDrive);
   }
@@ -29,16 +27,16 @@ public class NudgeRobot extends CommandBase {
   public void execute() {
     switch (direction) {
       case "NUDGE FORWARD":
-        swerveDrive.drive(0.5, 0.0, 0, fieldRelative);
+        swerveDrive.drive(0.5, 0.0, 0, true);
         break;
       case "NUDGE BACKWARD":
-        swerveDrive.drive(-0.5, 0.0, 0, fieldRelative);
+        swerveDrive.drive(-0.5, 0.0, 0, true);
         break;
       case "NUDGE LEFT":
-        swerveDrive.drive(0.0, 0.5, 0, fieldRelative);
+        swerveDrive.drive(0.0, 0.5, 0, true);
         break;
       case "NUDGE RIGHT":
-        swerveDrive.drive(0.0, -0.5, 0, fieldRelative);
+        swerveDrive.drive(0.0, -0.5, 0, true);
         break;
     }
   }

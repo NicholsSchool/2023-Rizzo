@@ -13,24 +13,24 @@ import static frc.robot.Constants.GripperConstants.*;
 
 public class Gripper extends SubsystemBase {
 
-  private CANSparkMax spinner;
-  private Solenoid pincher;
-  private DigitalInput limitSwitch;
+  private CANSparkMax gripperMotor;
+  private Solenoid gripperPiston;
+  private DigitalInput gripperLimitSwitch;
   private boolean isOpen = true;
 
   public Gripper() {
 
-    // Spinner
-    spinner = new CANSparkMax(CANID.GRIPPER_SPARKMAX, MotorType.kBrushless);
-    spinner.restoreFactoryDefaults();
-    spinner.setIdleMode(IdleMode.kBrake);
-    spinner.setInverted(false);
+    // Gripper Motor
+    gripperMotor = new CANSparkMax(CANID.GRIPPER_SPARKMAX, MotorType.kBrushless);
+    gripperMotor.restoreFactoryDefaults();
+    gripperMotor.setIdleMode(IdleMode.kBrake);
+    gripperMotor.setInverted(false);
 
-    // Pincher
-    pincher = new Solenoid(PneumaticsModuleType.CTREPCM, PINCHER_SOLENOID_CHANNEL);
+    // Gripper Piston/Pincher
+    gripperPiston = new Solenoid(PneumaticsModuleType.CTREPCM, PINCHER_SOLENOID_CHANNEL);
 
-    // Limit Switch
-    limitSwitch = new DigitalInput(GRIPPER_LIMIT_SWITCH_DIO_CHANNEL);
+    // Gripper Limit Switch
+    gripperLimitSwitch = new DigitalInput(GRIPPER_LIMIT_SWITCH_DIO_CHANNEL);
 
     // Set the starting state of the gripper subsystem.
     open();
@@ -42,25 +42,33 @@ public class Gripper extends SubsystemBase {
     RobotContainer.gripperLimit.setBoolean(isPressed());
   }
 
+  // Gripper Motors
+
+  public void spin(double speed) {
+    gripperMotor.set(speed * GRIPPER_SPEED_OFFSET);
+  }
+
   public void spinIn() {
-    spinner.set(-GRIPPER_SPEED);
+    gripperMotor.set(-GRIPPER_SPEED);
   }
 
   public void spinOut() {
-    spinner.set(GRIPPER_SPEED);
+    gripperMotor.set(GRIPPER_SPEED);
   }
 
   public void stop() {
-    spinner.stopMotor();
+    gripperMotor.stopMotor();
   }
 
+  // Gripper Pistons
+
   public void open() {
-    pincher.set(false);
+    gripperPiston.set(false);
     isOpen = true;
   }
 
   public void close() {
-    pincher.set(true);
+    gripperPiston.set(true);
     isOpen = false;
   }
 
@@ -72,18 +80,10 @@ public class Gripper extends SubsystemBase {
     }
   }
 
-  // Is limit switch pressed?
-  public boolean isPressed() {
-    return limitSwitch.get();
-  }
+  // Gripper Limit Switch
 
-  /**
-   * Spin the gripper motor directly with OI controller.
-   * 
-   * @param speed double between -1.0 and 1.0
-   */
-  public void spin(double speed) {
-    spinner.set(speed * GRIPPER_SPEED_OFFSET);
+  public boolean isPressed() {
+    return gripperLimitSwitch.get();
   }
 
 }

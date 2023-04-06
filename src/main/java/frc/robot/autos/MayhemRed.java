@@ -104,7 +104,7 @@ public class MayhemRed extends SequentialCommandGroup {
         new RunCommand(() -> intake.open(), intake).withTimeout(0.5),
         new InstantCommand(() -> intake.stop(), intake));
 
-    addCommands(new NudgeRobot(swerveDrive, "NUDGE BACKWARD", true).withTimeout(0.5));
+    addCommands(new NudgeRobot(swerveDrive, "NUDGE BACKWARD").withTimeout(0.5));
 
     // Swerve Drive Auto
     addCommands(swerveCC01);

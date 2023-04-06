@@ -34,7 +34,6 @@ public class DeployIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     intake.raise();
-    intake.open();
     intake.stop();
     uprighter.stop();
   }

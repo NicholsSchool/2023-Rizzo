@@ -29,7 +29,7 @@ public class OuttakeCube extends CommandBase {
 
   @Override
   public void execute() {
-    intake.spinOutAtSpeed(speed);
+    intake.spin(speed);
     uprighter.spinOut();
     gripper.spinOut();
   }

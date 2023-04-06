@@ -47,7 +47,7 @@ public class Intake extends SubsystemBase {
 
   // Intake Motors
 
-  public void spinOutAtSpeed(Double speed) {
+  public void spin(Double speed) {
     intakeMotorLeft.set(-speed);
     intakeMotorRight.set(speed);
   }

@@ -25,7 +25,13 @@ public class SwerveModule {
   private double chassisAngularOffset = 0;
   private SwerveModuleState desiredModuleState = new SwerveModuleState(0.0, new Rotation2d());
 
-  /** Constructs and configures the driving and turning motors, encoder, PIDs. */
+  /**
+   * Constructs and configures the driving and turning motors, encoder, PIDs.
+   * 
+   * @param drivingCANId  The CAN ID of the driving motor.
+   * @param turningCANId  The CAN ID of the turning motor.
+   * @param angularOffset The angular offset of the module.
+   */
   public SwerveModule(int drivingCANId, int turningCANId, double angularOffset) {
 
     drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
@@ -115,19 +121,19 @@ public class SwerveModule {
     drivingEncoder.setPosition(0);
   }
 
-  /** Returns the current state of the module. */
-  public SwerveModuleState getState() {
-    return new SwerveModuleState(drivingEncoder.getVelocity(),
-        new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
-  }
-
-  /** Returns the current position of the module. */
+  /**
+   * Returns the current position of the module.
+   */
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(drivingEncoder.getPosition(),
         new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
   }
 
-  /** Sets the desired state (speed and angle) for the module. */
+  /**
+   * Sets the desired state (speed and angle) for the module.
+   * 
+   * @param desiredState The desired state of the swerve modules.
+   */
   public void setDesiredState(SwerveModuleState desiredState) {
 
     // Apply chassis angular offset to the desired state.
@@ -144,11 +150,6 @@ public class SwerveModule {
     turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
     desiredModuleState = desiredState;
-  }
-
-  /** Zeroes the REV SwerveModule driving encoders. */
-  public void resetEncoders() {
-    drivingEncoder.setPosition(0);
   }
 
 }
