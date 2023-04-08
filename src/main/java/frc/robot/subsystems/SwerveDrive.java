@@ -178,7 +178,19 @@ public class SwerveDrive extends SubsystemBase {
    */
   public void resetGyro() {
     System.out.println("Resetting the Gyro.");
+    if (navX.getAngleAdjustment() > 0) {
+      navX.setAngleAdjustment(0);
+    }
     navX.zeroYaw();
+  }
+
+  /**
+   * Set the angle adjustment for the AHRS.
+   * 
+   * @param adjustment The angle adjustment in degrees.
+   */
+  public void setGyroAngleAdjustment(double adjustment) {
+    navX.setAngleAdjustment(adjustment);
   }
 
   /**
