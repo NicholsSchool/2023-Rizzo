@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.CANID;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 
@@ -38,6 +39,9 @@ public class SwerveDrive extends SubsystemBase {
 
   // Attitude and Heading Reference System (AHRS)
   private final AHRS navX = new AHRS(SPI.Port.kMXP);
+
+  public double maxPitch = 0;
+  public double maxRoll = 0;
 
   // Setup rate limiters for translation and rotation.
   private double translationalRateLimiter = VIRTUAL_LOW_GEAR_RATE;
@@ -80,7 +84,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public void setVirtualHighGear() {
     translationalRateLimiter = VIRTUAL_HIGH_GEAR_RATE;
-    System.out.println("Setting virtual gear to high.");
+    System.out.println("Setting virtual gear to HIGH.");
   }
 
   /**
@@ -88,7 +92,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public void setVirtualLowGear() {
     translationalRateLimiter = VIRTUAL_LOW_GEAR_RATE;
-    System.out.println("Setting virtual gear to low.");
+    System.out.println("Setting virtual gear to LOW.");
   }
 
   /**
@@ -191,6 +195,54 @@ public class SwerveDrive extends SubsystemBase {
    */
   public double getYaw() {
     return navX.getYaw();
+  }
+
+  /**
+   * Returns the pitch of the robot.
+   * 
+   * @return The current pitch value in degrees (-180 to 180).
+   */
+  public double getPitch() {
+    return navX.getPitch();
+  }
+
+  /**
+   * Returns the roll of the robot.
+   * 
+   * @return The current roll value in degrees (-180 to 180).
+   */
+  public double getRoll() {
+    return navX.getRoll();
+  }
+
+  /**
+   * Adds the current and max Pitch/Roll to the dashboard.
+   */
+  public void testPitchRoll() {
+    double pitch = getPitch();
+    double roll = getRoll();
+
+    if (pitch > maxPitch) {
+      maxPitch = pitch;
+    }
+    if (roll > maxRoll) {
+      maxRoll = roll;
+    }
+
+    SmartDashboard.putNumber("Pitch: ", pitch);
+    SmartDashboard.putNumber("Roll: ", roll);
+
+    SmartDashboard.putNumber("Max Pitch: ", maxPitch);
+    SmartDashboard.putNumber("Max Roll: ", maxRoll);
+  }
+
+  /**
+   * Resets the max Pitch/Roll values.
+   */
+  public void resetMaxPitchRoll() {
+    System.out.println("Resetting max Pitch/Roll.");
+    maxPitch = 0;
+    maxRoll = 0;
   }
 
 }

@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    robotContainer.swerveDrive.setWheelsToXFormation();
   }
 
   @Override
@@ -58,6 +59,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    robotContainer.swerveDrive.testPitchRoll();
   }
 
   @Override
@@ -68,7 +70,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    robotContainer.arm.armTestingPeriodic();
+    robotContainer.arm.testArmPosition();
   }
 
 }
