@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    robotContainer.swerveDrive.testPitchRoll();
   }
 
   @Override
@@ -70,7 +71,6 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     robotContainer.arm.testArmPosition();
-    robotContainer.swerveDrive.testYawPitchRoll();
   }
 
 }

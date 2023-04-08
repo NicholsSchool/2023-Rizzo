@@ -40,6 +40,9 @@ public class SwerveDrive extends SubsystemBase {
   // Attitude and Heading Reference System (AHRS)
   private final AHRS navX = new AHRS(SPI.Port.kMXP);
 
+  public double maxPitch = 0;
+  public double maxRoll = 0;
+
   // Setup rate limiters for translation and rotation.
   private double translationalRateLimiter = VIRTUAL_LOW_GEAR_RATE;
   private SlewRateLimiter rotationalRateLimiter = new SlewRateLimiter(ROTATIONAL_SLEW_RATE);
@@ -212,10 +215,33 @@ public class SwerveDrive extends SubsystemBase {
     return navX.getRoll();
   }
 
-  public void testYawPitchRoll() {
-    SmartDashboard.putNumber("Yaw: ", getYaw());
-    SmartDashboard.putNumber("Pitch: ", getPitch());
-    SmartDashboard.putNumber("Roll: ", getRoll());
+  /**
+   * Adds the current and max Pitch/Roll to the dashboard.
+   */
+  public void testPitchRoll() {
+    double pitch = getPitch();
+    double roll = getRoll();
+
+    if (pitch > maxPitch) {
+      maxPitch = pitch;
+    }
+    if (roll > maxRoll) {
+      maxRoll = roll;
+    }
+
+    SmartDashboard.putNumber("Pitch: ", pitch);
+    SmartDashboard.putNumber("Roll: ", roll);
+
+    SmartDashboard.putNumber("Max Pitch: ", maxPitch);
+    SmartDashboard.putNumber("Max Roll: ", maxRoll);
+  }
+
+  /**
+   * Resets the max Pitch/Roll values.
+   */
+  public void resetMaxPitchRoll() {
+    maxPitch = 0;
+    maxRoll = 0;
   }
 
 }
