@@ -31,7 +31,7 @@
 - [x] OPERATOR Y (↑) Button: Go to position 01 and lock.
 - [x] OPERATOR B (→) Button: Go to position 02 and lock.
 - [x] OPERATOR A (↓) Button: Go to position 03 and lock.
-- [ ] OPERATOR Start (→) Button: (UNASSIGNED)
+- [x] OPERATOR Start (→) Button: Reset max Pitch/Roll values on the dashboard.
 - [ ] OPERATOR Back (←) Button: (UNASSIGNED)
 
 ## CAN ID Assignments
