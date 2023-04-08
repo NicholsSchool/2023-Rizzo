@@ -155,7 +155,7 @@ public class Arm extends SubsystemBase {
   /**
    * Testing Periodic. Put arm values on network tables.
    */
-  public void armTestingPeriodic() {
+  public void testArmPosition() {
     SmartDashboard.putNumber("Arm Position: ", armEncoder.getPosition());
     SmartDashboard.putBoolean("Left Arm Limit Switch: ", leftArmLimitSwitch.get());
     SmartDashboard.putBoolean("Right Arm Limit Switch: ", rightArmLimitSwitch.get());

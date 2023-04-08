@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.CANID;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 
@@ -80,7 +81,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public void setVirtualHighGear() {
     translationalRateLimiter = VIRTUAL_HIGH_GEAR_RATE;
-    System.out.println("Setting virtual gear to high.");
+    System.out.println("Setting virtual gear to HIGH.");
   }
 
   /**
@@ -88,7 +89,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public void setVirtualLowGear() {
     translationalRateLimiter = VIRTUAL_LOW_GEAR_RATE;
-    System.out.println("Setting virtual gear to low.");
+    System.out.println("Setting virtual gear to LOW.");
   }
 
   /**
@@ -191,6 +192,30 @@ public class SwerveDrive extends SubsystemBase {
    */
   public double getYaw() {
     return navX.getYaw();
+  }
+
+  /**
+   * Returns the pitch of the robot.
+   * 
+   * @return The current pitch value in degrees (-180 to 180).
+   */
+  public double getPitch() {
+    return navX.getPitch();
+  }
+
+  /**
+   * Returns the roll of the robot.
+   * 
+   * @return The current roll value in degrees (-180 to 180).
+   */
+  public double getRoll() {
+    return navX.getRoll();
+  }
+
+  public void testYawPitchRoll() {
+    SmartDashboard.putNumber("Yaw: ", getYaw());
+    SmartDashboard.putNumber("Pitch: ", getPitch());
+    SmartDashboard.putNumber("Roll: ", getRoll());
   }
 
 }
