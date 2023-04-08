@@ -240,6 +240,7 @@ public class SwerveDrive extends SubsystemBase {
    * Resets the max Pitch/Roll values.
    */
   public void resetMaxPitchRoll() {
+    System.out.println("Resetting max Pitch/Roll.");
     maxPitch = 0;
     maxRoll = 0;
   }

@@ -31,7 +31,7 @@ public class ElectricPathPlanner extends SequentialCommandGroup {
     gripper = _gripper;
     arm = _arm;
 
-    PathPlannerTrajectory traj = PathPlanner.loadPath("path", new PathConstraints(3.0, 2.0));
+    PathPlannerTrajectory traj = PathPlanner.loadPath("PathTVR", new PathConstraints(3.0, 2.0));
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(_swerveDrive::getPose, _swerveDrive::resetOdometry,
         SWERVE_DRIVE_KINEMATICS, new PIDConstants(3.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0),

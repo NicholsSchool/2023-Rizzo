@@ -9,14 +9,14 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.Constants.SwerveDriveConstants;
-import frc.robot.commands.DeployIntake;
+import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.pathplanner.lib.PathConstraints;
 
-public class Test07PathPlanner extends SequentialCommandGroup {
+public class Test08PathPlanner extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
   Intake intake;
@@ -24,7 +24,7 @@ public class Test07PathPlanner extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public Test07PathPlanner(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public Test08PathPlanner(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;
@@ -32,29 +32,28 @@ public class Test07PathPlanner extends SequentialCommandGroup {
     gripper = _gripper;
     arm = _arm;
 
-    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Test07", new PathConstraints(4, 3));
+    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Test08", new PathConstraints(3, 2));
 
     HashMap<String, Command> eventMap = new HashMap<>();
-    eventMap.put("intake 1", new DeployIntake(_intake, _uprighter).withTimeout(3));
-    eventMap.put("intake 2", new DeployIntake(_intake, _uprighter).withTimeout(3));
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(_swerveDrive::getPose, _swerveDrive::resetOdometry,
-        SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDConstants(3.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0),
+        SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDConstants(3.0, 0.01, 0.0), new PIDConstants(0.5, 0.0, 0.0),
         _swerveDrive::setModuleStates, eventMap, true, _swerveDrive);
 
     addRequirements(swerveDrive, intake, gripper, arm, uprighter);
 
-    Command fullAuto = autoBuilder.fullAuto(pathGroup);
+    Command overChargeStationAndBack = autoBuilder.fullAuto(pathGroup);
 
     addCommands(
         autoBuilder.resetPose(pathGroup.get(0)),
         new RunCommand(() -> intake.close(), intake).withTimeout(0.5),
-        new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.65),
-        new RunCommand(() -> uprighter.stop(), intake).withTimeout(0.0),
+        new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.75),
+        new InstantCommand(() -> uprighter.stop(), intake),
         new RunCommand(() -> intake.spinOut(), intake).withTimeout(0.5),
-        new RunCommand(() -> intake.open(), intake).withTimeout(0.5),
-        new InstantCommand(() -> intake.stop(), intake));
+        new InstantCommand(() -> intake.open(), intake),
+        new InstantCommand(() -> intake.stop(), intake),
+        overChargeStationAndBack,
+        new RunCommand(() -> new BalanceRobot(swerveDrive, false), swerveDrive).withTimeout(5.0));
 
-    addCommands(fullAuto);
   }
 }

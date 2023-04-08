@@ -160,12 +160,24 @@ public class RobotContainer {
 
   public void configureAutoChooser() {
     autoChooser.setDefaultOption("Default Auto", new PrintCommand("Default Auto: Do Nothing"));
-    autoChooser.addOption("Electric Red", new ElectricRed(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Electric Blue", new ElectricBlue(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Electric PP", new ElectricPathPlanner(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Mayhem Red", new MayhemRed(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Mayhem Blue", new MayhemBlue(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Test 07", new Test07PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Electric Red",
+        new ElectricRed(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Electric Blue",
+        new ElectricBlue(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Electric PP",
+        new ElectricPathPlanner(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Mayhem Red",
+        new MayhemRed(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Mayhem Blue",
+        new MayhemBlue(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Test 07 (Daniel's 3B Auto)",
+        new Test07PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Test 08 (Shoot, Mobility, Balance)",
+        new Test08PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Test 09 (Balance Backwards)",
+        new Test09PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Test 10 (Balance Forwards)",
+        new Test10PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
   }
 
