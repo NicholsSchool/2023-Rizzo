@@ -27,11 +27,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    robotContainer.swerveDrive.testPitchRoll();
   }
 
   @Override
   public void disabledInit() {
-    robotContainer.swerveDrive.setWheelsToXFormation();
   }
 
   @Override
@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    robotContainer.swerveDrive.testPitchRoll();
+
   }
 
   @Override

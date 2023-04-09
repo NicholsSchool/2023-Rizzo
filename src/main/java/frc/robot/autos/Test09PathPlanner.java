@@ -12,6 +12,8 @@ import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 // import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.pathplanner.lib.PathConstraints;
@@ -32,20 +34,25 @@ public class Test09PathPlanner extends SequentialCommandGroup {
     gripper = _gripper;
     arm = _arm;
 
-    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Test09", new PathConstraints(3, 2));
-
-    HashMap<String, Command> eventMap = new HashMap<>();
+    PathPlannerTrajectory path = PathPlanner.loadPath("Test10", new PathConstraints(4.0, 3));
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(_swerveDrive::getPose, _swerveDrive::resetOdometry,
-        SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDConstants(3.0, 0.01, 0.0), new PIDConstants(0.5, 0.0, 0.0),
-        _swerveDrive::setModuleStates, eventMap, true, _swerveDrive);
+        SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDConstants(3.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0),
+        _swerveDrive::setModuleStates, new HashMap<String, Command>(), true, _swerveDrive);
 
     addRequirements(swerveDrive, intake, gripper, arm, uprighter);
 
-    Command gotoChargeStation = autoBuilder.fullAuto(pathGroup);
+    // Command gotoChargeStation = autoBuilder.fullAuto(path);
 
-    addCommands(gotoChargeStation,
-        new RunCommand(() -> new BalanceRobot(swerveDrive, false), swerveDrive).withTimeout(5.0));
+    addCommands(new RunCommand(() -> intake.close(), intake).withTimeout(0.5),
+        new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.75),
+        new InstantCommand(() -> uprighter.stop(), intake),
+        new RunCommand(() -> intake.spinOut(), intake).withTimeout(0.5),
+        new InstantCommand(() -> intake.open(), intake),
+        new InstantCommand(() -> intake.stop(), intake));
+    addCommands(autoBuilder.resetPose(path));
+    addCommands(autoBuilder.followPath(path));
+    addCommands(new BalanceRobot(swerveDrive, false).withTimeout(11.0));
 
   }
 }
