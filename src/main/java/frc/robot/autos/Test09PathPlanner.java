@@ -2,6 +2,9 @@ package frc.robot.autos;
 
 import java.util.HashMap;
 import java.util.List;
+
+import org.photonvision.PhotonCamera;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
@@ -20,6 +23,8 @@ import com.pathplanner.lib.PathConstraints;
 
 public class Test09PathPlanner extends SequentialCommandGroup {
 
+
+  PhotonCamera camera; 
   SwerveDrive swerveDrive;
   Intake intake;
   Uprighter uprighter;
@@ -33,6 +38,9 @@ public class Test09PathPlanner extends SequentialCommandGroup {
     uprighter = _uprighter;
     gripper = _gripper;
     arm = _arm;
+
+    camera = new PhotonCamera( "Microsoft_LifeCam_HD-3000" );
+
 
     PathPlannerTrajectory path = PathPlanner.loadPath("Test10", new PathConstraints(4.0, 3));
 

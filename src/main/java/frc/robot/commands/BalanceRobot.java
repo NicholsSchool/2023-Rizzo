@@ -1,5 +1,9 @@
 package frc.robot.commands;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -11,12 +15,15 @@ public class BalanceRobot extends CommandBase {
   boolean isFacingChargeStation = false;
 
   boolean isAtStopPoint = false;
+  PhotonCamera camera;
 
   private static final double ANGLE_OF_INCLINE = 12.5;
   private static final double ANGLE_OF_DECLINE = -6.25;
 
   private static double ANGLE_OF_INCLINE_SPEED = 0.7;
   private static double ANGLE_OF_DECLINE_SPEED = -0.33;
+
+  private static double APRILTAG_TO_CHARGE_STATION_METERS = 2.74; 
 
   public BalanceRobot(SwerveDrive _swerveDrive, boolean _isFacingChargeStation) {
     swerveDrive = _swerveDrive;
@@ -26,59 +33,56 @@ public class BalanceRobot extends CommandBase {
 
   @Override
   public void initialize() {
+    camera = new PhotonCamera( "Microsoft_LifeCam_HD-3000" );
     System.out.println("!!!!!!!!!!!! STARTING BALANCE ROUTINE !!!!!!!!!!!!!!");
   }
 
+
+  /**
+   * Gets the distance of the robot from an apriltag
+   * 
+   * @return the distance of the robot from the apriltag
+   */
+  public double getDistance()
+  {
+    PhotonPipelineResult result = camera.getLatestResult(); 
+    if( result.hasTargets() )
+    {
+      PhotonTrackedTarget target = result.getBestTarget();
+      double x = target.getBestCameraToTarget().getX(); //Not sure if it's x
+      double y = target.getBestCameraToTarget().getY(); //Not sure if it's y
+      return x; 
+    }
+    return 0.0; 
+  }
+
+
+
   @Override
   public void execute() {
+    double distance = getDistance();
 
-    // double currentAngle = swerveDrive.getRoll();
-    double currentAngle = swerveDrive.getPitch();
+    PIDController pidApriltag = new PIDController( 1, 0, 0); 
 
-    PIDController pid = new PIDController(1.322, 0.0, 0);
-    double power = pid.calculate(currentAngle, 0);
+    double powerApriltag = pidApriltag.calculate( distance, APRILTAG_TO_CHARGE_STATION_METERS);
 
-    // pid.setTolerance(5, 10);
-    // pid.atSetpoint();
-
-    double pow = -(power / 100) * 1.023;
-
-    if (currentAngle < -2.85 && !isAtStopPoint) {
-      swerveDrive.drive(pow, 0.0, 0.0, true);
-      System.out.println("!!!!!!!! BALANCING: INCLINE AHEAD " + pow);
-    } else if (currentAngle > -2.30 && !isAtStopPoint) {
-      swerveDrive.drive(pow, 0.0, 0.0, true);
-      System.out.println("!!!!!!!! BALANCING: DECLINE AHEAD " + pow);
-    } else {
-      isAtStopPoint = true;
-      // swerveDrive.drive(0.0, 0.0, 0.0, true);
-      swerveDrive.setWheelsToXFormation();
-      System.out.println("!!!!!!!! BALANCING: STOPPING");
+    if( distance < APRILTAG_TO_CHARGE_STATION_METERS )
+    {
+      swerveDrive.drive( -powerApriltag, 0, 0, true);
     }
-
-    // // Note: Guessing at the angles here, will need to test.
-    // if (isFacingChargeStation && currentAngle > ANGLE_OF_INCLINE) {
-    // swerveDrive.drive(ANGLE_OF_INCLINE_SPEED, 0.0, 0.0, true);
-    // } else if (isFacingChargeStation && currentAngle < ANGLE_OF_DECLINE) {
-    // swerveDrive.drive(ANGLE_OF_DECLINE_SPEED, 0.0, 0.0, true);
-    // } else if (!isFacingChargeStation && currentAngle > ANGLE_OF_INCLINE) {
-    // System.out.println("!!!!!!!! BALANCING: INCLINE AHEAD " + currentAngle + "
-    // >>> " + ANGLE_OF_INCLINE);
-    // swerveDrive.drive(ANGLE_OF_INCLINE_SPEED, 0.0, 0.0, true);
-    // } else if (!isFacingChargeStation && currentAngle < ANGLE_OF_DECLINE) {
-    // System.out.println("!!!!!!!! BALANCING: DECLINE AHEAD " + currentAngle + "<<<
-    // " + ANGLE_OF_DECLINE);
-    // swerveDrive.drive(-ANGLE_OF_DECLINE_SPEED, 0.0, 0.0, true);
-    // } else {
-    // // swerveDrive.drive(0.0, 0.0, 0.0, true);
-    // System.out.println("!!!!!!!! BALANCING: SET X POSITION");
-    // swerveDrive.setWheelsToXFormation();
-    // }
+    else if( distance > APRILTAG_TO_CHARGE_STATION_METERS )
+    {
+      swerveDrive.drive( powerApriltag, 0, 0, true);
+    }
+    else
+    {
+      pidApriltag.close();
+    }
   }
 
   @Override
   public void end(boolean interrupted) {
-    System.out.println("!!!!!!!!!!!! ENDING BALANCE ROUTINE !!!!!!!!!!!!!!");
+
   }
 
   @Override

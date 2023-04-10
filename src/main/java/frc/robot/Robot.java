@@ -1,5 +1,7 @@
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
+
 // import edu.wpi.first.cameraserver.CameraServer;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -17,11 +19,13 @@ public class Robot extends TimedRobot {
 
   private Command autonomousCommand;
   private RobotContainer robotContainer;
+  private PhotonCamera camera; 
 
   @Override
   public void robotInit() {
     // CameraServer.startAutomaticCapture();
     robotContainer = new RobotContainer();
+
   }
 
   @Override
@@ -40,6 +44,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    camera = new PhotonCamera( "Microsoft_LifeCam_HD-3000" );
     autonomousCommand = robotContainer.getAutonomousCommand();
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
@@ -48,6 +53,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    var result = camera.getLatestResult(); 
+    if( result.hasTargets() )
+    {
+      var target = result.getBestTarget();
+      var x = target.getBestCameraToTarget().getX();
+      var y = target.getBestCameraToTarget().getY();
+    }
   }
 
   @Override
