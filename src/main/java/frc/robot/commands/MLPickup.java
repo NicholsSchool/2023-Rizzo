@@ -102,7 +102,7 @@ public class MLPickup extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    swerveDrive.drive(0.0, 0.0, 0.0, false);
+    swerveDrive.drive(0.0, 0.0, 0.0, true);
   }
 
   @Override
