@@ -153,6 +153,14 @@ public class RobotContainer {
     operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_02)));
     operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_03)));
 
+    // OPERATOR POV_DOWN: align to apriltag
+    operatorOI.povDown().whileTrue( new ApriltagAlign(swerveDrive) );
+
+    // OPERATOR POV_UP: pick up cube using Machine Learning 
+    operatorOI.povUp().whileTrue( new MLPickup(swerveDrive).raceWith( new DeployIntake(intake, uprighter) ) );
+
+
+
     // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
     operatorOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetMaxPitchRoll()));
 
