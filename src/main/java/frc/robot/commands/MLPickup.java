@@ -107,7 +107,7 @@ public class MLPickup extends CommandBase {
     int yCenter = getYCenter();
     double distance = getDistance();
 
-    if( name.equals("Cube") && distance < 3 )
+    if( name.equals("Cube") )
     {
 
       PIDController xPID = new PIDController(1, 0, 0);

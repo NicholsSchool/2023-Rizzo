@@ -45,6 +45,8 @@ public class RotateRobot extends CommandBase {
 
     swerveDrive.drive(xSpeed, ySpeed, -angularRotation, true);
 
+    System.out.println( "Executing" );
+
   }
 
   @Override

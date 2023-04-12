@@ -60,7 +60,7 @@ public class BalanceRobot extends CommandBase {
 
     if( !firstPassCompleted && distance < APRILTAG_TO_END_OF_COMMUNITY_METERS )
     {
-      swerveDrive.drive( 0.6, 0, 0, true ); 
+      swerveDrive.drive( -0.6, 0, 0, true ); 
     }
     else if( !firstPassCompleted )
     {

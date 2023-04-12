@@ -44,16 +44,12 @@ public class DoubleCubeAuto extends SequentialCommandGroup {
 
     addRequirements(swerveDrive, intake, gripper, arm, uprighter);
 
-    addCommands(new RunCommand(() -> intake.close(), intake).withTimeout(0.01),
-        new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.5),
-        new InstantCommand(() -> uprighter.stop(), intake),
-        new RunCommand(() -> intake.spinOut(), intake).withTimeout(0.5),
-        new InstantCommand(() -> intake.open(), intake),
-        new InstantCommand(() -> intake.stop(), intake));
+    addCommands(new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.5),
+      new OuttakeCube( intake, uprighter, gripper, IntakeConstants.OUTTAKE_HIGH_SPEED ).withTimeout( 0.5 ) ); 
     addCommands(autoBuilder.resetPose(path));
     addCommands(autoBuilder.followPath(path));
     addCommands( new RotateRobot(_swerveDrive, 180.0 ).withTimeout(1));
-    addCommands( new RunCommand(() -> intake.close(), intake).withTimeout(0.01), new DeployIntake(_intake, _uprighter).withTimeout(1));
+    addCommands( new MLPickup(_swerveDrive).withTimeout(1).raceWith(new DeployIntake(_intake, _uprighter)));
     addCommands(new RotateRobot(_swerveDrive, 0.0 ).withTimeout(3));
     addCommands(autoBuilder.resetPose(back));
     addCommands(autoBuilder.followPath(back));
