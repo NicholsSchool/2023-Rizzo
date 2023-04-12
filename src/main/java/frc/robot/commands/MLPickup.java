@@ -105,8 +105,6 @@ public class MLPickup extends CommandBase {
     String name = getName();
     int xCenter = getXCenter();
     int yCenter = getYCenter();
-    double distance = getDistance();
-
     if( name.equals("Cube") )
     {
 

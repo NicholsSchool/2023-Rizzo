@@ -158,7 +158,7 @@ public class RobotContainer {
 
     // OPERATOR POV_DOWN: align to apriltag
     operatorOI.povDown().whileTrue(new ApriltagAlign(swerveDrive));
-    
+
     // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
     operatorOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetMaxPitchRoll()));
 
@@ -183,7 +183,9 @@ public class RobotContainer {
     autoChooser.addOption("Balance",
         new Balance(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Two Cube Mayhem",
-        new DoubleCubeAuto(swerveDrive, intake, uprighter, gripper, arm));
+        new DoubleCubeMayhem(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Two Cube Electric",
+        new DoubleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Test 10 (Balance Forwards)",
         new Test10PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);

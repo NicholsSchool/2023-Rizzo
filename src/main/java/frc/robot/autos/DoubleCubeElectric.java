@@ -13,11 +13,10 @@ import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.pathplanner.lib.PathConstraints;
 
-public class DoubleCubeAuto extends SequentialCommandGroup {
+public class DoubleCubeElectric extends SequentialCommandGroup {
 
   PhotonCamera camera;
   SwerveDrive swerveDrive;
@@ -26,7 +25,7 @@ public class DoubleCubeAuto extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public DoubleCubeAuto(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public DoubleCubeElectric(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;
@@ -34,8 +33,8 @@ public class DoubleCubeAuto extends SequentialCommandGroup {
     gripper = _gripper;
     arm = _arm;
 
-    PathPlannerTrajectory path = PathPlanner.loadPath("Test11", new PathConstraints(4, 3));
-    PathPlannerTrajectory back = PathPlanner.loadPath("Test12", new PathConstraints(4, 3));
+    PathPlannerTrajectory path = PathPlanner.loadPath("ElectricForward", new PathConstraints(4, 3));
+    PathPlannerTrajectory back = PathPlanner.loadPath("ElectricBackward", new PathConstraints(4, 3));
 
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(_swerveDrive::getPose, _swerveDrive::resetOdometry,
@@ -48,7 +47,7 @@ public class DoubleCubeAuto extends SequentialCommandGroup {
       new OuttakeCube( intake, uprighter, gripper, IntakeConstants.OUTTAKE_HIGH_SPEED ).withTimeout( 0.5 ) ); 
     addCommands(autoBuilder.resetPose(path));
     addCommands(autoBuilder.followPath(path));
-    addCommands( new RotateRobot(_swerveDrive, 180.0 ).withTimeout(1));
+    addCommands( new RotateRobot(_swerveDrive, 180.0 ).withTimeout(3));
     addCommands( new MLPickup(_swerveDrive).withTimeout(1).raceWith(new DeployIntake(_intake, _uprighter)));
     addCommands(new RotateRobot(_swerveDrive, 0.0 ).withTimeout(3));
     addCommands(autoBuilder.resetPose(back));
