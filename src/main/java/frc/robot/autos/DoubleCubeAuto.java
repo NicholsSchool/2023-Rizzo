@@ -1,10 +1,7 @@
 package frc.robot.autos;
 
 import java.util.HashMap;
-import java.util.List;
-
 import org.photonvision.PhotonCamera;
-
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
@@ -15,11 +12,8 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-// import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.pathplanner.lib.PathConstraints;
 
@@ -49,8 +43,6 @@ public class DoubleCubeAuto extends SequentialCommandGroup {
         _swerveDrive::setModuleStates, new HashMap<String, Command>(), true, _swerveDrive);
 
     addRequirements(swerveDrive, intake, gripper, arm, uprighter);
-
-    Command gotoChargeStation = autoBuilder.fullAuto(path);
 
     addCommands(new RunCommand(() -> intake.close(), intake).withTimeout(0.01),
         new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.5),

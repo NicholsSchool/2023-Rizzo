@@ -9,7 +9,7 @@
 - [x] DRIVER Left & Right Stick: Translational and rotational robot movement.
 - [x] DRIVER Left Trigger: While held, switch to virtual high gear.
 - [x] DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
-- [ ] DRIVER Left Bumper: (UNASSIGNED)
+- [x] DRIVER Left Bumper: Whiel held, pick up cube with machine learning
 - [x] DRIVER Right Bumper: While held, close intake flappers.
 - [x] DRIVER POV/D-Pad: Nudge robot (Left, Right, Up, Down) relative to the field.
 - [x] DRIVER X (←) Button: Rotate chassis to +90-degree position relative to the field.
