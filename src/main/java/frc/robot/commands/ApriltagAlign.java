@@ -32,8 +32,8 @@ public class ApriltagAlign extends CommandBase {
     PhotonPipelineResult result = camera.getLatestResult();
     if (result.hasTargets()) {
       PhotonTrackedTarget target = result.getBestTarget();
-      double x = target.getBestCameraToTarget().getX(); // Not sure if it's x
-      double y = target.getBestCameraToTarget().getY(); // Not sure if it's y
+      double x = target.getBestCameraToTarget().getX(); 
+      double y = target.getBestCameraToTarget().getY();
       double ambiguity = target.getPoseAmbiguity();
       return new double[] { x, y, ambiguity };
     }
@@ -46,7 +46,6 @@ public class ApriltagAlign extends CommandBase {
     
     double xDistance = getDistance()[0];
     double yDistance = getDistance()[1];
-    double ambiguity = getDistance()[2]; 
 
     PIDController xPID = new PIDController(1, 0, 0);
     PIDController yPID = new PIDController(1, 0, 0);

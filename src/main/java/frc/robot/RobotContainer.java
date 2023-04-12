@@ -154,12 +154,10 @@ public class RobotContainer {
     operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_03)));
 
     // OPERATOR POV_DOWN: align to apriltag
-    operatorOI.povDown().whileTrue( new ApriltagAlign(swerveDrive) );
+    operatorOI.povDown().whileTrue(new ApriltagAlign(swerveDrive));
 
-    // OPERATOR POV_UP: pick up cube using Machine Learning 
-    operatorOI.povUp().whileTrue( new MLPickup(swerveDrive).raceWith( new DeployIntake(intake, uprighter) ) );
-
-
+    // OPERATOR POV_UP: pick up cube using Machine Learning
+    operatorOI.povUp().whileTrue(new MLPickup(swerveDrive).raceWith(new DeployIntake(intake, uprighter)));
 
     // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
     operatorOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetMaxPitchRoll()));
@@ -182,8 +180,10 @@ public class RobotContainer {
         new Test07PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Test 08 (Shoot, Mobility, Balance)",
         new Test08PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Test 09 (Balance Backwards)",
-        new Test09PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Balance",
+        new Balance(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Two Cube Mayhem",
+        new DoubleCubeAuto(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Test 10 (Balance Forwards)",
         new Test10PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);

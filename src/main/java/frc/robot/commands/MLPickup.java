@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.IntegerSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StringSubscriber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveDrive;
 
@@ -18,12 +19,20 @@ public class MLPickup extends CommandBase {
   SwerveDrive swerveDrive;
 
   NetworkTableInstance inst = NetworkTableInstance.getDefault();
+
   NetworkTable pieces = inst.getTable("Vision");
+  NetworkTable names = inst.getTable("Piece");
+
+
+  StringSubscriber name = names.getStringTopic("piece").subscribe("None");
+
 
   IntegerSubscriber ymin = pieces.getIntegerTopic("yMin").subscribe(0);
   IntegerSubscriber xmin = pieces.getIntegerTopic("xMin").subscribe(0);
   IntegerSubscriber ymax = pieces.getIntegerTopic("yMax").subscribe(0);
   IntegerSubscriber xmax = pieces.getIntegerTopic("xMax").subscribe(0);
+  IntegerSubscriber distance = pieces.getIntegerTopic("Distance").subscribe(0);
+
 
   public MLPickup(SwerveDrive swerveDrive) {
     this.swerveDrive = swerveDrive; 
@@ -68,36 +77,63 @@ public class MLPickup extends CommandBase {
     return (int)(yCenter); 
   }
 
+  /**
+   * Gets the distance from the robot to a detected game piece in meters
+   * 
+   * @return a game pieces' distance from the robot
+   */
+  public double getDistance()
+  {
+    long d = distance.get(); 
+    return ( double )( d ); 
+  }
+
+  /**
+   * Gets the name of a detected game piece
+   * 
+   * @return the name of a detected game piece
+   */
+  public String getName()
+  {
+    return name.get(); 
+  }
+
 
 
   @Override
   public void execute() {
+    String name = getName();
     int xCenter = getXCenter();
     int yCenter = getYCenter();
+    double distance = getDistance();
 
-    PIDController xPID = new PIDController(1, 0, 0);
-    PIDController yPID = new PIDController(1, 0, 0);
+    if( name.equals("Cube") && distance < 3 )
+    {
 
-    xPID.setTolerance(.05);
-    yPID.setTolerance(.05);
+      PIDController xPID = new PIDController(1, 0, 0);
+      PIDController yPID = new PIDController(1, 0, 0);
 
-    double xPower = xPID.calculate(xCenter, WIDTH / 2 );
-    xPower = xPower / 1000 * 6;
-    double yPower = yPID.calculate(yCenter, HEIGHT);
-    yPower = yPower / 1000 * 6;
+      xPID.setTolerance(.05);
+      yPID.setTolerance(.05);
+
+      double xPower = xPID.calculate(xCenter, WIDTH / 2 );
+      xPower = xPower / 1000 * 6;
+      double yPower = yPID.calculate(yCenter, HEIGHT);
+      yPower = yPower / 1000 * 6;
 
 
-    System.out.println("xPower:" + xPower);
-    System.out.println("yPower:" + yPower);
+      System.out.println("xPower:" + xPower);
+      System.out.println("yPower:" + yPower);
 
-    System.out.println("xCenter:" + xCenter);
-    System.out.println("yCenter:" + yCenter);
+      System.out.println("xCenter:" + xCenter);
+      System.out.println("yCenter:" + yCenter);
 
-    System.out.println("xSetPoint:" + xPID.atSetpoint());
-    System.out.println("ySetPoint:" + yPID.atSetpoint());
+      System.out.println("xSetPoint:" + xPID.atSetpoint());
+      System.out.println("ySetPoint:" + yPID.atSetpoint());
 
-    if( !xPID.atSetpoint() && !yPID.atSetpoint() )
-    swerveDrive.drive( yPower, xPower, 0, false);
+      if( !xPID.atSetpoint() && !yPID.atSetpoint() )
+      swerveDrive.drive( yPower, xPower, 0, false);
+    }
   }
 
   @Override

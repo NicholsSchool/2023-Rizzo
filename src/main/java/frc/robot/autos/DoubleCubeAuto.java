@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.pathplanner.lib.PathConstraints;
 
-public class Test09PathPlanner extends SequentialCommandGroup {
+public class DoubleCubeAuto extends SequentialCommandGroup {
 
   PhotonCamera camera;
   SwerveDrive swerveDrive;
@@ -32,7 +32,7 @@ public class Test09PathPlanner extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public Test09PathPlanner(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public DoubleCubeAuto(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;
@@ -50,7 +50,7 @@ public class Test09PathPlanner extends SequentialCommandGroup {
 
     addRequirements(swerveDrive, intake, gripper, arm, uprighter);
 
-    // Command gotoChargeStation = autoBuilder.fullAuto(path);
+    Command gotoChargeStation = autoBuilder.fullAuto(path);
 
     addCommands(new RunCommand(() -> intake.close(), intake).withTimeout(0.01),
         new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.5),
@@ -68,7 +68,6 @@ public class Test09PathPlanner extends SequentialCommandGroup {
     addCommands(new ApriltagAlign(_swerveDrive).withTimeout(2));
     addCommands( new OuttakeCube(intake, uprighter, gripper, IntakeConstants.OUTTAKE_LOW_SPEED).withTimeout( 2 ) );
   
-
 
 
   }
