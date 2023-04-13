@@ -159,6 +159,9 @@ public class RobotContainer {
     // OPERATOR POV_DOWN: align to apriltag
     operatorOI.povDown().whileTrue(new ApriltagAlign(swerveDrive));
 
+    operatorOI.povUp().whileTrue(new CalibrateBalance(swerveDrive));
+
+
     // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
     operatorOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetMaxPitchRoll()));
 

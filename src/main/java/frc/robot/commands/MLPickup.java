@@ -119,16 +119,6 @@ public class MLPickup extends CommandBase {
       double yPower = yPID.calculate(yCenter, HEIGHT);
       yPower = yPower / 1000 * 6;
 
-
-      System.out.println("xPower:" + xPower);
-      System.out.println("yPower:" + yPower);
-
-      System.out.println("xCenter:" + xCenter);
-      System.out.println("yCenter:" + yCenter);
-
-      System.out.println("xSetPoint:" + xPID.atSetpoint());
-      System.out.println("ySetPoint:" + yPID.atSetpoint());
-
       if( !xPID.atSetpoint() && !yPID.atSetpoint() )
       swerveDrive.drive( yPower, xPower, 0, false);
     }

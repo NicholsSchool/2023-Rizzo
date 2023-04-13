@@ -1,12 +1,9 @@
 package frc.robot.commands;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
@@ -27,7 +24,7 @@ public class BalanceRobot extends CommandBase {
   
 
 
-  public BalanceRobot(SwerveDrive _swerveDrive, boolean _isFacingChargeStation) {
+  public BalanceRobot(SwerveDrive _swerveDrive) {
     swerveDrive = _swerveDrive;
     addRequirements(swerveDrive);
   }
@@ -84,11 +81,7 @@ public class BalanceRobot extends CommandBase {
       powerApriltag = powerApriltag / 10 * 4; 
       pidApriltag.setTolerance( 0.1 );
 
-
-      System.out.println("Power:" + powerApriltag);
       System.out.println("Distnace:" + distance); //Useful for Calibration
-      System.out.println("At Point:" + pidApriltag.atSetpoint());
-
 
       if( pidApriltag.atSetpoint() )
       {

@@ -33,8 +33,8 @@ public class DoubleCubeElectric extends SequentialCommandGroup {
     gripper = _gripper;
     arm = _arm;
 
-    PathPlannerTrajectory path = PathPlanner.loadPath("ElectricForward", new PathConstraints(1.5, 1.5));
-    PathPlannerTrajectory back = PathPlanner.loadPath("ElectricBackward", new PathConstraints(1.5, 1.5));
+    PathPlannerTrajectory path = PathPlanner.loadPath("ElectricForward", new PathConstraints(3, 2));
+    PathPlannerTrajectory back = PathPlanner.loadPath("ElectricBackward", new PathConstraints(2, 2));
 
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(_swerveDrive::getPose, _swerveDrive::resetOdometry,

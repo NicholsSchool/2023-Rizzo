@@ -13,6 +13,7 @@ import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.pathplanner.lib.PathConstraints;
 
@@ -33,7 +34,7 @@ public class SingleCubeElectric extends SequentialCommandGroup {
     gripper = _gripper;
     arm = _arm;
 
-    PathPlannerTrajectory path = PathPlanner.loadPath("ElectricForward", new PathConstraints(2, 2));
+    PathPlannerTrajectory path = PathPlanner.loadPath("ElectricForward", new PathConstraints(2, 3));
 
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(_swerveDrive::getPose, _swerveDrive::resetOdometry,
@@ -46,9 +47,10 @@ public class SingleCubeElectric extends SequentialCommandGroup {
       new OuttakeCube( intake, uprighter, gripper, IntakeConstants.OUTTAKE_HIGH_SPEED ).withTimeout( 0.5 ) ); 
     addCommands(autoBuilder.resetPose(path));
     addCommands(autoBuilder.followPath(path));
-    addCommands( new RotateRobot(_swerveDrive, 180.0 ).withTimeout(3));
-    addCommands( new MLPickup(_swerveDrive).withTimeout(1).raceWith(new DeployIntake(_intake, _uprighter)));
-    swerveDrive.resetGyro();
+    addCommands( new RotateRobot(_swerveDrive, 180.0 ).withTimeout(2));
+    addCommands( new MLPickup(_swerveDrive).withTimeout(2.5).raceWith(new DeployIntake(_intake, _uprighter)));
+    addCommands( new InstantCommand( () -> swerveDrive.resetGyro() ));
+
   
 
 
