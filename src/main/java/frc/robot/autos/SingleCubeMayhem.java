@@ -48,7 +48,7 @@ public class SingleCubeMayhem extends SequentialCommandGroup {
     addCommands(autoBuilder.followPath(path));
     addCommands( new RotateRobot(_swerveDrive, 180.0 ).withTimeout(2));
     addCommands( new MLPickup(_swerveDrive).withTimeout(0.75).raceWith(new DeployIntake(_intake, _uprighter)));
-    addCommands( new InstantCommand( () -> swerveDrive.resetGyro() ));
+    addCommands( new InstantCommand( () -> swerveDrive.resetGyro()));
 
 
   }

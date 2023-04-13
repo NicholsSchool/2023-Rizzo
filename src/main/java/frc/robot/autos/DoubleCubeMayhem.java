@@ -13,6 +13,7 @@ import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.pathplanner.lib.PathConstraints;
 
@@ -54,6 +55,8 @@ public class DoubleCubeMayhem extends SequentialCommandGroup {
     addCommands(autoBuilder.followPath(back));
     addCommands(new ApriltagAlign(_swerveDrive).withTimeout(2));
     addCommands( new OuttakeCube(intake, uprighter, gripper, IntakeConstants.OUTTAKE_LOW_SPEED).withTimeout( 2 ) );
+    addCommands( new InstantCommand( () -> swerveDrive.setGyroAngleAdjustment( 180.0 ) ));
+
   
 
 
