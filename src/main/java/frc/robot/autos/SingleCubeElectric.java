@@ -33,7 +33,7 @@ public class SingleCubeElectric extends SequentialCommandGroup {
     gripper = _gripper;
     arm = _arm;
 
-    PathPlannerTrajectory path = PathPlanner.loadPath("ElectricForward", new PathConstraints(4, 3));
+    PathPlannerTrajectory path = PathPlanner.loadPath("ElectricForward", new PathConstraints(2, 2));
 
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(_swerveDrive::getPose, _swerveDrive::resetOdometry,

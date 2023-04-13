@@ -195,7 +195,7 @@ public class RobotContainer {
         new SingleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
     //strech
     autoChooser.addOption("Two Cube Electric",
-        new SingleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
+        new DoubleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Test 10 (Balance Forwards)",
         new Test10PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);

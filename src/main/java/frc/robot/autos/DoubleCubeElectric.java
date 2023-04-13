@@ -33,8 +33,8 @@ public class DoubleCubeElectric extends SequentialCommandGroup {
     gripper = _gripper;
     arm = _arm;
 
-    PathPlannerTrajectory path = PathPlanner.loadPath("ElectricForward", new PathConstraints(4, 3));
-    PathPlannerTrajectory back = PathPlanner.loadPath("ElectricBackward", new PathConstraints(4, 3));
+    PathPlannerTrajectory path = PathPlanner.loadPath("ElectricForward", new PathConstraints(1.5, 1.5));
+    PathPlannerTrajectory back = PathPlanner.loadPath("ElectricBackward", new PathConstraints(1.5, 1.5));
 
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(_swerveDrive::getPose, _swerveDrive::resetOdometry,
@@ -47,9 +47,9 @@ public class DoubleCubeElectric extends SequentialCommandGroup {
       new OuttakeCube( intake, uprighter, gripper, IntakeConstants.OUTTAKE_HIGH_SPEED ).withTimeout( 0.5 ) ); 
     addCommands(autoBuilder.resetPose(path));
     addCommands(autoBuilder.followPath(path));
-    addCommands( new RotateRobot(_swerveDrive, 180.0 ).withTimeout(3));
+    addCommands( new RotateRobot(_swerveDrive, 180.0 ).withTimeout(2));
     addCommands( new MLPickup(_swerveDrive).withTimeout(1).raceWith(new DeployIntake(_intake, _uprighter)));
-    addCommands(new RotateRobot(_swerveDrive, 0.0 ).withTimeout(3));
+    addCommands(new RotateRobot(_swerveDrive, 0.0 ).withTimeout(2));
     addCommands(autoBuilder.resetPose(back));
     addCommands(autoBuilder.followPath(back));
     addCommands(new ApriltagAlign(_swerveDrive).withTimeout(2));
