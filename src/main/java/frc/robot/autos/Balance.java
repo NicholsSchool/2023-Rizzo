@@ -27,7 +27,7 @@ public class Balance extends SequentialCommandGroup {
     addCommands( new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.5),
         new InstantCommand(() -> uprighter.stop(), intake),
         new OuttakeCube( intake, uprighter, gripper, IntakeConstants.OUTTAKE_HIGH_SPEED ).withTimeout( 0.5 ) ); 
-    addCommands(new BalanceRobot(_swerveDrive, false));
+    addCommands(new BalanceRobot(_swerveDrive, false).withTimeout( 13 ));
 
   }
 }

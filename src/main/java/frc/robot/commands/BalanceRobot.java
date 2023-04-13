@@ -1,5 +1,8 @@
 package frc.robot.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -15,10 +18,11 @@ public class BalanceRobot extends CommandBase {
 
   double prevDistance = 0.0;
   boolean firstPassCompleted = false; 
+  boolean stop = false; 
 
   //Change this for balancing
-  private static double APRILTAG_TO_CHARGE_STATION_METERS = 2.54; 
-  private static double APRILTAG_TO_END_OF_COMMUNITY_METERS = 3.5; //Just picked this value. Need to adjust with tests
+  private static double APRILTAG_TO_CHARGE_STATION_METERS = 2.51; 
+  private static double APRILTAG_TO_END_OF_COMMUNITY_METERS = 4.20; //Just picked this value. Need to adjust with tests
 
   
 
@@ -42,12 +46,16 @@ public class BalanceRobot extends CommandBase {
   public double getDistance()
   {
     PhotonPipelineResult result = camera.getLatestResult(); 
-    if( result.hasTargets() )
+    List<PhotonTrackedTarget> targets = result.getTargets();
+
+    for( PhotonTrackedTarget target: targets )
     {
-      PhotonTrackedTarget target = result.getBestTarget();
-      double x = target.getBestCameraToTarget().getX(); //Not sure if it's x
-      prevDistance = x;
-      return x; 
+      if( target.getFiducialId() == 7 || target.getFiducialId() == 2 )
+      {
+        double x = target.getBestCameraToTarget().getX(); //Not sure if it's x
+        prevDistance = x;
+        return x; 
+      }
     }
     return prevDistance; 
   }
@@ -73,7 +81,7 @@ public class BalanceRobot extends CommandBase {
       PIDController pidApriltag = new PIDController( 1, 0, 0); 
 
       double powerApriltag = pidApriltag.calculate( distance, APRILTAG_TO_CHARGE_STATION_METERS);
-      powerApriltag = powerApriltag / 10 * 6.25; 
+      powerApriltag = powerApriltag / 10 * 4; 
       pidApriltag.setTolerance( 0.1 );
 
 

@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.pathplanner.lib.PathConstraints;
 
-public class DoubleCubeMayhem extends SequentialCommandGroup {
+public class SingleCubeMayhem extends SequentialCommandGroup {
 
   PhotonCamera camera;
   SwerveDrive swerveDrive;
@@ -25,7 +25,7 @@ public class DoubleCubeMayhem extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public DoubleCubeMayhem(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public SingleCubeMayhem(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;
@@ -34,8 +34,6 @@ public class DoubleCubeMayhem extends SequentialCommandGroup {
     arm = _arm;
 
     PathPlannerTrajectory path = PathPlanner.loadPath("MayhemForward", new PathConstraints(4, 3));
-    PathPlannerTrajectory back = PathPlanner.loadPath("MayhemBackward", new PathConstraints(4, 3));
-
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(_swerveDrive::getPose, _swerveDrive::resetOdometry,
         SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDConstants(3.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0),
@@ -49,12 +47,7 @@ public class DoubleCubeMayhem extends SequentialCommandGroup {
     addCommands(autoBuilder.followPath(path));
     addCommands( new RotateRobot(_swerveDrive, 180.0 ).withTimeout(2));
     addCommands( new MLPickup(_swerveDrive).withTimeout(0.75).raceWith(new DeployIntake(_intake, _uprighter)));
-    addCommands(new RotateRobot(_swerveDrive, 0.0 ).withTimeout(2));
-    addCommands(autoBuilder.resetPose(back));
-    addCommands(autoBuilder.followPath(back));
-    addCommands(new ApriltagAlign(_swerveDrive).withTimeout(2));
-    addCommands( new OuttakeCube(intake, uprighter, gripper, IntakeConstants.OUTTAKE_LOW_SPEED).withTimeout( 2 ) );
-  
+    swerveDrive.resetGyro();
 
 
   }

@@ -180,12 +180,22 @@ public class RobotContainer {
         new Test07PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Test 08 (Shoot, Mobility, Balance)",
         new Test08PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
+
+    //works
     autoChooser.addOption("Balance",
         new Balance(swerveDrive, intake, uprighter, gripper, arm));
+    //works
     autoChooser.addOption("Two Cube Mayhem",
         new DoubleCubeMayhem(swerveDrive, intake, uprighter, gripper, arm));
+    //works
+    autoChooser.addOption("Single Cube Mayhem",
+        new SingleCubeMayhem(swerveDrive, intake, uprighter, gripper, arm));
+    //test
+    autoChooser.addOption("Single Cube Electric",
+        new SingleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
+    //strech
     autoChooser.addOption("Two Cube Electric",
-        new DoubleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
+        new SingleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Test 10 (Balance Forwards)",
         new Test10PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
