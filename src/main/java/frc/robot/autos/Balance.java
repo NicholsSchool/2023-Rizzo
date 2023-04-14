@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.AutoDistanceConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -27,7 +28,9 @@ public class Balance extends SequentialCommandGroup {
     addCommands( new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.5),
         new InstantCommand(() -> uprighter.stop(), intake),
         new OuttakeCube( intake, uprighter, gripper, IntakeConstants.OUTTAKE_HIGH_SPEED ).withTimeout( 0.5 ) ); 
-    addCommands(new BalanceRobot(_swerveDrive).withTimeout( 13 ));
+    addCommands(new BalanceRobot(_swerveDrive, AutoDistanceConstants.APRILTAG_TO_END_OF_COMMUNITY_METERS).withTimeout( 6 ));
+    addCommands(new RotateRobot(_swerveDrive, 0.0));
+    addCommands(new BalanceRobot(_swerveDrive, AutoDistanceConstants.APRILTAG_TO_CHARGE_STATION_METERS).withTimeout( 8 ));
 
   }
 }

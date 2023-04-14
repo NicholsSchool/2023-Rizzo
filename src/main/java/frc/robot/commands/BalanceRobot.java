@@ -17,14 +17,13 @@ public class BalanceRobot extends CommandBase {
   boolean firstPassCompleted = false; 
   boolean stop = false; 
 
-  //Change this for balancing
-  private static double APRILTAG_TO_CHARGE_STATION_METERS = 2.51; 
-  private static double APRILTAG_TO_END_OF_COMMUNITY_METERS = 4.20; //Just picked this value. Need to adjust with tests
+  double DISTANCE = 0; 
 
   
 
 
-  public BalanceRobot(SwerveDrive _swerveDrive) {
+  public BalanceRobot(SwerveDrive _swerveDrive, double distance) {
+    DISTANCE = distance; 
     swerveDrive = _swerveDrive;
     addRequirements(swerveDrive);
   }
@@ -63,21 +62,9 @@ public class BalanceRobot extends CommandBase {
   public void execute() {
     double distance = getDistance();
 
-    if( !firstPassCompleted && distance < APRILTAG_TO_END_OF_COMMUNITY_METERS )
-    {
-      swerveDrive.drive( -0.6, 0, 0, true ); 
-    }
-    else if( !firstPassCompleted )
-    {
-      firstPassCompleted = true; 
-      new RotateRobot(swerveDrive, 0.0).withTimeout(2); 
-    }
-
-    if( firstPassCompleted )
-    {
       PIDController pidApriltag = new PIDController( 1, 0, 0); 
 
-      double powerApriltag = pidApriltag.calculate( distance, APRILTAG_TO_CHARGE_STATION_METERS);
+      double powerApriltag = pidApriltag.calculate( distance, DISTANCE);
       powerApriltag = powerApriltag / 10 * 4; 
       pidApriltag.setTolerance( 0.1 );
 
@@ -88,15 +75,15 @@ public class BalanceRobot extends CommandBase {
         pidApriltag.close();
         swerveDrive.setWheelsToXFormation();
       }
-      else if( distance < APRILTAG_TO_CHARGE_STATION_METERS && !pidApriltag.atSetpoint() )
+      else if( distance < DISTANCE && !pidApriltag.atSetpoint() )
       {
         swerveDrive.drive( -powerApriltag, 0, 0, true);
       }
-      else if( distance > APRILTAG_TO_CHARGE_STATION_METERS && !pidApriltag.atSetpoint() )
+      else if( distance > DISTANCE && !pidApriltag.atSetpoint() )
       {
         swerveDrive.drive( -powerApriltag, 0, 0, true);
       }
-    }
+
   }
 
   @Override
