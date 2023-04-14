@@ -28,8 +28,8 @@ public class Balance extends SequentialCommandGroup {
     addCommands( new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.5),
         new InstantCommand(() -> uprighter.stop(), intake),
         new OuttakeCube( intake, uprighter, gripper, IntakeConstants.OUTTAKE_HIGH_SPEED ).withTimeout( 0.5 ) ); 
-    addCommands(new BalanceRobot(_swerveDrive, AutoDistanceConstants.APRILTAG_TO_END_OF_COMMUNITY_METERS).withTimeout( 6 ));
-    addCommands(new RotateRobot(_swerveDrive, 0.0));
+    addCommands(new BalanceRobot(_swerveDrive, AutoDistanceConstants.APRILTAG_TO_END_OF_COMMUNITY_METERS).withTimeout( 5 ));
+    addCommands(new RotateRobot(_swerveDrive, 0.0).withTimeout(1));
     addCommands(new BalanceRobot(_swerveDrive, AutoDistanceConstants.APRILTAG_TO_CHARGE_STATION_METERS).withTimeout( 8 ));
 
   }
