@@ -107,6 +107,9 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> intake.close(), intake))
         .onFalse(new InstantCommand(() -> intake.open(), intake));
 
+    // Driver Right Bumper: pick up cube using Machine Learning
+    driverOI.leftBumper().whileTrue(new MLPickup(swerveDrive).raceWith(new DeployIntake(intake, uprighter)));
+
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
     driverOI.povUp().whileTrue(new NudgeRobot(swerveDrive, "NUDGE FORWARD").withTimeout(0.5));
     driverOI.povDown().whileTrue(new NudgeRobot(swerveDrive, "NUDGE BACKWARD").withTimeout(0.5));
@@ -153,6 +156,12 @@ public class RobotContainer {
     operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_02)));
     operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_03)));
 
+    // OPERATOR POV_DOWN: align to apriltag
+    operatorOI.povDown().whileTrue(new ApriltagAlign(swerveDrive));
+
+    operatorOI.povUp().whileTrue(new CalibrateBalance(swerveDrive));
+
+
     // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
     operatorOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetMaxPitchRoll()));
 
@@ -174,8 +183,22 @@ public class RobotContainer {
         new Test07PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Test 08 (Shoot, Mobility, Balance)",
         new Test08PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Test 09 (Balance Backwards)",
-        new Test09PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
+
+    //works
+    autoChooser.addOption("Balance",
+        new Balance(swerveDrive, intake, uprighter, gripper, arm));
+    //works
+    autoChooser.addOption("Two Cube Mayhem",
+        new DoubleCubeMayhem(swerveDrive, intake, uprighter, gripper, arm));
+    //works
+    autoChooser.addOption("Single Cube Mayhem",
+        new SingleCubeMayhem(swerveDrive, intake, uprighter, gripper, arm));
+    //test
+    autoChooser.addOption("Single Cube Electric",
+        new SingleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
+    //strech
+    autoChooser.addOption("Two Cube Electric",
+        new DoubleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Test 10 (Balance Forwards)",
         new Test10PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);

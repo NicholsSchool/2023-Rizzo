@@ -31,6 +31,7 @@ public class RotateRobot extends CommandBase {
     double ySpeed = -RobotContainer.driverOI.getLeftX();
 
     double currentYaw = swerveDrive.getYaw();
+    System.out.println("yaw:" + currentYaw);
     double difference = desiredAngle - currentYaw;
     double error, angularRotation = 0.0;
     double kP = 0.63;
@@ -44,6 +45,8 @@ public class RotateRobot extends CommandBase {
     angularRotation = error / 180 * (Math.PI * kP);
 
     swerveDrive.drive(xSpeed, ySpeed, -angularRotation, true);
+
+    System.out.println( "Executing" );
 
   }
 

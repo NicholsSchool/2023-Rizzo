@@ -122,4 +122,12 @@ public final class Constants {
     public static final int TURNING_MOTOR_CURRENT_LIMIT = 12; // amps
   }
 
+  //Auto Constants
+  public static final class AutoDistanceConstants {
+    //Change this for balancing
+    public static final double APRILTAG_TO_CHARGE_STATION_METERS = 2.51; 
+    public static final double APRILTAG_TO_END_OF_COMMUNITY_METERS = 4.20; //Just picked this value. Need to adjust with tests
+
+  }
+
 }

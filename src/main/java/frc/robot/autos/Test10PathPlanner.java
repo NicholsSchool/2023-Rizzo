@@ -45,7 +45,7 @@ public class Test10PathPlanner extends SequentialCommandGroup {
     Command gotoChargeStation = autoBuilder.fullAuto(pathGroup);
 
     addCommands(gotoChargeStation,
-        new RunCommand(() -> new BalanceRobot(swerveDrive, true), swerveDrive).withTimeout(5.0));
+        new RunCommand(() -> new BalanceRobot(swerveDrive, 0), swerveDrive).withTimeout(5.0));
 
   }
 }

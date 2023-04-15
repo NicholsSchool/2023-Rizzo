@@ -53,7 +53,7 @@ public class Test08PathPlanner extends SequentialCommandGroup {
         new InstantCommand(() -> intake.open(), intake),
         new InstantCommand(() -> intake.stop(), intake),
         overChargeStationAndBack,
-        new RunCommand(() -> new BalanceRobot(swerveDrive, false), swerveDrive).withTimeout(5.0),
+        new RunCommand(() -> new BalanceRobot(swerveDrive, 0), swerveDrive).withTimeout(5.0),
         // Experimental reset of gyro to 180 degrees
         new InstantCommand(() -> swerveDrive.setGyroAngleAdjustment(180), swerveDrive));
 

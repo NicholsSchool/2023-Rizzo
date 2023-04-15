@@ -4,26 +4,14 @@ import java.util.List;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
-public class BalanceRobot extends CommandBase {
+public class CalibrateBalance extends CommandBase {
 
   SwerveDrive swerveDrive;
   PhotonCamera camera;
-
-  double prevDistance = 0.0;
-  boolean firstPassCompleted = false; 
-  boolean stop = false; 
-
-  double DISTANCE = 0; 
-
-  
-
-
-  public BalanceRobot(SwerveDrive _swerveDrive, double distance) {
-    DISTANCE = distance; 
+  public CalibrateBalance(SwerveDrive _swerveDrive) {
     swerveDrive = _swerveDrive;
     addRequirements(swerveDrive);
   }
@@ -49,11 +37,10 @@ public class BalanceRobot extends CommandBase {
       if( target.getFiducialId() == 7 || target.getFiducialId() == 2 )
       {
         double x = target.getBestCameraToTarget().getX(); //Not sure if it's x
-        prevDistance = x;
         return x; 
       }
     }
-    return prevDistance; 
+    return 0.0; 
   }
 
 
@@ -61,34 +48,11 @@ public class BalanceRobot extends CommandBase {
   @Override
   public void execute() {
     double distance = getDistance();
-
-      PIDController pidApriltag = new PIDController( 1, 0, 0); 
-
-      double powerApriltag = pidApriltag.calculate( distance, DISTANCE);
-      powerApriltag = powerApriltag / 10 * 4; 
-      pidApriltag.setTolerance( 0.1 );
-
-      System.out.println("Distnace:" + distance); //Useful for Calibration
-
-      if( pidApriltag.atSetpoint() )
-      {
-        pidApriltag.close();
-        swerveDrive.setWheelsToXFormation();
-      }
-      else if( distance < DISTANCE && !pidApriltag.atSetpoint() )
-      {
-        swerveDrive.drive( -powerApriltag, 0, 0, true);
-      }
-      else if( distance > DISTANCE && !pidApriltag.atSetpoint() )
-      {
-        swerveDrive.drive( -powerApriltag, 0, 0, true);
-      }
-
+    System.out.println( "Distance: " + distance );
   }
 
   @Override
   public void end(boolean interrupted) {
-    swerveDrive.drive( 0, 0, 0, true);
   }
 
   @Override
