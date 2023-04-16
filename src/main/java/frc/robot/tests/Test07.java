@@ -1,4 +1,4 @@
-package frc.robot.autos;
+package frc.robot.tests;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.pathplanner.lib.PathConstraints;
 
-public class Test07PathPlanner extends SequentialCommandGroup {
+public class Test07 extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
   Intake intake;
@@ -24,7 +24,7 @@ public class Test07PathPlanner extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public Test07PathPlanner(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public Test07(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;

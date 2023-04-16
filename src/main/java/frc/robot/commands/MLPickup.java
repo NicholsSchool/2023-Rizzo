@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveDrive;
 
 public class MLPickup extends CommandBase {
-  private static final int WIDTH = 160; 
+  private static final int WIDTH = 160;
   private static final int HEIGHT = 120;
 
   SwerveDrive swerveDrive;
@@ -23,9 +23,7 @@ public class MLPickup extends CommandBase {
   NetworkTable pieces = inst.getTable("Vision");
   NetworkTable names = inst.getTable("Piece");
 
-
   StringSubscriber name = names.getStringTopic("piece").subscribe("None");
-
 
   IntegerSubscriber ymin = pieces.getIntegerTopic("yMin").subscribe(0);
   IntegerSubscriber xmin = pieces.getIntegerTopic("xMin").subscribe(0);
@@ -33,11 +31,10 @@ public class MLPickup extends CommandBase {
   IntegerSubscriber xmax = pieces.getIntegerTopic("xMax").subscribe(0);
   IntegerSubscriber distance = pieces.getIntegerTopic("Distance").subscribe(0);
 
-
   public MLPickup(SwerveDrive swerveDrive) {
-    this.swerveDrive = swerveDrive; 
+    this.swerveDrive = swerveDrive;
 
-    addRequirements( this.swerveDrive );
+    addRequirements(this.swerveDrive);
   }
 
   @Override
@@ -49,32 +46,29 @@ public class MLPickup extends CommandBase {
    * 
    * @return the center x coordinate of the deteced game piece
    */
-  public int getXCenter()
-  {
-    long xMax = xmax.get(); 
-    long xMin = xmin.get(); 
+  public int getXCenter() {
+    long xMax = xmax.get();
+    long xMin = xmin.get();
 
     long width = xMax - xMin;
-    long xCenter = xMin + ( width / 2 ); 
+    long xCenter = xMin + (width / 2);
 
-    return (int)(xCenter); 
+    return (int) (xCenter);
   }
-
 
   /**
    * Gets the center y coordinate of the detected game piece
    * 
    * @return the center y coordinate of the deteced game piece
    */
-  public int getYCenter()
-  {
-    long yMax = ymax.get(); 
-    long yMin = ymin.get(); 
+  public int getYCenter() {
+    long yMax = ymax.get();
+    long yMin = ymin.get();
 
     long height = yMax - yMin;
-    long yCenter = yMin + ( height / 2 ); 
+    long yCenter = yMin + (height / 2);
 
-    return (int)(yCenter); 
+    return (int) (yCenter);
   }
 
   /**
@@ -82,10 +76,9 @@ public class MLPickup extends CommandBase {
    * 
    * @return a game pieces' distance from the robot
    */
-  public double getDistance()
-  {
-    long d = distance.get(); 
-    return ( double )( d ); 
+  public double getDistance() {
+    long d = distance.get();
+    return (double) (d);
   }
 
   /**
@@ -93,20 +86,18 @@ public class MLPickup extends CommandBase {
    * 
    * @return the name of a detected game piece
    */
-  public String getName()
-  {
-    return name.get(); 
+  public String getName() {
+    return name.get();
   }
-
-
 
   @Override
   public void execute() {
+
     String name = getName();
     int xCenter = getXCenter();
     int yCenter = getYCenter();
-    if( name.equals("Cube") )
-    {
+
+    if (name.equals("Cube")) {
 
       PIDController xPID = new PIDController(1, 0, 0);
       PIDController yPID = new PIDController(1, 0, 0);
@@ -114,14 +105,19 @@ public class MLPickup extends CommandBase {
       xPID.setTolerance(.05);
       yPID.setTolerance(.05);
 
-      double xPower = xPID.calculate(xCenter, WIDTH / 2 );
+      double xPower = xPID.calculate(xCenter, WIDTH / 2);
       xPower = xPower / 1000 * 6;
       double yPower = yPID.calculate(yCenter, HEIGHT);
       yPower = yPower / 1000 * 6;
 
-      if( !xPID.atSetpoint() && !yPID.atSetpoint() )
-      swerveDrive.drive( yPower, xPower, 0, false);
+      if (!xPID.atSetpoint() && !yPID.atSetpoint()) {
+        swerveDrive.drive(yPower, xPower, 0, false);
+      }
+
+      xPID.close();
+      yPID.close();
     }
+
   }
 
   @Override

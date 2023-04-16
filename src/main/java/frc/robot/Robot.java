@@ -19,7 +19,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     robotContainer = new RobotContainer();
-
   }
 
   @Override
@@ -63,12 +62,12 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     CommandScheduler.getInstance().cancelAll();
-    robotContainer.arm.armTestingInit();
+    robotContainer.arm.setIdleModeToCoast();
   }
 
   @Override
   public void testPeriodic() {
-    robotContainer.arm.testArmPosition();
+    robotContainer.arm.putArmValuesOnNT();
   }
 
 }

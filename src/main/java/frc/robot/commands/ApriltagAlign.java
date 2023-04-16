@@ -49,22 +49,21 @@ public class ApriltagAlign extends CommandBase {
     PIDController yPID = new PIDController(1, 0, 0);
 
     xPID.setTolerance(0.05);
-    yPID.setTolerance(0.05 );
-
+    yPID.setTolerance(0.05);
 
     double xPower = xPID.calculate(xDistance, 0.8);
     xPower = xPower / 10 * 5;
     double yPower = yPID.calculate(yDistance, -0.1);
     yPower = yPower / 10 * 5;
 
-    if( !xPID.atSetpoint() && !yPID.atSetpoint() )
-    {
-      swerveDrive.drive( -xPower, -yPower, 0.0, true ); 
+    if (!xPID.atSetpoint() && !yPID.atSetpoint()) {
+      swerveDrive.drive(-xPower, -yPower, 0.0, true);
+    } else {
+      swerveDrive.drive(0.0, 0.0, 0.0, true);
     }
-    else
-    {
-      swerveDrive.drive( 0.0, 0.0, 0.0, true ); 
-    }
+
+    xPID.close();
+    yPID.close();
   }
 
   @Override

@@ -7,7 +7,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder.Type;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -64,9 +63,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     checkArmLimitSwitch();
-    RobotContainer.armPos.setDouble(armEncoder.getPosition());
-    RobotContainer.leftArmLimit.setBoolean(leftArmLimitSwitch.get());
-    RobotContainer.rightArmLimit.setBoolean(rightArmLimitSwitch.get());
+    putArmValuesOnNT();
   }
 
   /**
@@ -146,19 +143,26 @@ public class Arm extends SubsystemBase {
   }
 
   /**
-   * Testing Init. Setup coast mode for testing the arm.
+   * Sets the idle mode to "coast".
    */
-  public void armTestingInit() {
+  public void setIdleModeToCoast() {
     armMotor.setIdleMode(IdleMode.kCoast);
   }
 
   /**
-   * Testing Periodic. Put arm values on network tables.
+   * Sets the idle mode to "brake".
    */
-  public void testArmPosition() {
-    SmartDashboard.putNumber("Arm Position: ", armEncoder.getPosition());
-    SmartDashboard.putBoolean("Left Arm Limit Switch: ", leftArmLimitSwitch.get());
-    SmartDashboard.putBoolean("Right Arm Limit Switch: ", rightArmLimitSwitch.get());
+  public void armSetIdleModeToBrake() {
+    armMotor.setIdleMode(IdleMode.kBrake);
+  }
+
+  /**
+   * Put arm values on network tables.
+   */
+  public void putArmValuesOnNT() {
+    RobotContainer.armPos.setDouble(armEncoder.getPosition());
+    RobotContainer.leftArmLimitSwitch.setBoolean(leftArmLimitSwitch.get());
+    RobotContainer.rightArmLimitSwitch.setBoolean(rightArmLimitSwitch.get());
   }
 
 }

@@ -1,4 +1,4 @@
-package frc.robot.autos;
+package frc.robot.tests;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -14,7 +14,8 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import frc.robot.subsystems.*;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 
-public class ElectricPathPlanner extends SequentialCommandGroup {
+// TVR Path Planner (Used during TVR finals 2023)
+public class TestPP extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
   Intake intake;
@@ -22,7 +23,7 @@ public class ElectricPathPlanner extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public ElectricPathPlanner(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper,
+  public TestPP(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper,
       Arm _arm) {
 
     swerveDrive = _swerveDrive;

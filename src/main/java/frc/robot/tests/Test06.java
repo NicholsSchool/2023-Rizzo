@@ -1,4 +1,4 @@
-package frc.robot.autos;
+package frc.robot.tests;
 
 // import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -19,7 +19,7 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 
-public class Test06Intake extends SequentialCommandGroup {
+public class Test06 extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
   Intake intake;
@@ -27,7 +27,7 @@ public class Test06Intake extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public Test06Intake(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public Test06(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;

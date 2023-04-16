@@ -1,4 +1,4 @@
-package frc.robot.autos;
+package frc.robot.tests;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -19,7 +19,8 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 
-public class MayhemBlue extends SequentialCommandGroup {
+// TVR Electric Red
+public class TestER extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
   Intake intake;
@@ -27,7 +28,7 @@ public class MayhemBlue extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public MayhemBlue(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public TestER(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;
@@ -44,27 +45,26 @@ public class MayhemBlue extends SequentialCommandGroup {
         // Zero the starting pose of the trajectory.
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
-            new Translation2d(-0.75, -0.33)
+            new Translation2d(-0.25, 0.25)
         // Add interior waypoints to the list above.
         ),
         // Final X/Y position in meters and rotation in radians.
-        new Pose2d(-3.5, -0.33, new Rotation2d(0)), config);
+        new Pose2d(-0.5, 0.0, new Rotation2d(0)), config);
 
     Trajectory trajectory02 = TrajectoryGenerator.generateTrajectory(
         // Zero the starting pose of the trajectory.
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
-            new Translation2d(0.33, -0.33)
-        // Add interior waypoints to the list above.
-        ),
+            new Translation2d(1.25, -0.25)),
         // Final X/Y position in meters and rotation in radians.
-        new Pose2d(0.44, -0.55, new Rotation2d(0)), config);
+        new Pose2d(3.75, -0.25, new Rotation2d(0)),
+        config);
 
     // Create a PID controller for the robot's translation and rotation.
     var thetaController = new ProfiledPIDController(1.0, 0, 0, new Constraints(Math.PI, Math.PI));
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    SwerveControllerCommand swerveCC01 = new SwerveControllerCommand(
+    SwerveControllerCommand back0point5meters = new SwerveControllerCommand(
         trajectory01,
         swerveDrive::getPose,
         SWERVE_DRIVE_KINEMATICS,
@@ -74,7 +74,7 @@ public class MayhemBlue extends SequentialCommandGroup {
         swerveDrive::setModuleStates,
         swerveDrive);
 
-    SwerveControllerCommand swerveCC02 = new SwerveControllerCommand(
+    SwerveControllerCommand forward4meters = new SwerveControllerCommand(
         trajectory02,
         swerveDrive::getPose,
         SWERVE_DRIVE_KINEMATICS,
@@ -104,10 +104,8 @@ public class MayhemBlue extends SequentialCommandGroup {
         new RunCommand(() -> intake.open(), intake).withTimeout(0.5),
         new InstantCommand(() -> intake.stop(), intake));
 
-    addCommands(new NudgeRobot(swerveDrive, "NUDGE BACKWARD").withTimeout(0.5));
-
     // Swerve Drive Auto
-    addCommands(swerveCC01);
+    addCommands(back0point5meters);
 
     // Move -90 degrees
     addCommands(new RotateRobot(swerveDrive, -90.0).withTimeout(0.88));
@@ -116,8 +114,7 @@ public class MayhemBlue extends SequentialCommandGroup {
     addCommands(new RotateRobot(swerveDrive, -180.0).withTimeout(0.88)
         .andThen(() -> swerveDrive.resetGyro(), swerveDrive));
 
-    addCommands(swerveCC02.raceWith(new DeployIntake(intake,
-        uprighter)).withTimeout(2.75));
+    addCommands(forward4meters);
 
   }
 

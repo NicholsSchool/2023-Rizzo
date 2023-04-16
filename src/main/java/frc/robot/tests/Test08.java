@@ -1,4 +1,4 @@
-package frc.robot.autos;
+package frc.robot.tests;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +12,11 @@ import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.pathplanner.lib.PathConstraints;
 
-public class Test10PathPlanner extends SequentialCommandGroup {
+public class Test08 extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
   Intake intake;
@@ -24,7 +24,7 @@ public class Test10PathPlanner extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public Test10PathPlanner(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public Test08(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;
@@ -32,7 +32,7 @@ public class Test10PathPlanner extends SequentialCommandGroup {
     gripper = _gripper;
     arm = _arm;
 
-    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Test10", new PathConstraints(3, 2));
+    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Test08", new PathConstraints(3, 2));
 
     HashMap<String, Command> eventMap = new HashMap<>();
 
@@ -42,10 +42,20 @@ public class Test10PathPlanner extends SequentialCommandGroup {
 
     addRequirements(swerveDrive, intake, gripper, arm, uprighter);
 
-    Command gotoChargeStation = autoBuilder.fullAuto(pathGroup);
+    Command overChargeStationAndBack = autoBuilder.fullAuto(pathGroup);
 
-    addCommands(gotoChargeStation,
-        new RunCommand(() -> new BalanceRobot(swerveDrive, 0), swerveDrive).withTimeout(5.0));
+    addCommands(
+        autoBuilder.resetPose(pathGroup.get(0)),
+        new RunCommand(() -> intake.close(), intake).withTimeout(0.5),
+        new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.75),
+        new InstantCommand(() -> uprighter.stop(), intake),
+        new RunCommand(() -> intake.spinOut(), intake).withTimeout(0.5),
+        new InstantCommand(() -> intake.open(), intake),
+        new InstantCommand(() -> intake.stop(), intake),
+        overChargeStationAndBack,
+        new RunCommand(() -> new BalanceRobot(swerveDrive, 0), swerveDrive).withTimeout(5.0),
+        // Experimental reset of gyro to 180 degrees
+        new InstantCommand(() -> swerveDrive.setGyroAngleAdjustment(180), swerveDrive));
 
   }
 }
