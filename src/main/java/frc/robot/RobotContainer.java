@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.tests.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import static frc.robot.Constants.ArmConstants.*;
@@ -33,9 +34,9 @@ public class RobotContainer {
   // Shuffleboard
   ShuffleboardTab walterTab;
   public static GenericEntry armPos;
-  public static GenericEntry leftArmLimit;
-  public static GenericEntry rightArmLimit;
-  public static GenericEntry gripperLimit;
+  public static GenericEntry leftArmLimitSwitch;
+  public static GenericEntry rightArmLimitSwitch;
+  public static GenericEntry gripperLimitSwitch;
   public static ComplexWidget autoChooserWidget;
 
   // OI (Operator Interface) controllers
@@ -76,9 +77,9 @@ public class RobotContainer {
     // Configure the Shuffleboard
     walterTab = Shuffleboard.getTab("Walter");
     armPos = walterTab.add("Arm Position", -7.7).withPosition(18, 0).withSize(6, 6).getEntry();
-    leftArmLimit = walterTab.add("Arm L LS", false).withPosition(6, 0).withSize(6, 6).getEntry();
-    rightArmLimit = walterTab.add("Arm R LS", false).withPosition(12, 0).withSize(6, 6).getEntry();
-    gripperLimit = walterTab.add("Gripper LS", false).withPosition(0, 0).withSize(6, 6).getEntry();
+    leftArmLimitSwitch = walterTab.add("Arm L LS", false).withPosition(6, 0).withSize(6, 6).getEntry();
+    rightArmLimitSwitch = walterTab.add("Arm R LS", false).withPosition(12, 0).withSize(6, 6).getEntry();
+    gripperLimitSwitch = walterTab.add("Gripper LS", false).withPosition(0, 0).withSize(6, 6).getEntry();
   }
 
   /** Define all button() to command() mappings. */
@@ -161,7 +162,6 @@ public class RobotContainer {
 
     operatorOI.povUp().whileTrue(new CalibrateBalance(swerveDrive));
 
-
     // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
     operatorOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetMaxPitchRoll()));
 
@@ -169,38 +169,18 @@ public class RobotContainer {
 
   public void configureAutoChooser() {
     autoChooser.setDefaultOption("Default Auto", new PrintCommand("Default Auto: Do Nothing"));
-    autoChooser.addOption("Electric Red",
-        new ElectricRed(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Electric Blue",
-        new ElectricBlue(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Electric PP",
-        new ElectricPathPlanner(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Mayhem Red",
-        new MayhemRed(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Mayhem Blue",
-        new MayhemBlue(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Test 07 (Daniel's 3B Auto)",
-        new Test07PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Test 08 (Shoot, Mobility, Balance)",
-        new Test08PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
-
-    //works
-    autoChooser.addOption("Balance",
-        new Balance(swerveDrive, intake, uprighter, gripper, arm));
-    //works
-    autoChooser.addOption("Two Cube Mayhem",
-        new DoubleCubeMayhem(swerveDrive, intake, uprighter, gripper, arm));
-    //works
-    autoChooser.addOption("Single Cube Mayhem",
-        new SingleCubeMayhem(swerveDrive, intake, uprighter, gripper, arm));
-    //test
-    autoChooser.addOption("Single Cube Electric",
-        new SingleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
-    //strech
-    autoChooser.addOption("Two Cube Electric",
-        new DoubleCubeElectric(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Test 10 (Balance Forwards)",
-        new Test10PathPlanner(swerveDrive, intake, uprighter, gripper, arm));
+    // works
+    autoChooser.addOption("Mayhem: One Cube", new MayhemOneCube(swerveDrive, intake, uprighter, gripper, arm));
+    // works
+    autoChooser.addOption("Mayhem: Two Cube", new MayhemTwoCube(swerveDrive, intake, uprighter, gripper, arm));
+    // works
+    autoChooser.addOption("Charging: Balance", new ChargingBalance(swerveDrive, intake, uprighter, gripper, arm));
+    // works
+    autoChooser.addOption("Charging: Community", new ChargingCommunity(swerveDrive, intake, uprighter, gripper, arm));
+    // test
+    autoChooser.addOption("Electric: One Cube", new ElectricOneCube(swerveDrive, intake, uprighter, gripper, arm));
+    // strech
+    autoChooser.addOption("Electric: Two Cube ", new ElectricTwoCube(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
   }
 

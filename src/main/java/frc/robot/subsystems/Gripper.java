@@ -39,7 +39,7 @@ public class Gripper extends SubsystemBase {
 
   @Override
   public void periodic() {
-    RobotContainer.gripperLimit.setBoolean(isPressed());
+    RobotContainer.gripperLimitSwitch.setBoolean(isPressed());
   }
 
   // Gripper Motors
