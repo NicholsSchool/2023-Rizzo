@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
 /**
- * Deploys the intake down and spins the intake motors inwards.
+ * Deploys the intake and spins the intake motors inwards.
  */
 public class DeployIntake extends CommandBase {
 

@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
 
+/**
+ * Spins the gripper then rumbles controllers if game piece is detected.
+ */
 public class SpinGripper extends CommandBase {
 
   private Gripper gripper;

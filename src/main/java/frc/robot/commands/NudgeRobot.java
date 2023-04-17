@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
 /**
- * Nudges the robot in a specified direction.
+ * Nudges the robot in a specified direction relative to the field.
  */
 public class NudgeRobot extends CommandBase {
 
