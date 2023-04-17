@@ -4,21 +4,15 @@ import java.util.List;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.*;
 
-public class BalanceRobot extends CommandBase {
+// Balance Values: Used for calibration of the robot's distance from an AprilTag.
+public class BalanceValues extends CommandBase {
 
-  SwerveDrive swerveDrive;
   PhotonCamera camera;
 
-  double targetDistance;
-
-  public BalanceRobot(SwerveDrive _swerveDrive, double _targetDistance) {
-    targetDistance = _targetDistance;
-    swerveDrive = _swerveDrive;
-    addRequirements(swerveDrive);
+  public BalanceValues() {
+    addRequirements();
   }
 
   @Override
@@ -29,27 +23,11 @@ public class BalanceRobot extends CommandBase {
   @Override
   public void execute() {
     double distance = getDistance();
-
-    PIDController pidApriltag = new PIDController(1, 0, 0);
-
-    double powerApriltag = pidApriltag.calculate(distance, targetDistance);
-    powerApriltag = powerApriltag / 10 * 4;
-    pidApriltag.setTolerance(0.1);
-
-    System.out.println("Distance:" + distance); // Useful for Calibration
-
-    if (pidApriltag.atSetpoint()) {
-      swerveDrive.setWheelsToXFormation();
-    } else {
-      swerveDrive.drive(-powerApriltag, 0, 0, true);
-    }
-
-    pidApriltag.close();
+    System.out.println("Distance: " + distance);
   }
 
   @Override
   public void end(boolean interrupted) {
-    swerveDrive.drive(0, 0, 0, true);
   }
 
   @Override
@@ -58,9 +36,9 @@ public class BalanceRobot extends CommandBase {
   }
 
   /**
-   * Gets the distance of the robot from an AprilTag
+   * Gets the distance of the robot from an AprilTag.
    * 
-   * @return distance from AprilTag
+   * @return the distance from AprilTag
    */
   public double getDistance() {
     PhotonPipelineResult result = camera.getLatestResult();

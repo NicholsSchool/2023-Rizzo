@@ -34,7 +34,6 @@ public class Gripper extends SubsystemBase {
 
     // Set the starting state of the gripper subsystem.
     open();
-
   }
 
   @Override

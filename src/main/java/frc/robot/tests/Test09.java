@@ -46,7 +46,7 @@ public class Test09 extends SequentialCommandGroup {
     addCommands(autoBuilder.resetPose(path));
     addCommands(autoBuilder.followPath(path));
     addCommands(new RotateRobot(_swerveDrive, 180.0).withTimeout(3));
-    addCommands(new MLPickup(_swerveDrive).withTimeout(1).raceWith(new DeployIntake(_intake, _uprighter)));
+    addCommands(new MLCubePickup(_swerveDrive).withTimeout(1).raceWith(new DeployIntake(_intake, _uprighter)));
     _swerveDrive.resetGyro();
   }
 }

@@ -12,10 +12,8 @@ public class NudgeRobot extends CommandBase {
   String direction;
 
   public NudgeRobot(SwerveDrive _swerveDrive, String _direction) {
-
     swerveDrive = _swerveDrive;
     direction = _direction;
-
     addRequirements(swerveDrive);
   }
 

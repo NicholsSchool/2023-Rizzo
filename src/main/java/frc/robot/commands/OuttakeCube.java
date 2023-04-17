@@ -14,12 +14,10 @@ public class OuttakeCube extends CommandBase {
   Double speed;
 
   public OuttakeCube(Intake _intake, Uprighter _uprighter, Gripper _gripper, Double _speed) {
-
     intake = _intake;
     uprighter = _uprighter;
     gripper = _gripper;
     speed = _speed;
-
     addRequirements(intake);
   }
 

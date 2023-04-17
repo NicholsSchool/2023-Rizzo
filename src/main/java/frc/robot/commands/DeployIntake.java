@@ -12,10 +12,8 @@ public class DeployIntake extends CommandBase {
   private Uprighter uprighter;
 
   public DeployIntake(Intake _intake, Uprighter _uprighter) {
-
     intake = _intake;
     uprighter = _uprighter;
-
     addRequirements(intake, uprighter);
   }
 

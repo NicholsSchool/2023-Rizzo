@@ -1,26 +1,25 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import frc.robot.tests.*;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.IntakeConstants.*;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.networktables.GenericEntry;
 
 public class RobotContainer {
 
@@ -108,8 +107,8 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> intake.close(), intake))
         .onFalse(new InstantCommand(() -> intake.open(), intake));
 
-    // Driver Right Bumper: pick up cube using Machine Learning
-    driverOI.leftBumper().whileTrue(new MLPickup(swerveDrive).raceWith(new DeployIntake(intake, uprighter)));
+    // DRIVER Left Bumper: While held, pick up cube with machine learning.
+    driverOI.leftBumper().whileTrue(new MLCubePickup(swerveDrive).raceWith(new DeployIntake(intake, uprighter)));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
     driverOI.povUp().whileTrue(new NudgeRobot(swerveDrive, "NUDGE FORWARD").withTimeout(0.5));
@@ -157,29 +156,27 @@ public class RobotContainer {
     operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_02)));
     operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_03)));
 
-    // OPERATOR POV_DOWN: align to apriltag
+    // OPERATOR POV DOWN: Align to AprilTag
     operatorOI.povDown().whileTrue(new ApriltagAlign(swerveDrive));
 
-    operatorOI.povUp().whileTrue(new CalibrateBalance(swerveDrive));
+    // OPERATOR Back Button: Balance Values For Calibration
+    operatorOI.back().whileTrue(new BalanceValues());
 
     // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
     operatorOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetMaxPitchRoll()));
 
   }
 
+  /**
+   * Configure the autonomous chooser.
+   */
   public void configureAutoChooser() {
-    autoChooser.setDefaultOption("Default Auto", new PrintCommand("Default Auto: Do Nothing"));
-    // works
+    autoChooser.setDefaultOption("Default: Do Nothing", new WaitCommand(0));
     autoChooser.addOption("Mayhem: One Cube", new MayhemOneCube(swerveDrive, intake, uprighter, gripper, arm));
-    // works
     autoChooser.addOption("Mayhem: Two Cube", new MayhemTwoCube(swerveDrive, intake, uprighter, gripper, arm));
-    // works
     autoChooser.addOption("Charging: Balance", new ChargingBalance(swerveDrive, intake, uprighter, gripper, arm));
-    // works
     autoChooser.addOption("Charging: Community", new ChargingCommunity(swerveDrive, intake, uprighter, gripper, arm));
-    // test
     autoChooser.addOption("Electric: One Cube", new ElectricOneCube(swerveDrive, intake, uprighter, gripper, arm));
-    // strech
     autoChooser.addOption("Electric: Two Cube ", new ElectricTwoCube(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
   }
