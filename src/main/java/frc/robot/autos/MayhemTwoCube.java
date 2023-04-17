@@ -49,7 +49,7 @@ public class MayhemTwoCube extends SequentialCommandGroup {
         new RotateRobot(swerveDrive, 0.0).withTimeout(2),
         autoBuilder.resetPose(backward),
         autoBuilder.followPath(backward),
-        new ApriltagAlign(swerveDrive).withTimeout(2),
+        new AlignToAprilTag(swerveDrive).withTimeout(2),
         new OuttakeCube(intake, uprighter, gripper, OUTTAKE_LOW_SPEED).withTimeout(2),
         new InstantCommand(() -> swerveDrive.setGyroAngleAdjustment(180.0)));
 

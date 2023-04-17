@@ -8,6 +8,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
+/**
+ * Sets the robot to a target distance from an AprilTag. Used for balancing.
+ */
 public class BalanceRobot extends CommandBase {
 
   SwerveDrive swerveDrive;

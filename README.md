@@ -26,13 +26,13 @@
 - [x] OPERATOR Right Trigger: High power Outtake.
 - [x] OPERATOR Left Bumper: While held, open the gripper.
 - [x] OPERATOR Right Bumper: Low power Outtake.
-- [ ] OPERATOR POV/D-Pad: (UNASSIGNED)
+- [x] OPERATOR POV/D-Pad Down: Align to AprilTag.
 - [x] OPERATOR X (←) Button: Go to position 00 and lock.
 - [x] OPERATOR Y (↑) Button: Go to position 01 and lock.
 - [x] OPERATOR B (→) Button: Go to position 02 and lock.
 - [x] OPERATOR A (↓) Button: Go to position 03 and lock.
 - [x] OPERATOR Start (→) Button: Reset max Pitch/Roll values on the dashboard.
-- [x] OPERATOR Back (←) Button: Balance Values For Calibration
+- [x] OPERATOR Back (←) Button: Display distance values for balance calibration.
 
 ## CAN ID Assignments
 * CAN ID 10 = SparkMax = Rear Right Drive Motor

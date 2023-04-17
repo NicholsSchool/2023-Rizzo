@@ -156,11 +156,11 @@ public class RobotContainer {
     operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_02)));
     operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_03)));
 
-    // OPERATOR POV DOWN: Align to AprilTag
-    operatorOI.povDown().whileTrue(new ApriltagAlign(swerveDrive));
+    // OPERATOR POV Down: Align to AprilTag
+    operatorOI.povDown().whileTrue(new AlignToAprilTag(swerveDrive));
 
-    // OPERATOR Back Button: Balance Values For Calibration
-    operatorOI.back().whileTrue(new BalanceValues());
+    // OPERATOR Back Button: Display distance values for balance calibration.
+    operatorOI.back().whileTrue(new DistanceValues());
 
     // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
     operatorOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetMaxPitchRoll()));
@@ -177,7 +177,7 @@ public class RobotContainer {
     autoChooser.addOption("Charging: Balance", new ChargingBalance(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Charging: Community", new ChargingCommunity(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Electric: One Cube", new ElectricOneCube(swerveDrive, intake, uprighter, gripper, arm));
-    autoChooser.addOption("Electric: Two Cube ", new ElectricTwoCube(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Electric: Two Cube", new ElectricTwoCube(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
   }
 

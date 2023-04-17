@@ -7,12 +7,15 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
-public class ApriltagAlign extends CommandBase {
+/**
+ * Aligns the robot to the nearest AprilTag.
+ */
+public class AlignToAprilTag extends CommandBase {
 
   SwerveDrive swerveDrive;
   PhotonCamera camera;
 
-  public ApriltagAlign(SwerveDrive _swerveDrive) {
+  public AlignToAprilTag(SwerveDrive _swerveDrive) {
     swerveDrive = _swerveDrive;
     addRequirements(swerveDrive);
   }

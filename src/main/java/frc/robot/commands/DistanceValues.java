@@ -6,12 +6,14 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-// Balance Values: Used for calibration of the robot's distance from an AprilTag.
-public class BalanceValues extends CommandBase {
+/**
+ * Displays the distance of the robot from an AprilTag on the console.
+ */
+public class DistanceValues extends CommandBase {
 
   PhotonCamera camera;
 
-  public BalanceValues() {
+  public DistanceValues() {
     addRequirements();
   }
 
@@ -23,7 +25,7 @@ public class BalanceValues extends CommandBase {
   @Override
   public void execute() {
     double distance = getDistance();
-    System.out.println("Distance: " + distance);
+    System.out.println("Distance Values: " + distance);
   }
 
   @Override
