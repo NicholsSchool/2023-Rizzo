@@ -24,7 +24,6 @@ public class RotateRobot extends CommandBase {
 
   @Override
   public void execute() {
-
     double xSpeed = -RobotContainer.driverOI.getLeftY();
     double ySpeed = -RobotContainer.driverOI.getLeftX();
 
@@ -43,9 +42,6 @@ public class RotateRobot extends CommandBase {
     angularRotation = error / 180 * (Math.PI * kP);
 
     swerveDrive.drive(xSpeed, ySpeed, -angularRotation, true);
-
-    System.out.println("Executing");
-
   }
 
   @Override

@@ -63,7 +63,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     checkArmLimitSwitch();
-    putArmValuesOnNT();
+    armValuesToNT();
   }
 
   /**
@@ -159,7 +159,7 @@ public class Arm extends SubsystemBase {
   /**
    * Put arm values on network tables.
    */
-  public void putArmValuesOnNT() {
+  public void armValuesToNT() {
     RobotContainer.armPos.setDouble(armEncoder.getPosition());
     RobotContainer.leftArmLimitSwitch.setBoolean(leftArmLimitSwitch.get());
     RobotContainer.rightArmLimitSwitch.setBoolean(rightArmLimitSwitch.get());
