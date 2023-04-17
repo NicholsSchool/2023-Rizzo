@@ -1,25 +1,22 @@
 package frc.robot.autos;
 
 import java.util.HashMap;
-import org.photonvision.PhotonCamera;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.PathConstraints;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.SwerveDrive;
-import frc.robot.Constants.SwerveDriveConstants;
-import frc.robot.commands.*;
-import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import com.pathplanner.lib.PathConstraints;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
+import static frc.robot.Constants.SwerveDriveConstants.*;
 import static frc.robot.Constants.IntakeConstants.*;
 
 public class ElectricTwoCube extends SequentialCommandGroup {
 
-  PhotonCamera camera;
   SwerveDrive swerveDrive;
   Intake intake;
   Uprighter uprighter;
@@ -34,27 +31,28 @@ public class ElectricTwoCube extends SequentialCommandGroup {
     gripper = _gripper;
     arm = _arm;
 
-    PathPlannerTrajectory path = PathPlanner.loadPath("ElectricForward", new PathConstraints(3, 2));
-    PathPlannerTrajectory back = PathPlanner.loadPath("ElectricBackward", new PathConstraints(2, 2));
-
-    SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(_swerveDrive::getPose, _swerveDrive::resetOdometry,
-        SwerveDriveConstants.SWERVE_DRIVE_KINEMATICS, new PIDConstants(3.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0),
-        _swerveDrive::setModuleStates, new HashMap<String, Command>(), true, _swerveDrive);
-
     addRequirements(swerveDrive, intake, gripper, arm, uprighter);
 
+    PathPlannerTrajectory forward = PathPlanner.loadPath("ElectricForward", new PathConstraints(3, 2));
+    PathPlannerTrajectory backward = PathPlanner.loadPath("ElectricBackward", new PathConstraints(2, 2));
+
+    SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(swerveDrive::getPose, swerveDrive::resetOdometry,
+        SWERVE_DRIVE_KINEMATICS, new PIDConstants(3.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0),
+        swerveDrive::setModuleStates, new HashMap<String, Command>(), true, swerveDrive);
+
     addCommands(new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.5),
-        new OuttakeCube(intake, uprighter, gripper, OUTTAKE_HIGH_SPEED).withTimeout(0.5));
-    addCommands(autoBuilder.resetPose(path));
-    addCommands(autoBuilder.followPath(path));
-    addCommands(new RotateRobot(_swerveDrive, 180.0).withTimeout(2));
-    addCommands(new MLPickup(_swerveDrive).withTimeout(1).raceWith(new DeployIntake(_intake, _uprighter)));
-    addCommands(new RotateRobot(_swerveDrive, 0.0).withTimeout(2));
-    addCommands(autoBuilder.resetPose(back));
-    addCommands(autoBuilder.followPath(back));
-    addCommands(new ApriltagAlign(_swerveDrive).withTimeout(2));
-    addCommands(new OuttakeCube(intake, uprighter, gripper, OUTTAKE_LOW_SPEED).withTimeout(2));
-    addCommands(new InstantCommand(() -> swerveDrive.setGyroAngleAdjustment(180.0)));
+        new OuttakeCube(intake, uprighter, gripper, OUTTAKE_HIGH_SPEED).withTimeout(0.5),
+        autoBuilder.resetPose(forward),
+        autoBuilder.followPath(forward),
+        new RotateRobot(swerveDrive, 180.0).withTimeout(2),
+        new MLPickup(swerveDrive).withTimeout(1).raceWith(new DeployIntake(intake, uprighter)),
+        new RotateRobot(swerveDrive, 0.0).withTimeout(2),
+        autoBuilder.resetPose(backward),
+        autoBuilder.followPath(backward),
+        new ApriltagAlign(swerveDrive).withTimeout(2),
+        new OuttakeCube(intake, uprighter, gripper, OUTTAKE_LOW_SPEED).withTimeout(2),
+        new InstantCommand(() -> swerveDrive.setGyroAngleAdjustment(180.0)));
 
   }
+
 }

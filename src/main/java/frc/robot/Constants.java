@@ -11,7 +11,7 @@ import java.lang.Math;
 
 public final class Constants {
 
-  // Intake/Lifter/Uprighter
+  // Intake/Lifter
   public static final class IntakeConstants {
     public static final double INTAKE_SPEED = 0.6;
     public static final double OUTTAKE_HIGH_SPEED = 1.0;
@@ -30,7 +30,7 @@ public final class Constants {
     public static final double POSITION_00 = 0.0; // home position
     public static final double POSITION_01 = 0.83; // test position (parallel to ground)
     public static final double POSITION_02 = 3.14; // high scoring position
-    public static final double POSITION_03 = 3.45; // low scoring position & human player position
+    public static final double POSITION_03 = 3.45; // human player position
 
     public static final double SOFT_LIMIT_REVERSE = -0.1;
     public static final double SOFT_LIMIT_FORWARD = 4.5;
@@ -53,7 +53,7 @@ public final class Constants {
     public static final Constraints ARM_MOTION_CONSTRAINTS = new Constraints(0.66, 0.66);
   }
 
-  // Gripper/Pinchers/Spinners (End Effector)
+  // Gripper/Pincher (End Effector)
   public static final class GripperConstants {
     public static final double GRIPPER_SPEED = 0.45;
     public static final double GRIPPER_SPEED_OFFSET = 0.33;
@@ -61,7 +61,7 @@ public final class Constants {
     public static final int GRIPPER_LIMIT_SWITCH_DIO_CHANNEL = 1;
   }
 
-  // Controller Area Network (CAN) IDs
+  // CAN IDs (Controller Area Network)
   public static final class CANID {
     public static final int REAR_RIGHT_DRIVING_SPARKMAX = 10;
     public static final int REAR_RIGHT_TURNING_SPARKMAX = 11;
@@ -122,12 +122,10 @@ public final class Constants {
     public static final int TURNING_MOTOR_CURRENT_LIMIT = 12; // amps
   }
 
-  //Auto Constants
+  // Autonomous Constants
   public static final class AutoDistanceConstants {
-    //Change this for balancing
-    public static final double APRILTAG_TO_CHARGE_STATION_METERS = 2.51; 
-    public static final double APRILTAG_TO_END_OF_COMMUNITY_METERS = 4.20; //Just picked this value. Need to adjust with tests
-
+    public static final double APRILTAG_TO_CHARGE_STATION_METERS = 2.51;
+    public static final double APRILTAG_TO_END_OF_COMMUNITY_METERS = 4.20;
   }
 
 }

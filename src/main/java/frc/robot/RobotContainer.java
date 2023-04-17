@@ -1,26 +1,25 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import frc.robot.tests.*;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.IntakeConstants.*;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.networktables.GenericEntry;
 
 public class RobotContainer {
 
@@ -157,9 +156,10 @@ public class RobotContainer {
     operatorOI.b().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_02)));
     operatorOI.a().onTrue(new InstantCommand(() -> arm.setTargetPosition(POSITION_03)));
 
-    // OPERATOR POV_DOWN: align to apriltag
+    // OPERATOR POV DOWN: Align to AprilTag
     operatorOI.povDown().whileTrue(new ApriltagAlign(swerveDrive));
 
+    // OPERATOR POV UP: Calibrate Balance
     operatorOI.povUp().whileTrue(new CalibrateBalance(swerveDrive));
 
     // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
@@ -167,19 +167,16 @@ public class RobotContainer {
 
   }
 
+  /**
+   * Configure the autonomous chooser.
+   */
   public void configureAutoChooser() {
-    autoChooser.setDefaultOption("Default Auto", new PrintCommand("Default Auto: Do Nothing"));
-    // works
+    autoChooser.setDefaultOption("Default: Do Nothing", new WaitCommand(0));
     autoChooser.addOption("Mayhem: One Cube", new MayhemOneCube(swerveDrive, intake, uprighter, gripper, arm));
-    // works
     autoChooser.addOption("Mayhem: Two Cube", new MayhemTwoCube(swerveDrive, intake, uprighter, gripper, arm));
-    // works
     autoChooser.addOption("Charging: Balance", new ChargingBalance(swerveDrive, intake, uprighter, gripper, arm));
-    // works
     autoChooser.addOption("Charging: Community", new ChargingCommunity(swerveDrive, intake, uprighter, gripper, arm));
-    // test
     autoChooser.addOption("Electric: One Cube", new ElectricOneCube(swerveDrive, intake, uprighter, gripper, arm));
-    // strech
     autoChooser.addOption("Electric: Two Cube ", new ElectricTwoCube(swerveDrive, intake, uprighter, gripper, arm));
     SmartDashboard.putData(RobotContainer.autoChooser);
   }
