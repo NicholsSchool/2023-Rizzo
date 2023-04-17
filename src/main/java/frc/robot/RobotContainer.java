@@ -107,8 +107,8 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> intake.close(), intake))
         .onFalse(new InstantCommand(() -> intake.open(), intake));
 
-    // Driver Right Bumper: pick up cube using Machine Learning
-    driverOI.leftBumper().whileTrue(new MLPickup(swerveDrive).raceWith(new DeployIntake(intake, uprighter)));
+    // DRIVER Left Bumper: While held, pick up cube with machine learning.
+    driverOI.leftBumper().whileTrue(new MLCubePickup(swerveDrive).raceWith(new DeployIntake(intake, uprighter)));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
     driverOI.povUp().whileTrue(new NudgeRobot(swerveDrive, "NUDGE FORWARD").withTimeout(0.5));
@@ -159,8 +159,8 @@ public class RobotContainer {
     // OPERATOR POV DOWN: Align to AprilTag
     operatorOI.povDown().whileTrue(new ApriltagAlign(swerveDrive));
 
-    // OPERATOR POV UP: Calibrate Balance
-    operatorOI.povUp().whileTrue(new CalibrateBalance(swerveDrive));
+    // OPERATOR Back Button: Balance Values For Calibration
+    operatorOI.back().whileTrue(new BalanceValues());
 
     // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
     operatorOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetMaxPitchRoll()));

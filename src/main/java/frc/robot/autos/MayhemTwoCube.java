@@ -45,7 +45,7 @@ public class MayhemTwoCube extends SequentialCommandGroup {
         autoBuilder.resetPose(forward),
         autoBuilder.followPath(forward),
         new RotateRobot(swerveDrive, 180.0).withTimeout(2),
-        new MLPickup(swerveDrive).withTimeout(0.75).raceWith(new DeployIntake(intake, uprighter)),
+        new MLCubePickup(swerveDrive).withTimeout(0.75).raceWith(new DeployIntake(intake, uprighter)),
         new RotateRobot(swerveDrive, 0.0).withTimeout(2),
         autoBuilder.resetPose(backward),
         autoBuilder.followPath(backward),

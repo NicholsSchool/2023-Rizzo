@@ -12,7 +12,7 @@ import edu.wpi.first.networktables.StringSubscriber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveDrive;
 
-public class MLPickup extends CommandBase {
+public class MLCubePickup extends CommandBase {
 
   private static final int WIDTH = 160;
   private static final int HEIGHT = 120;
@@ -31,7 +31,7 @@ public class MLPickup extends CommandBase {
   IntegerSubscriber xmax = pieces.getIntegerTopic("xMax").subscribe(0);
   IntegerSubscriber distance = pieces.getIntegerTopic("Distance").subscribe(0);
 
-  public MLPickup(SwerveDrive _swerveDrive) {
+  public MLCubePickup(SwerveDrive _swerveDrive) {
     swerveDrive = _swerveDrive;
     addRequirements(swerveDrive);
   }

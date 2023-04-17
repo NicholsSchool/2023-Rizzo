@@ -13,10 +13,8 @@ public class RotateRobot extends CommandBase {
   Double desiredAngle;
 
   public RotateRobot(SwerveDrive _swerveDrive, Double _desiredAngle) {
-
     swerveDrive = _swerveDrive;
     desiredAngle = _desiredAngle;
-
     addRequirements(swerveDrive);
   }
 
@@ -46,7 +44,7 @@ public class RotateRobot extends CommandBase {
 
     swerveDrive.drive(xSpeed, ySpeed, -angularRotation, true);
 
-    System.out.println( "Executing" );
+    System.out.println("Executing");
 
   }
 

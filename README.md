@@ -9,7 +9,7 @@
 - [x] DRIVER Left & Right Stick: Translational and rotational robot movement.
 - [x] DRIVER Left Trigger: While held, switch to virtual high gear.
 - [x] DRIVER Right Trigger: While held, deploy intake to obtain a Cube.
-- [x] DRIVER Left Bumper: Whiel held, pick up cube with machine learning
+- [x] DRIVER Left Bumper: While held, pick up cube with machine learning.
 - [x] DRIVER Right Bumper: While held, close intake flappers.
 - [x] DRIVER POV/D-Pad: Nudge robot (Left, Right, Up, Down) relative to the field.
 - [x] DRIVER X (←) Button: Rotate chassis to +90-degree position relative to the field.
@@ -32,7 +32,7 @@
 - [x] OPERATOR B (→) Button: Go to position 02 and lock.
 - [x] OPERATOR A (↓) Button: Go to position 03 and lock.
 - [x] OPERATOR Start (→) Button: Reset max Pitch/Roll values on the dashboard.
-- [ ] OPERATOR Back (←) Button: (UNASSIGNED)
+- [x] OPERATOR Back (←) Button: Balance Values For Calibration
 
 ## CAN ID Assignments
 * CAN ID 10 = SparkMax = Rear Right Drive Motor

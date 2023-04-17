@@ -5,16 +5,14 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.*;
 
-public class CalibrateBalance extends CommandBase {
+// Balance Values: Used for calibration of the robot's distance from an AprilTag.
+public class BalanceValues extends CommandBase {
 
-  SwerveDrive swerveDrive;
   PhotonCamera camera;
 
-  public CalibrateBalance(SwerveDrive _swerveDrive) {
-    swerveDrive = _swerveDrive;
-    addRequirements(swerveDrive);
+  public BalanceValues() {
+    addRequirements();
   }
 
   @Override

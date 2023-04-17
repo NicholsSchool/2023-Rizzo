@@ -44,7 +44,7 @@ public class MayhemOneCube extends SequentialCommandGroup {
         autoBuilder.resetPose(path),
         autoBuilder.followPath(path),
         new RotateRobot(swerveDrive, 180.0).withTimeout(2),
-        new MLPickup(swerveDrive).withTimeout(0.75).raceWith(new DeployIntake(intake, uprighter)),
+        new MLCubePickup(swerveDrive).withTimeout(0.75).raceWith(new DeployIntake(intake, uprighter)),
         new RotateRobot(swerveDrive, 180.0).withTimeout(2),
         new InstantCommand(() -> swerveDrive.resetGyro()));
 
