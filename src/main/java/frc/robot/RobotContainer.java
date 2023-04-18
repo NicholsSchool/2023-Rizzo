@@ -46,7 +46,6 @@ public class RobotContainer {
 
   // Autonomous Chooser
   public static SendableChooser<Command> autoChooser;
-  public Alliance alliance;
 
   public RobotContainer() {
 
