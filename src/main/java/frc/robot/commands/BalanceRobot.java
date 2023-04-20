@@ -15,6 +15,7 @@ public class BalanceRobot extends CommandBase {
 
   SwerveDrive swerveDrive;
   PhotonCamera camera;
+  double prevDistance = 0.0;
 
   double targetDistance;
 
@@ -32,6 +33,7 @@ public class BalanceRobot extends CommandBase {
   @Override
   public void execute() {
     double distance = getDistance();
+    prevDistance = distance;
 
     PIDController pidApriltag = new PIDController(1, 0, 0);
 
@@ -74,7 +76,7 @@ public class BalanceRobot extends CommandBase {
         return target.getBestCameraToTarget().getX();
       }
     }
-    return 0.0;
+    return prevDistance;
   }
 
 }
