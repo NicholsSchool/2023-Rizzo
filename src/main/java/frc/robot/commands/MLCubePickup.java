@@ -42,31 +42,27 @@ public class MLCubePickup extends CommandBase {
   @Override
   public void execute() {
 
-    String name = getName();
     int xCenter = getXCenter();
     int yCenter = getYCenter();
 
-    if (name.equals("Cube")) {
+    PIDController xPID = new PIDController(1, 0, 0);
+    PIDController yPID = new PIDController(1, 0, 0);
 
-      PIDController xPID = new PIDController(1, 0, 0);
-      PIDController yPID = new PIDController(1, 0, 0);
+    xPID.setTolerance(.05);
+    yPID.setTolerance(.05);
 
-      xPID.setTolerance(.05);
-      yPID.setTolerance(.05);
+    double xPower = xPID.calculate(xCenter, WIDTH / 2);
+    xPower = xPower / 1000 * 6;
 
-      double xPower = xPID.calculate(xCenter, WIDTH / 2);
-      xPower = xPower / 1000 * 6;
+    double yPower = yPID.calculate(yCenter, HEIGHT);
+    yPower = yPower / 1000 * 6;
 
-      double yPower = yPID.calculate(yCenter, HEIGHT);
-      yPower = yPower / 1000 * 6;
-
-      if (!xPID.atSetpoint() && !yPID.atSetpoint()) {
-        swerveDrive.drive(yPower, xPower, 0, false);
-      }
-
-      xPID.close();
-      yPID.close();
+    if (!xPID.atSetpoint() && !yPID.atSetpoint()) {
+      swerveDrive.drive(yPower, xPower, 0, false);
     }
+
+    xPID.close();
+    yPID.close();
 
   }
 
