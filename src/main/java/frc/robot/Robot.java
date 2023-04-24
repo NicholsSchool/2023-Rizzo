@@ -48,6 +48,11 @@ public class Robot extends TimedRobot {
   }
 
   @Override
+  public void autonomousExit() {
+    robotContainer.swerveDrive.setWheelsToXFormation();
+  }
+
+  @Override
   public void teleopInit() {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();

@@ -125,7 +125,7 @@ public final class Constants {
   // Autonomous Constants
   public static final class AutoDistanceConstants {
     public static final double APRILTAG_TO_CHARGE_STATION_METERS = 2.65;
-    public static final double APRILTAG_TO_END_OF_COMMUNITY_METERS = 4.1;
+    public static final double APRILTAG_TO_END_OF_COMMUNITY_METERS = 3.9;
   }
 
 }
