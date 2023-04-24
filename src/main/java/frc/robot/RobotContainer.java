@@ -176,6 +176,10 @@ public class RobotContainer {
     autoChooser.addOption("Charging: Community", new ChargingCommunity(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Electric: One Cube", new ElectricOneCube(swerveDrive, intake, uprighter, gripper, arm));
     autoChooser.addOption("Electric: Two Cube", new ElectricTwoCube(swerveDrive, intake, uprighter, gripper, arm));
+    autoChooser.addOption("Shoot High Dumbo", new ShootHigh(swerveDrive, intake, uprighter, gripper));
+    // autoChooser.addOption("ML Pickup", new MLPickup(swerveDrive, intake,
+    // uprighter, gripper, arm));
+
     SmartDashboard.putData(RobotContainer.autoChooser);
   }
 

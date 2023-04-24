@@ -28,7 +28,7 @@ public class ChargingBalance extends SequentialCommandGroup {
 
     addCommands(new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.5),
         new OuttakeCube(intake, uprighter, gripper, OUTTAKE_HIGH_SPEED).withTimeout(0.5),
-        new BalanceRobot(swerveDrive, APRILTAG_TO_CHARGE_STATION_METERS).withTimeout(13),
+        new BalanceRobot(swerveDrive, APRILTAG_TO_CHARGE_STATION_METERS).withTimeout(9),
         new InstantCommand(() -> swerveDrive.setGyroAngleAdjustment(180.0)));
 
   }

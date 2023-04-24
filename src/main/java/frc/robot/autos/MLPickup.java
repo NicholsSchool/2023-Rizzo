@@ -15,7 +15,7 @@ import frc.robot.subsystems.*;
 import static frc.robot.Constants.SwerveDriveConstants.*;
 import static frc.robot.Constants.IntakeConstants.*;
 
-public class ElectricTwoCube extends SequentialCommandGroup {
+public class MLPickup extends SequentialCommandGroup {
 
   SwerveDrive swerveDrive;
   Intake intake;
@@ -23,7 +23,7 @@ public class ElectricTwoCube extends SequentialCommandGroup {
   Gripper gripper;
   Arm arm;
 
-  public ElectricTwoCube(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
+  public MLPickup(SwerveDrive _swerveDrive, Intake _intake, Uprighter _uprighter, Gripper _gripper, Arm _arm) {
 
     swerveDrive = _swerveDrive;
     intake = _intake;
@@ -33,7 +33,6 @@ public class ElectricTwoCube extends SequentialCommandGroup {
 
     addRequirements(swerveDrive, intake, gripper, arm, uprighter);
 
-    PathPlannerTrajectory forward = PathPlanner.loadPath("ElectricForward", new PathConstraints(2, 2));
     PathPlannerTrajectory backward = PathPlanner.loadPath("ElectricBackward", new PathConstraints(2, 2));
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(swerveDrive::getPose, swerveDrive::resetOdometry,
@@ -42,8 +41,7 @@ public class ElectricTwoCube extends SequentialCommandGroup {
 
     addCommands(new RunCommand(() -> uprighter.spinOut(), intake).withTimeout(0.5),
         new OuttakeCube(intake, uprighter, gripper, OUTTAKE_HIGH_SPEED).withTimeout(0.5),
-        autoBuilder.resetPose(forward),
-        autoBuilder.followPath(forward),
+        new MLPickup(_swerveDrive, _intake, _uprighter, _gripper, _arm).withTimeout(4),
         new RotateRobot(swerveDrive, 180.0).withTimeout(2),
         new MLCubePickup(swerveDrive).withTimeout(1.5).raceWith(new DeployIntake(intake, uprighter)),
         new RotateRobot(swerveDrive, 0.0).withTimeout(2),

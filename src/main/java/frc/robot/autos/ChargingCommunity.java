@@ -31,6 +31,7 @@ public class ChargingCommunity extends SequentialCommandGroup {
         new BalanceRobot(swerveDrive, APRILTAG_TO_END_OF_COMMUNITY_METERS).withTimeout(3.5),
         new RotateRobot(swerveDrive, 0.0).withTimeout(0.5),
         new BalanceRobot(swerveDrive, 1.5).withTimeout(3.0),
+        new RotateRobot(swerveDrive, 0.0).withTimeout(0.5),
         new BalanceRobot(swerveDrive, APRILTAG_TO_CHARGE_STATION_METERS).withTimeout(6.9),
         new InstantCommand(() -> swerveDrive.setGyroAngleAdjustment(180.0)));
 
