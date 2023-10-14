@@ -25,7 +25,7 @@
 - [x] OPERATOR Right Trigger:
 - [x] OPERATOR Left Bumper:
 - [x] OPERATOR Right Bumper:
-- [x] OPERATOR POV/D-Pad Down: Align to AprilTag.
+- [x] OPERATOR POV/D-Pad Down: 
 - [x] OPERATOR X (←) Button:
 - [x] OPERATOR Y (↑) Button:
 - [x] OPERATOR B (→) Button:

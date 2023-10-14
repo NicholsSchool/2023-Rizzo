@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+
 import java.lang.Math;
 
 public final class Constants {
@@ -19,15 +20,39 @@ public final class Constants {
     public static final int FRONT_LEFT_TURNING_SPARKMAX = 15;
     public static final int REAR_LEFT_DRIVING_SPARKMAX = 16;
     public static final int REAR_LEFT_TURNING_SPARKMAX = 17;
+    public static final int HAND_SPARKMAX = 21;
+    public static final int ARM_SPARKMAX = 22;
+  }
+
+  public static final class HandConstants {
+    public static final double INTAKE_SPEED = -0.45;
+    public static final double OUTTAKE_SPEED = 0.45;
+    public static final double SHOOT_SPEED = 0.85;
+    public static final double HAND_SPEED_OFFSET = 0.33;
+    public static final int HAND_LIMIT_SWITCH_DIO_CHANNEL = 0;
+  }
+
+  public static final class WristConstants {
+    public static final int WRIST_PISTON_SOLENOID_CHANNEL = 0;
+    public static final boolean IS_EXTENDED = true;
+  }
+
+  public static final class ArmConstants {
+    public static final int POT_PORT = 0;
+    public static final double MIN_ARM_POS = 0.0;
+    public static final double MAX_ARM_POS = Math.PI / 4;
+    public static final double START_ARM_POS = Math.PI / 4;
+    public static final double ARM_P = 1.0;
+    public static final double ARM_ALLOWED_ERROR = 0.1;
   }
 
   // Swerve Drive (Drive Train)
   public static final class SwerveDriveConstants {
-    public static final double DRIVETRAIN_WIDTH = Units.inchesToMeters(26.5);
-    public static final double DRIVETRAIN_LENGTH = Units.inchesToMeters(26.5);
+    public static final double DRIVETRAIN_WIDTH = Units.inchesToMeters(26.09);
+    public static final double DRIVETRAIN_LENGTH = Units.inchesToMeters(26.06);
 
     public static final double VIRTUAL_LOW_GEAR_RATE = 0.33;
-    public static final double VIRTUAL_HIGH_GEAR_RATE = 1.0;
+    public static final double VIRTUAL_HIGH_GEAR_RATE = 0.9;
 
     public static final double MAX_METERS_PER_SECOND = 4.8;
     public static final double MAX_ANGULAR_SPEED = 2 * Math.PI;

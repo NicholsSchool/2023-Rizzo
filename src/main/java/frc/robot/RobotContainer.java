@@ -15,6 +15,9 @@ public class RobotContainer {
 
   // Subsystems
   public final SwerveDrive swerveDrive;
+  public final Hand hand;
+  public final Arm arm;
+  public final Wrist wrist;
 
   // OI (Operator Interface) controllers
   public static CommandXboxController driverOI;
@@ -29,6 +32,9 @@ public class RobotContainer {
 
     // Instantiate all subsystems
     swerveDrive = new SwerveDrive();
+    hand = new Hand();
+    arm = new Arm();
+    wrist = new Wrist();
 
     // OI (Operator Interface) Controllers & Rumblers
     driverOI = new CommandXboxController(1);
@@ -51,9 +57,9 @@ public class RobotContainer {
     swerveDrive.setDefaultCommand(
         new RunCommand(
             () -> swerveDrive.drive(
-                -MathUtil.applyDeadband(driverOI.getLeftY(), 0.05),
-                -MathUtil.applyDeadband(driverOI.getLeftX(), 0.05),
-                -MathUtil.applyDeadband(driverOI.getRightX(), 0.05),
+                -MathUtil.applyDeadband(driverOI.getLeftY() * 0.8, 0.05),
+                -MathUtil.applyDeadband(driverOI.getLeftX() * 0.8, 0.05),
+                -MathUtil.applyDeadband(driverOI.getRightX() * 0.4, 0.05),
                 true),
             swerveDrive));
 
@@ -61,6 +67,10 @@ public class RobotContainer {
     driverOI.leftTrigger()
         .onTrue(new InstantCommand(() -> swerveDrive.setVirtualHighGear()))
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
+
+    // DRIVER Right Trigger: While held, intake the hand
+    driverOI.rightTrigger()
+        .whileTrue(new HandIntake(hand));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
     driverOI.povUp().whileTrue(new NudgeRobot(swerveDrive, "NUDGE FORWARD").withTimeout(0.5));
@@ -79,10 +89,6 @@ public class RobotContainer {
 
     // DRIVER Start Button: Reset gyro to a new field oriented forward position.
     driverOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetGyro(), swerveDrive));
-
-    // OPERATOR Start Button: Reset max Pitch/Roll on the dashboard.
-    operatorOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetMaxPitchRoll()));
-
   }
 
   /**

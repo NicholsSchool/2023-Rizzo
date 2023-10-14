@@ -39,7 +39,8 @@ public class RotateRobot extends CommandBase {
       error = difference;
     }
 
-    angularRotation = error / 180 * (Math.PI * kP);
+    //angularRotation = error / 180 * (Math.PI * kP);
+    angularRotation = kP * Math.sin( 0.5 * Math.toRadians( error ) );
 
     swerveDrive.drive(xSpeed, ySpeed, -angularRotation, true);
   }
