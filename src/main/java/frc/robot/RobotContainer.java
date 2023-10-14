@@ -2,14 +2,14 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import static frc.robot.Constants.ArmConstants.*;
 
 public class RobotContainer {
 
@@ -24,9 +24,6 @@ public class RobotContainer {
   public static CommandXboxController operatorOI;
   public static XboxController driverRumbler;
   public static XboxController operatorRumbler;
-
-  // Autonomous Chooser
-  public static SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
 
@@ -44,10 +41,6 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-
-    // Configure autonomous chooser
-    autoChooser = new SendableChooser<Command>();
-    configureAutoChooser();
   }
 
   /** Define all button() to command() mappings. */
@@ -69,8 +62,7 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> swerveDrive.setVirtualLowGear()));
 
     // DRIVER Right Trigger: While held, intake the hand
-    driverOI.rightTrigger()
-        .whileTrue(new HandIntake(hand));
+    driverOI.rightTrigger().whileTrue(new HandIntake(hand));
 
     // DRIVER POV/D-Pad: Nudge (Left, Right, Up, Down) relative to the robot.
     driverOI.povUp().whileTrue(new NudgeRobot(swerveDrive, "NUDGE FORWARD").withTimeout(0.5));
@@ -89,20 +81,28 @@ public class RobotContainer {
 
     // DRIVER Start Button: Reset gyro to a new field oriented forward position.
     driverOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetGyro(), swerveDrive));
+
+    // Operator Right Trigger: While held, shoot from hand
+    operatorOI.leftTrigger().whileTrue(new HandShoot(hand));
+
+    // Operator Right Bumper: While held, outtake from hand
+    operatorOI.leftTrigger().whileTrue(new HandOuttake(hand));
+
+    // Operator B: Toggle wrist position
+    operatorOI.b().onTrue(new WristToggle(wrist));
+
+    // OPERATOR Left Stick Y: Direct control over the Arm.
+    new Trigger(() -> Math.abs(operatorOI.getLeftY()) > 0.05)
+        .whileTrue(new ArmDirectControl(arm, -operatorOI.getLeftY()));
+
+    // Operator DPAD Up, Right, Left, Down: Set Arm Target Positions
+    operatorOI.povUp().onTrue(new ArmToAngle(arm, ARM_HIGH_POS));
+    operatorOI.povLeft().onTrue(new ArmToAngle(arm, ARM_MED_POS));
+    operatorOI.povRight().onTrue(new ArmToAngle(arm, ARM_MED_POS));
+    operatorOI.povDown().onTrue(new ArmToAngle(arm, ARM_LOW_POS));
   }
 
-  /**
-   * Configure the autonomous chooser.
-   */
-  public void configureAutoChooser() {
-    SmartDashboard.putData(RobotContainer.autoChooser);
-  }
-
-  /**
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return null;
   }
-
 }

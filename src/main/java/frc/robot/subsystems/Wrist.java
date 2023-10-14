@@ -14,7 +14,7 @@ public class Wrist extends SubsystemBase {
     wristPiston = new Solenoid(PneumaticsModuleType.CTREPCM, WRIST_PISTON_SOLENOID_CHANNEL);
 
     // Set the starting position of the Wrist subsystem.
-    store();
+    wristPiston.set(IS_EXTENDED);
   }
 
   @Override
@@ -22,11 +22,11 @@ public class Wrist extends SubsystemBase {
   }
 
   // Wrist Pistons
-  public void extend() {
-    wristPiston.set(IS_EXTENDED);
+  public void togglePiston() {
+    wristPiston.set(!state());
   }
 
-  public void store() {
-    wristPiston.set(!IS_EXTENDED);
+  public boolean state() {
+    return wristPiston.get();
   }
 }

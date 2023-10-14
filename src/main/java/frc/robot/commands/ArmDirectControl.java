@@ -5,14 +5,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.Arm;
+import static frc.robot.Constants.ArmConstants.*;
 
-public class WristStore extends CommandBase {
-  Wrist wrist;
-  /** Creates a new StoreWrist. */
-  public WristStore( Wrist wrist ) {
+public class ArmDirectControl extends CommandBase {
+
+  Arm arm;
+  double speed;
+  /** Creates a new ArmGoToAngle. */
+  public ArmDirectControl(Arm arm, double speed ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.wrist = wrist;
+    this.arm = arm;
+    this.speed = speed * ARM_SPEED_GOVERNOR;
+    addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
@@ -22,16 +27,18 @@ public class WristStore extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    wrist.store();
+    arm.spin(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    arm.stop();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return Math.abs(speed) <= 0.05;
   }
 }

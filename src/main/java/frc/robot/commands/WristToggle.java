@@ -7,10 +7,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Wrist;
 
-public class WristExtend extends CommandBase {
+public class WristToggle extends CommandBase {
   Wrist wrist;
   /** Creates a new ExtendWrist. */
-  public WristExtend( Wrist wrist ) {
+  public WristToggle( Wrist wrist ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.wrist = wrist;
   }
@@ -22,7 +22,7 @@ public class WristExtend extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    wrist.extend();
+    wrist.togglePiston();
   }
 
   // Called once the command ends or is interrupted.

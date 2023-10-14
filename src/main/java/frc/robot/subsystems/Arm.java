@@ -40,6 +40,10 @@ public class Arm extends SubsystemBase {
     return pot.get();
   }
 
+  public void spin( double speed ) {
+    armMotor.set(speed);
+  }
+
   public void goToAngle(double desiredAngle) {
     double armAngle = getPot();
     armMotor.set( ARM_P * (desiredAngle - armAngle) );

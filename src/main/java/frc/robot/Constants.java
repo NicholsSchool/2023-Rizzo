@@ -42,8 +42,12 @@ public final class Constants {
     public static final double MIN_ARM_POS = 0.0;
     public static final double MAX_ARM_POS = Math.PI / 4;
     public static final double START_ARM_POS = Math.PI / 4;
+    public static final double ARM_LOW_POS = 0.0;
+    public static final double ARM_MED_POS = Math.PI / 2;
+    public static final double ARM_HIGH_POS = Math.PI / 4;
     public static final double ARM_P = 1.0;
     public static final double ARM_ALLOWED_ERROR = 0.1;
+    public static final double ARM_SPEED_GOVERNOR = 0.5;
   }
 
   // Swerve Drive (Drive Train)
