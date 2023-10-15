@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 import static frc.robot.Constants.ArmConstants.*;
 
@@ -39,6 +40,7 @@ public class ArmToAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(angle - arm.getPot() ) < ARM_ALLOWED_ERROR;
+    return Math.abs(RobotContainer.operatorOI.getLeftY()) > 0.05 ||
+           Math.abs(angle - arm.getPot() ) <= ARM_ALLOWED_ERROR;
   }
 }
