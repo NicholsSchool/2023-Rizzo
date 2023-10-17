@@ -17,7 +17,6 @@ public class RobotContainer {
   public final SwerveDrive swerveDrive;
   public final Hand hand;
   public final Arm arm;
-  public final Wrist wrist;
 
   // OI (Operator Interface) controllers
   public static CommandXboxController driverOI;
@@ -31,7 +30,6 @@ public class RobotContainer {
     swerveDrive = new SwerveDrive();
     hand = new Hand();
     arm = new Arm();
-    wrist = new Wrist();
 
     // OI (Operator Interface) Controllers & Rumblers
     driverOI = new CommandXboxController(1);
@@ -87,9 +85,6 @@ public class RobotContainer {
 
     // Operator Right Bumper: While held, outtake from hand
     operatorOI.leftTrigger().whileTrue(new HandOuttake(hand));
-
-    // Operator B: Toggle wrist position
-    operatorOI.b().onTrue(new WristToggle(wrist));
 
     // OPERATOR Left Stick Y: Direct control over the Arm.
     new Trigger(() -> Math.abs(operatorOI.getLeftY()) > 0.05)
