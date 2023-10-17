@@ -41,6 +41,6 @@ public class ArmToAngle extends CommandBase {
   @Override
   public boolean isFinished() {
     return Math.abs(RobotContainer.operatorOI.getLeftY()) > 0.05 ||
-           Math.abs(angle - arm.getPot() ) <= ARM_ALLOWED_ERROR;
+           Math.abs(angle - arm.getArmRotations() ) <= ARM_ALLOWED_ERROR;
   }
 }

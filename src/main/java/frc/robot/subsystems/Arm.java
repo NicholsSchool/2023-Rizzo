@@ -1,19 +1,22 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder.Type;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.CANID;
 import static frc.robot.Constants.ArmConstants.*;
 
 public class Arm extends SubsystemBase {
 
   private CANSparkMax armMotor;
-  private AnalogPotentiometer pot;
+  private RelativeEncoder armEncoder;
 
   public Arm() {
 
@@ -21,32 +24,40 @@ public class Arm extends SubsystemBase {
     armMotor = new CANSparkMax(CANID.ARM_SPARKMAX, MotorType.kBrushless);
     armMotor.restoreFactoryDefaults();
     armMotor.setIdleMode(IdleMode.kBrake);
-    armMotor.setInverted(false); // check later
-    armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) MAX_ARM_POS);
-    armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) MIN_ARM_POS);
-
-    // potentiometer
-    pot = new AnalogPotentiometer(POT_PORT, MAX_ARM_POS, START_ARM_POS);
-    // TODO: conversion from volts to angle of the arm
+    armMotor.setInverted(true);
+    armMotor.enableSoftLimit(SoftLimitDirection.kForward, false); //TODO: Put limits back
+    armMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+    armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (MAX_ARM_LIMIT / ARM_GEAR_RATIO) );
+    armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (MIN_ARM_LIMIT / ARM_GEAR_RATIO) );
+    armEncoder = armMotor.getEncoder(Type.kHallSensor, ARM_COUNTS_PER_REV);
+    armEncoder.setPosition(0.0);
+    armEncoder.setPositionConversionFactor(ArmConstants.POSITION_CONVERSION_FACTOR);
+    armMotor.burnFlash();
   }
 
   @Override
   public void periodic() {
+    armValuesToNT();
   }
 
-  public double getPot() {
-    return pot.get();
+  /**
+   * Put arm values on network tables.
+   */
+  public void armValuesToNT() {
+    RobotContainer.armEncoder.setDouble(getArmRotations());
+  }
+
+  public double getArmRotations() {
+    return armEncoder.getPosition();
   }
 
   public void spin( double speed ) {
     armMotor.set(speed);
   }
 
-  public void goToAngle(double desiredAngle) {
-    double armAngle = getPot();
-    armMotor.set( ARM_P * (desiredAngle - armAngle) );
+  public void goToAngle(double desiredPos) {
+    double armAngle = getArmRotations();
+    armMotor.set( ARM_P * (desiredPos - armAngle) );
   }
 
   public void stop() {

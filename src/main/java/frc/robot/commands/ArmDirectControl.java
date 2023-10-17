@@ -39,6 +39,6 @@ public class ArmDirectControl extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(speed) <= 0.05;
+    return Math.abs(speed) < 0.05;
   }
 }

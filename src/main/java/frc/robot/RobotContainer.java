@@ -1,7 +1,10 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -9,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import static frc.robot.Constants.ArmConstants.*;
 
 public class RobotContainer {
 
@@ -17,6 +19,11 @@ public class RobotContainer {
   public final SwerveDrive swerveDrive;
   public final Hand hand;
   public final Arm arm;
+
+  // Shuffleboard
+  ShuffleboardTab rizzoTab;
+  public static GenericEntry armEncoder;
+  public static GenericEntry handLS;
 
   // OI (Operator Interface) controllers
   public static CommandXboxController driverOI;
@@ -31,7 +38,13 @@ public class RobotContainer {
     hand = new Hand();
     arm = new Arm();
 
+    // Configure the Shuffleboard
+    rizzoTab = Shuffleboard.getTab("Rizzo");
+    armEncoder = rizzoTab.add("Arm Encoder", -0.12345).getEntry();
+    handLS = rizzoTab.add( "Hand LS", false).getEntry();
+
     // OI (Operator Interface) Controllers & Rumblers
+
     driverOI = new CommandXboxController(1);
     driverRumbler = new XboxController(1);
     operatorOI = new CommandXboxController(0);
@@ -81,20 +94,20 @@ public class RobotContainer {
     driverOI.start().whileTrue(new InstantCommand(() -> swerveDrive.resetGyro(), swerveDrive));
 
     // Operator Right Trigger: While held, shoot from hand
-    operatorOI.leftTrigger().whileTrue(new HandShoot(hand));
+    operatorOI.rightTrigger().whileTrue(new HandShoot(hand));
 
     // Operator Right Bumper: While held, outtake from hand
-    operatorOI.leftTrigger().whileTrue(new HandOuttake(hand));
+    operatorOI.rightBumper().whileTrue(new HandOuttake(hand));
 
     // OPERATOR Left Stick Y: Direct control over the Arm.
     new Trigger(() -> Math.abs(operatorOI.getLeftY()) > 0.05)
-        .whileTrue(new ArmDirectControl(arm, -operatorOI.getLeftY()));
+        .whileTrue(new ArmDirectControl(arm, operatorOI.getLeftY()));
 
     // Operator DPAD Up, Right, Left, Down: Set Arm Target Positions
-    operatorOI.povUp().onTrue(new ArmToAngle(arm, ARM_HIGH_POS));
-    operatorOI.povLeft().onTrue(new ArmToAngle(arm, ARM_MED_POS));
-    operatorOI.povRight().onTrue(new ArmToAngle(arm, ARM_MED_POS));
-    operatorOI.povDown().onTrue(new ArmToAngle(arm, ARM_LOW_POS));
+    // operatorOI.povUp().onTrue(new ArmToAngle(arm, ARM_HIGH_POS));
+    // operatorOI.povLeft().onTrue(new ArmToAngle(arm, ARM_MED_POS));
+    // operatorOI.povRight().onTrue(new ArmToAngle(arm, ARM_MED_POS));
+    // operatorOI.povDown().onTrue(new ArmToAngle(arm, ARM_LOW_POS));
   }
 
   public Command getAutonomousCommand() {

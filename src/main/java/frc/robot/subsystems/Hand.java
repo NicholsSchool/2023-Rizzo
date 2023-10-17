@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.CANID;
 import static frc.robot.Constants.HandConstants.*;
 
@@ -20,7 +21,7 @@ public class Hand extends SubsystemBase {
     handMotor = new CANSparkMax(CANID.HAND_SPARKMAX, MotorType.kBrushless);
     handMotor.restoreFactoryDefaults();
     handMotor.setIdleMode(IdleMode.kBrake);
-    handMotor.setInverted(false); // check later
+    handMotor.setInverted(true);
 
     // limit switch
     handLimitSwitch = new DigitalInput(HAND_LIMIT_SWITCH_DIO_CHANNEL);
@@ -28,6 +29,7 @@ public class Hand extends SubsystemBase {
 
   @Override
   public void periodic() {
+    RobotContainer.handLS.setBoolean( isPressed() );
   }
 
   // hand Motors
@@ -49,6 +51,6 @@ public class Hand extends SubsystemBase {
 
   //limit switch
   public boolean isPressed() {
-    return handLimitSwitch.get();
+    return !handLimitSwitch.get();
   }
 }

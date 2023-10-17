@@ -31,7 +31,7 @@ public class RotateRobot extends CommandBase {
     System.out.println("yaw:" + currentYaw);
     double difference = desiredAngle - currentYaw;
     double error, angularRotation = 0.0;
-    double kP = 0.63;
+    double kP = 1.0;
 
     if (Math.abs(difference) > 180) {
       error = difference - (360 * (Math.abs(difference) / difference));
