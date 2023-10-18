@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -100,8 +101,11 @@ public class RobotContainer {
     operatorOI.rightBumper().whileTrue(new HandOuttake(hand));
 
     // OPERATOR Left Stick Y: Direct control over the Arm.
-    new Trigger(() -> Math.abs(operatorOI.getLeftY()) > 0.05)
-        .whileTrue(new ArmDirectControl(arm, operatorOI.getLeftY()));
+    new Trigger( () -> Math.abs( operatorOI.getLeftY() ) >= 0.05 )
+                  .whileTrue( new RunCommand(
+                  () -> arm.spin(operatorOI.getLeftY() * ArmConstants.ARM_SPEED_GOVERNOR), arm));
+    
+    arm.setDefaultCommand(new RunCommand(() -> arm.stop(), arm) );
 
     // Operator DPAD Up, Right, Left, Down: Set Arm Target Positions
     // operatorOI.povUp().onTrue(new ArmToAngle(arm, ARM_HIGH_POS));

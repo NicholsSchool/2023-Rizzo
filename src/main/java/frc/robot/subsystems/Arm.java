@@ -27,8 +27,8 @@ public class Arm extends SubsystemBase {
     armMotor.setInverted(true);
     armMotor.enableSoftLimit(SoftLimitDirection.kForward, false); //TODO: Put limits back
     armMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
-    armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (MAX_ARM_LIMIT / ARM_GEAR_RATIO) );
-    armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (MIN_ARM_LIMIT / ARM_GEAR_RATIO) );
+    armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (MAX_ARM_LIMIT) );
+    armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (MIN_ARM_LIMIT) );
     armEncoder = armMotor.getEncoder(Type.kHallSensor, ARM_COUNTS_PER_REV);
     armEncoder.setPosition(0.0);
     armEncoder.setPositionConversionFactor(ArmConstants.POSITION_CONVERSION_FACTOR);
@@ -51,8 +51,12 @@ public class Arm extends SubsystemBase {
     return armEncoder.getPosition();
   }
 
+  public void resetEncoder() {
+    armEncoder.setPosition(0.0);
+  }
+
   public void spin( double speed ) {
-    armMotor.set(speed);
+    armMotor.set(-speed);
   }
 
   public void goToAngle(double desiredPos) {

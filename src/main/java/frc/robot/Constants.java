@@ -36,14 +36,14 @@ public final class Constants {
     public static final double ARM_GEAR_RATIO = 1.0 / (98); // 1:98 gear ratio
     public static final int ARM_COUNTS_PER_REV = 42;
     public static final double POSITION_CONVERSION_FACTOR = ARM_GEAR_RATIO * 2.0 * Math.PI;
-    public static final double MIN_ARM_LIMIT = -0.05;
+    public static final double MIN_ARM_LIMIT = -0.1;
     public static final double MAX_ARM_LIMIT = 1.25;
     public static final double ARM_LOW_POS = 0.0;
     public static final double ARM_MED_POS = 0.5;
     public static final double ARM_HIGH_POS = 1.0;
     public static final double ARM_P = 0.1;
-    public static final double ARM_ALLOWED_ERROR = 0.1;
-    public static final double ARM_SPEED_GOVERNOR = 0.005;
+    public static final double ARM_ALLOWED_ERROR = 0.05;
+    public static final double ARM_SPEED_GOVERNOR = 0.075;
   }
 
   // Swerve Drive (Drive Train)
@@ -51,7 +51,7 @@ public final class Constants {
     public static final double DRIVETRAIN_WIDTH = Units.inchesToMeters(26.09);
     public static final double DRIVETRAIN_LENGTH = Units.inchesToMeters(26.06);
 
-    public static final double VIRTUAL_LOW_GEAR_RATE = 0.33;
+    public static final double VIRTUAL_LOW_GEAR_RATE = 0.3;
     public static final double VIRTUAL_HIGH_GEAR_RATE = 0.9;
 
     public static final double MAX_METERS_PER_SECOND = 4.8;
