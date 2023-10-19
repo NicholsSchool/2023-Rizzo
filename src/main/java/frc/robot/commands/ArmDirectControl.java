@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
-import static frc.robot.Constants.ArmConstants.*;
 
 public class ArmDirectControl extends CommandBase {
 
@@ -16,7 +15,7 @@ public class ArmDirectControl extends CommandBase {
   public ArmDirectControl(Arm arm, double speed ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arm = arm;
-    this.speed = speed * ARM_SPEED_GOVERNOR;
+    this.speed = speed;
     addRequirements(arm);
   }
 
@@ -39,6 +38,6 @@ public class ArmDirectControl extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(speed) < 0.05;
+    return false;
   }
 }

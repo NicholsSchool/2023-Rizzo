@@ -26,9 +26,8 @@ public final class Constants {
 
   public static final class HandConstants {
     public static final double INTAKE_SPEED = -0.6;
-    public static final double OUTTAKE_SPEED = 0.6;
+    public static final double OUTTAKE_SPEED = 0.3;
     public static final double SHOOT_SPEED = 1.0;
-    public static final double HAND_SPEED_OFFSET = 0.33;
     public static final int HAND_LIMIT_SWITCH_DIO_CHANNEL = 0;
   }
 
@@ -37,13 +36,15 @@ public final class Constants {
     public static final int ARM_COUNTS_PER_REV = 42;
     public static final double POSITION_CONVERSION_FACTOR = ARM_GEAR_RATIO * 2.0 * Math.PI;
     public static final double MIN_ARM_LIMIT = -0.1;
-    public static final double MAX_ARM_LIMIT = 1.25;
+    public static final double MAX_ARM_LIMIT = 1.5;
     public static final double ARM_LOW_POS = 0.0;
     public static final double ARM_MED_POS = 0.5;
     public static final double ARM_HIGH_POS = 1.0;
-    public static final double ARM_P = 0.1;
+    public static final double ARM_P = 0.5;
     public static final double ARM_ALLOWED_ERROR = 0.05;
-    public static final double ARM_SPEED_GOVERNOR = 0.075;
+    public static final double ARM_SPEED_GOVERNOR = 0.1;
+    public static final int ARM_LIMIT_SWITCH_DIO_CHANNEL = 9;
+
   }
 
   // Swerve Drive (Drive Train)

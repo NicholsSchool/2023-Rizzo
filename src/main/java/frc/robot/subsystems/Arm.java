@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
@@ -17,6 +18,7 @@ public class Arm extends SubsystemBase {
 
   private CANSparkMax armMotor;
   private RelativeEncoder armEncoder;
+  private DigitalInput armLimitSwitch;
 
   public Arm() {
 
@@ -33,11 +35,16 @@ public class Arm extends SubsystemBase {
     armEncoder.setPosition(0.0);
     armEncoder.setPositionConversionFactor(ArmConstants.POSITION_CONVERSION_FACTOR);
     armMotor.burnFlash();
+
+    // limit switch
+    armLimitSwitch = new DigitalInput(ARM_LIMIT_SWITCH_DIO_CHANNEL);
   }
 
   @Override
   public void periodic() {
     armValuesToNT();
+    if( isPressed() )
+      setEncoder(0.0);
   }
 
   /**
@@ -45,26 +52,35 @@ public class Arm extends SubsystemBase {
    */
   public void armValuesToNT() {
     RobotContainer.armEncoder.setDouble(getArmRotations());
+    RobotContainer.armLS.setBoolean(isPressed());
   }
 
   public double getArmRotations() {
     return armEncoder.getPosition();
   }
 
-  public void resetEncoder() {
-    armEncoder.setPosition(0.0);
+  public void setEncoder( double position ) {
+    armEncoder.setPosition(position);
   }
 
   public void spin( double speed ) {
-    armMotor.set(-speed);
+    if( isPressed() && speed > 0 )
+      stop();
+    else
+      armMotor.set(-speed * ARM_SPEED_GOVERNOR);
   }
 
   public void goToAngle(double desiredPos) {
     double armAngle = getArmRotations();
-    armMotor.set( ARM_P * (desiredPos - armAngle) );
+    spin( ARM_P * (desiredPos - armAngle) );
   }
 
   public void stop() {
     armMotor.stopMotor();
+  }
+
+  //limit switch
+  public boolean isPressed() {
+    return !armLimitSwitch.get();
   }
 }

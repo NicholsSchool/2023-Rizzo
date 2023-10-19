@@ -18,7 +18,6 @@ public class ArmToAngle extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arm = arm;
     this.angle = angle;
-    addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
@@ -40,7 +39,6 @@ public class ArmToAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(RobotContainer.operatorOI.getLeftY()) > 0.05 ||
-           Math.abs(angle - arm.getArmRotations() ) <= ARM_ALLOWED_ERROR;
+    return false;
   }
 }
