@@ -40,7 +40,7 @@ public final class Constants {
     public static final double ARM_LOW_POS = 0.0;
     public static final double ARM_MED_POS = 0.5;
     public static final double ARM_HIGH_POS = 1.0;
-    public static final double ARM_P = 0.5;
+    public static final double ARM_P = 0.1;
     public static final double ARM_ALLOWED_ERROR = 0.05;
     public static final double ARM_SPEED_GOVERNOR = 0.1;
     public static final int ARM_LIMIT_SWITCH_DIO_CHANNEL = 9;

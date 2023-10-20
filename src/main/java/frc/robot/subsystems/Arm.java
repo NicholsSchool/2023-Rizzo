@@ -32,7 +32,6 @@ public class Arm extends SubsystemBase {
     armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (MAX_ARM_LIMIT) );
     armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (MIN_ARM_LIMIT) );
     armEncoder = armMotor.getEncoder(Type.kHallSensor, ARM_COUNTS_PER_REV);
-    armEncoder.setPosition(0.0);
     armEncoder.setPositionConversionFactor(ArmConstants.POSITION_CONVERSION_FACTOR);
     armMotor.burnFlash();
 
@@ -63,16 +62,20 @@ public class Arm extends SubsystemBase {
     armEncoder.setPosition(position);
   }
 
-  public void spin( double speed ) {
+  public void move( double speed ) {
     if( isPressed() && speed > 0 )
       stop();
     else
-      armMotor.set(-speed * ARM_SPEED_GOVERNOR);
+      setPower(speed);
+  }
+
+  public void setPower( double speed ) {
+    armMotor.set(-speed * ARM_SPEED_GOVERNOR);
   }
 
   public void goToAngle(double desiredPos) {
     double armAngle = getArmRotations();
-    spin( ARM_P * (desiredPos - armAngle) );
+    move( ARM_P * (desiredPos - armAngle) );
   }
 
   public void stop() {

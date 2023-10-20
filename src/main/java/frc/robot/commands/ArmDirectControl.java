@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 
 public class ArmDirectControl extends CommandBase {
@@ -12,7 +13,7 @@ public class ArmDirectControl extends CommandBase {
   Arm arm;
   double speed;
   /** Creates a new ArmGoToAngle. */
-  public ArmDirectControl(Arm arm, double speed ) {
+  public ArmDirectControl(Arm arm, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arm = arm;
     this.speed = speed;
@@ -26,13 +27,14 @@ public class ArmDirectControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.spin(speed);
+    arm.move(speed);
+    RobotContainer.armTroubleShooting.setDouble(1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm.stop();
+    RobotContainer.armTroubleShooting.setDouble(-1);
   }
 
   // Returns true when the command should end.

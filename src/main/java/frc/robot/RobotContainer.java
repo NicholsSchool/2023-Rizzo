@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -27,6 +28,7 @@ public class RobotContainer {
   public static GenericEntry armEncoder;
   public static GenericEntry handLS;
   public static GenericEntry armLS;
+  public static GenericEntry armTroubleShooting;
 
   // OI (Operator Interface) controllers
   public static CommandXboxController driverOI;
@@ -46,6 +48,7 @@ public class RobotContainer {
     armEncoder = rizzoTab.add("Arm Encoder", -0.12345).getEntry();
     armLS = rizzoTab.add("Arm LS", false).getEntry();
     handLS = rizzoTab.add( "Hand LS", false).getEntry();
+    armTroubleShooting = rizzoTab.add("ArmDirectControl", 0).getEntry();
 
     // OI (Operator Interface) Controllers & Rumblers
 
@@ -105,22 +108,23 @@ public class RobotContainer {
 
     // OPERATOR Left Stick Y: Direct control over the Arm.
     new Trigger( () -> Math.abs( operatorOI.getLeftY() ) >= 0.05 ).whileTrue(
-      new RunCommand( () -> arm.spin( operatorOI.getLeftY() ), arm ) );
-
-      new Trigger( () -> Math.abs( operatorOI.getLeftY() ) < 0.05 ).whileTrue(
-        new RunCommand( () -> arm.stop(), arm ) );
+      new RunCommand( () -> arm.move( operatorOI.getLeftY() ), arm ) );
 
     // Operator DPAD Up, Right, Left, Down: Set Arm Target Positions
-    operatorOI.povUp().whileTrue(new ArmToAngle(arm, ArmConstants.ARM_HIGH_POS));
-    operatorOI.povLeft().whileTrue(new ArmToAngle(arm, ArmConstants.ARM_MED_POS));
-    operatorOI.povRight().whileTrue(new ArmToAngle(arm, ArmConstants.ARM_MED_POS));
-    operatorOI.povDown().whileTrue(new ArmToAngle(arm, ArmConstants.ARM_LOW_POS));
+    // operatorOI.povUp().whileTrue(new ArmToAngle(arm, ArmConstants.ARM_HIGH_POS));
+    // operatorOI.povLeft().whileTrue(new ArmToAngle(arm, ArmConstants.ARM_MED_POS));
+    // operatorOI.povRight().whileTrue(new ArmToAngle(arm, ArmConstants.ARM_MED_POS));
+    // operatorOI.povDown().whileTrue(new ArmToAngle(arm, ArmConstants.ARM_LOW_POS));
 
-    arm.setDefaultCommand(new RunCommand(() -> arm.stop(), arm));
+    arm.setDefaultCommand( new RunCommand( () -> arm.stop(), arm ) );
   }
 
   public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(
-      new RunCommand( () -> arm.spin(1.0) ) );
+      return new SequentialCommandGroup(
+        new RunCommand( () -> arm.move(1.0), arm ).raceWith(new WaitCommand(0.25)),
+        new WaitCommand(1),
+        new RunCommand( () -> hand.shoot(), hand).raceWith(new WaitCommand(0.5)),
+        new WaitCommand(1),
+        new RunCommand( () -> arm.move(1.0), arm ) );
   }
 }
