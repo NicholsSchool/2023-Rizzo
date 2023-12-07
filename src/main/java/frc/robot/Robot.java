@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -12,12 +13,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * Any method which contains the word "Periodic" is called repeatedly.
  */
 public class Robot extends TimedRobot {
-
   private Command autonomousCommand;
   private RobotContainer robotContainer;
 
   @Override
   public void robotInit() {
+    CameraServer.startAutomaticCapture();
     robotContainer = new RobotContainer();
   }
 
@@ -40,7 +41,6 @@ public class Robot extends TimedRobot {
     autonomousCommand = robotContainer.getAutonomousCommand();
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
-      robotContainer.arm.setEncoder(1.5);
     }
   }
 
@@ -50,7 +50,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousExit() {
-    robotContainer.swerveDrive.setWheelsToXFormation();
   }
 
   @Override

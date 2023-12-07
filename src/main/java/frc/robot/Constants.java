@@ -27,7 +27,7 @@ public final class Constants {
   public static final class HandConstants {
     public static final double INTAKE_SPEED = -0.6;
     public static final double OUTTAKE_SPEED = 0.3;
-    public static final double SHOOT_SPEED = 1.0;
+    public static final double SHOOT_SPEED = 0.75;
     public static final int HAND_LIMIT_SWITCH_DIO_CHANNEL = 0;
   }
 
@@ -52,7 +52,7 @@ public final class Constants {
     public static final double DRIVETRAIN_WIDTH = Units.inchesToMeters(26.09);
     public static final double DRIVETRAIN_LENGTH = Units.inchesToMeters(26.06);
 
-    public static final double VIRTUAL_LOW_GEAR_RATE = 0.3;
+    public static final double VIRTUAL_LOW_GEAR_RATE = 0.4;
     public static final double VIRTUAL_HIGH_GEAR_RATE = 0.9;
 
     public static final double MAX_METERS_PER_SECOND = 4.8;
